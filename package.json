@@ -1,0 +1,11 @@
+{
+  "name": "richang.js",
+  "version": "1.0.0",
+  "description": "richang js code.",
+  "main": "arrayARR.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nullice",
+  "license": "MIT"
+}
