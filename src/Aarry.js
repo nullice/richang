@@ -20,11 +20,11 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//             · arrayARR ·
+//             · Aarry ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
-//            license: LGPL
+//            license: MIT
 
 
 /**

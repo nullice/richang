@@ -19,11 +19,11 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//             · objectOBJ ·
+//             · Object ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
-//            license: LGPL
+//            license: MIT
 
 
 var objectOBJ = {

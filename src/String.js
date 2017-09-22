@@ -21,11 +21,11 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//            · stringSTR ·
+//            · String ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
-//            license: LGPL
+//            license: MIT
 
 
 /**

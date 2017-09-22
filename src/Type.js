@@ -20,11 +20,11 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//              · typeTYP ·
+//              · Type ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
-//            license: LGPL
+//            license: MIT
 
 
 var typeTYP = {
@@ -34,7 +34,7 @@ var typeTYP = {
      * @param value
      * @returns {*}
      */
-    type: function (value)
+    getType: function (value)
     {
         var typeList = {
             "[object Boolean]": "boolean",

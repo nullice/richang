@@ -1,10 +1,10 @@
-import objectOBJ from "./src/objectOBJ"
-import stringSTR from "./src/stringSTR"
-import fileFIL from "./src/fileFIL"
-import typeTYP from "./src/typeTYP"
-import arrayARR from "./src/arrayARR"
+import Object from "./src/objectOBJ"
+import String from "./src/stringSTR"
+import File from "./src/fileFIL"
+import Type from "./src/typeTYP"
+import Array from "./src/arrayARR"
 
 
-var Richang  = {stringSTR,fileFIL,typeTYP,arrayARR};
+var Richang = {Object, String, File, Type, Array};
 
-export  default  Richang
+export default Richang
