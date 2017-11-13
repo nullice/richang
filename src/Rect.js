@@ -111,9 +111,23 @@ Rect.getXywhsRange = function (xywhs) {
     return Rect.rltb2xywh(range)
 }
 
+/**
+ * 整体移动多个 xywh 到某点，保留原 xywhs 相对位置。
+ * 会改变 xywhs 里每个 xywh 对象的 x，y 值。
+ * @param xywhs
+ * @param xy
+ */
 Rect.moveXywhs = function (xywhs, xy) {
 
-    
+    var range = Rect.getXywhsRange(xywhs)
+    for (var i = 0; i < xywhs.length; i++)
+    {
+        var xywh = xywhs[i]
+        xywh.x = xy.x + xywh.x - range.x
+        xywh.y = xy.y + xywh.y - range.y
+    }
+
+    return xywhs
 }
 
 export default Rect
