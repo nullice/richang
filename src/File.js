@@ -27,27 +27,27 @@
 //            license: MIT
 
 
-var fs  = require("fs")
-var fileFIL = {
-    /**
-     * 去除一个字符串中不符合成为文件名的字符
-     * @param name
-     * @param fix 非法字符替代
-     * @returns {*}
-     */
-    filterFileName: function (name, fix)
+var fileFIL = {}
+var fs = require("fs")
+
+
+/**
+ * 去除一个字符串中不符合成为文件名的字符
+ * @param name
+ * @param fix 非法字符替代
+ * @returns {*}
+ */
+fileFIL.filterFileName = function (name, fix) {
+    if (name != undefined && name.length != undefined)
     {
-        if (name != undefined && name.length != undefined)
-        {
-            var reg = /[\\/:*?"<>]/g
-            name = name.replace(reg, fix||"")
-            return name
-        } else
-        {
-            return null
-        }
-    },
-
-
+        var reg = /[\\/:*?"<>]/g
+        name = name.replace(reg, fix || "")
+        return name
+    } else
+    {
+        return null
+    }
 }
-export  default fileFIL;
+
+
+export default fileFIL;

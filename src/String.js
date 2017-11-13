@@ -21,7 +21,7 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//            · String ·
+//              · String ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com

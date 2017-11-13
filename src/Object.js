@@ -149,7 +149,6 @@ var objectOBJ = {
         return nowValue
     },
 
-
     /**
      * 根据属性名路径列表（names）对对象属性赋值
      * @param object 对象

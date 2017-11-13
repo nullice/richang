@@ -21,9 +21,7 @@
 //             nullice.com
 //            license: MIT
 
-
 var Rect = {}
-
 
 /**
  * 坐标转换
@@ -32,14 +30,13 @@ var Rect = {}
  * @returns {{x: null, y: null, w: null, h: null}}
  */
 Rect.rltb2xywh = function (boundsInfo) {
-    var newBoundsInfo = {x: null, y: null, w: null, h: null};
-    newBoundsInfo.x = boundsInfo.left;
-    newBoundsInfo.y = boundsInfo.top;
-    newBoundsInfo.h = boundsInfo.bottom - boundsInfo.top;
-    newBoundsInfo.w = boundsInfo.right - boundsInfo.left;
-    return newBoundsInfo;
+    var newBoundsInfo = {x: null, y: null, w: null, h: null}
+    newBoundsInfo.x = boundsInfo.left
+    newBoundsInfo.y = boundsInfo.top
+    newBoundsInfo.h = boundsInfo.bottom - boundsInfo.top
+    newBoundsInfo.w = boundsInfo.right - boundsInfo.left
+    return newBoundsInfo
 }
-
 
 /**
  * 坐标转换
@@ -48,14 +45,13 @@ Rect.rltb2xywh = function (boundsInfo) {
  * @returns {{left: null, right: null, top: null, bottom: null}}
  */
 Rect.xywh2rltb = function (boundsInfo) {
-    var newBoundsInfo = {left: null, right: null, top: null, bottom: null};
-    newBoundsInfo.left = boundsInfo.x;
-    newBoundsInfo.top = boundsInfo.y;
-    newBoundsInfo.right = boundsInfo.x + boundsInfo.w;
-    newBoundsInfo.bottom = boundsInfo.y + boundsInfo.h;
-    return newBoundsInfo;
+    var newBoundsInfo = {left: null, right: null, top: null, bottom: null}
+    newBoundsInfo.left = boundsInfo.x
+    newBoundsInfo.top = boundsInfo.y
+    newBoundsInfo.right = boundsInfo.x + boundsInfo.w
+    newBoundsInfo.bottom = boundsInfo.y + boundsInfo.h
+    return newBoundsInfo
 }
-
 
 /**
  * 给 xywh 添加内边距
@@ -87,7 +83,6 @@ Rect.paddingXywh = function (xywh, padding) {
     return Rect.rltb2xywh(rltb)
 }
 
-
 /**
  * 计算多个 xywh 矩形的边界
  *
@@ -97,10 +92,16 @@ Rect.paddingXywh = function (xywh, padding) {
  */
 Rect.getXywhsRange = function (xywhs) {
 
-    var range = {left: 0, right: 0, top: 0, bottom: 0};
+    var range = {left: null, right: null, top: null, bottom: null}
     for (var i = 0; i < xywhs.length; i++)
     {
         var rltb = Rect.xywh2rltb(xywhs[i])
+
+        if (range.left == undefined) range.left = rltb.left
+        if (range.top == undefined) range.top = rltb.top
+        if (range.right == undefined) range.right = rltb.right
+        if (range.bottom == undefined) range.bottom = rltb.bottom
+
         if (rltb.left < range.left) range.left = rltb.left
         if (rltb.top < range.top) range.top = rltb.top
         if (rltb.right > range.right) range.right = rltb.right
@@ -110,8 +111,10 @@ Rect.getXywhsRange = function (xywhs) {
     return Rect.rltb2xywh(range)
 }
 
+Rect.moveXywhs = function (xywhs, xy) {
 
-
+    
+}
 
 export default Rect
 
