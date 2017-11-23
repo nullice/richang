@@ -130,6 +130,26 @@ Rect.moveXywhs = function (xywhs, xy) {
     return xywhs
 }
 
+/**
+ * 2 个 xywh 是否有重叠
+ * @param xywhA
+ * @param xywhB
+ */
+Rect.xywhHasCover = function (xywhA, xywhB) {
+
+    var rltbA = Rect.xywh2rltb(xywhA)
+    var rltbB = Rect.xywh2rltb(xywhB)
+
+    var hasOverlay = !!(
+        rltbA.left <= rltbB.right &&
+        rltbA.right >= rltbB.left &&
+        rltbA.top <= rltbB.bottom &&
+        rltbA.bottom >= rltbB.top
+    )
+
+    return hasOverlay
+
+}
 export default Rect
 
 
