@@ -1,13 +1,24 @@
 {
   "name": "richang.js",
-  "version": "2.3.10",
+  "version": "3.0.0",
   "description": "richang js code.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish":"npm publish"
+    "publish": "npm publish",
+    "build": "rmdir-cli lib &&babel src -d lib ",
+    "watch": "babel src -w -d lib"
   },
   "author": "nullice",
   "license": "MIT",
-  "repository": "git@github.com:nullice/Richang.js.git"
+  "repository": "git@github.com:nullice/Richang.js.git",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "rmdir-cli": "^2.0.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-minify": "^0.3.0"
+  }
 }

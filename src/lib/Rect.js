@@ -21,6 +21,7 @@
 //             nullice.com
 //            license: MIT
 
+
 var Rect = {}
 
 /**
@@ -134,6 +135,7 @@ Rect.moveXywhs = function (xywhs, xy) {
  * 2 个 xywh 是否有重叠
  * @param xywhA
  * @param xywhB
+ * @return {boolean}
  */
 Rect.xywhHasCover = function (xywhA, xywhB) {
 
@@ -150,6 +152,10 @@ Rect.xywhHasCover = function (xywhA, xywhB) {
     return hasOverlay
 
 }
+
+/**
+ * @exports Rect
+ */
 export default Rect
 
 
