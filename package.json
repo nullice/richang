@@ -1,11 +1,11 @@
 {
   "name": "richang.js",
-  "version": "3.0.1",
+  "version": "3.0.2-rc4",
   "description": "richang js code.",
   "main": "dist/Richang.js",
   "scripts": {
     "test": "node test/test.js",
-    "publish": "npm publish ",
+    "publish": "npm publish --registry=https://registry.npmjs.org/ --disturl=/",
     "watch": "rollup -c -w",
     "build": "rollup -c",
     "build-min": "rollup -c rollup-min.config.js"
