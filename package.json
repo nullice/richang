@@ -4,11 +4,12 @@
   "description": "richang js code.",
   "main": "dist/Richang.js",
   "scripts": {
-    "test": "node test/test.js",
+    "test": "jest",
     "publish": "npm publish --registry=https://registry.npmjs.org/ --disturl=/",
     "watch": "rollup -c -w",
     "build": "rollup -c",
-    "build-min": "rollup -c rollup-min.config.js"
+    "build-min": "rollup -c rollup-min.config.js",
+    "doc": "jsdoc2md dist/RichangEs.js > doc/RichangEs.md && type README-HEAD.MD > README.MD && type doc\\RichangEs.md >> README.MD"
   },
   "author": "nullice",
   "license": "MIT",
@@ -20,10 +21,13 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.1",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-minify": "^0.3.0",
+    "jest": "^22.4.2",
     "rollup": "^0.56.5",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-uglify": "^3.0.0"

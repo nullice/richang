@@ -36,8 +36,8 @@ var stringSTR = {
     /**
      * 取字符串左边
      * ****依赖 stringSTR.right()***
-     * @param {String} str 原文
-     * @param {Number} offset 偏移值
+     * @param {String} str - 原文
+     * @param {Number} offset - 偏移值
      * @returns {*}
      */
     left: function (str, offset)

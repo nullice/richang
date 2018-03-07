@@ -13,6 +13,7 @@ export default [
         plugins: [
             babel({
                 exclude: 'node_modules/**',
+                plugins: ['external-helpers']
             })
         ]
 
@@ -27,6 +28,7 @@ export default [
         plugins: [
             babel({
                 exclude: 'node_modules/**',
+                plugins: ['external-helpers']
             })
         ]
 
@@ -41,6 +43,7 @@ export default [
         plugins: [
             babel({
                 exclude: 'node_modules/**',
+                plugins: ['external-helpers']
             })
         ]
 

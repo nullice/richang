@@ -25,7 +25,10 @@
 //             nullice.com
 //            license: MIT
 
-
+/**
+ * 对象操作相关操作
+ * @type {{isEmptyObject: objectOBJ.isEmptyObject, objectCopyToObject: objectOBJ.objectCopyToObject, getObjectValueByNames: objectOBJ.getObjectValueByNames, setObjectValueByNames: objectOBJ.setObjectValueByNames}}
+ */
 var objectOBJ = {
 
 

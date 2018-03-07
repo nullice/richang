@@ -1,5 +1,4 @@
 {
-  "plugins": [  "external-helpers"],
   "presets": [
     [
       "env",
@@ -12,5 +11,19 @@
         "modules": false
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [[
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "since 2015"
+            ]
+          }
+        }
+      ]]
+    }
+  }
 }
