@@ -6,8 +6,6 @@ import Type from "./modules/Type"
 import Array from "./modules/Aarry"
 import Rect from "./modules/Rect"
 
-
-
 const Richang ={
     Object,
     String,
