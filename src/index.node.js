@@ -1,10 +1,10 @@
-import "babel-polyfill"
-import Object from "./lib/Object"
-import String from "./lib/String"
-import Type from "./lib/Type"
-import Array from "./lib/Aarry"
-import Rect from "./lib/Rect"
-import File from "./lib/File"
+
+import Object from "./modules/Object"
+import String from "./modules/String"
+import Type from "./modules/Type"
+import Array from "./modules/Aarry"
+import Rect from "./modules/Rect"
+import File from "./modules/File"
 const RichangNode ={
     Object,
     String,
@@ -15,6 +15,6 @@ const RichangNode ={
 }
 
 /**
- * @export Richang
+ * @export RichangNode
  */
-export default  RichangNode
+module.exports =   RichangNode

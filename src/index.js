@@ -1,9 +1,12 @@
-import "babel-polyfill"
-import Object from "./lib/Object"
-import String from "./lib/String"
-import Type from "./lib/Type"
-import Array from "./lib/Aarry"
-import Rect from "./lib/Rect"
+
+
+import Object from "./modules/Object"
+import String from "./modules/String"
+import Type from "./modules/Type"
+import Array from "./modules/Aarry"
+import Rect from "./modules/Rect"
+
+
 
 const Richang ={
     Object,
@@ -16,4 +19,4 @@ const Richang ={
 /**
  * @export Richang
  */
-export default  Richang
+export default Richang

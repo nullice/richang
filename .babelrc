@@ -1,9 +1,15 @@
 {
+  "plugins": [  "external-helpers"],
   "presets": [
     [
       "env",
       {
-        "target":"es5"
+        "targets": {
+          "browsers": [
+            "since 2015"
+          ]
+        },
+        "modules": false
       }
     ]
   ]
