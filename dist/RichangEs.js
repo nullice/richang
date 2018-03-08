@@ -31,7 +31,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //             nullice.com
 //            license: MIT
 
-
+/**
+ * 对象操作相关操作
+ * @type {{isEmptyObject: objectOBJ.isEmptyObject, objectCopyToObject: objectOBJ.objectCopyToObject, getObjectValueByNames: objectOBJ.getObjectValueByNames, setObjectValueByNames: objectOBJ.setObjectValueByNames}}
+ */
 var objectOBJ = {
 
     /**
@@ -212,8 +215,8 @@ var stringSTR = {
     /**
      * 取字符串左边
      * ****依赖 stringSTR.right()***
-     * @param {String} str 原文
-     * @param {Number} offset 偏移值
+     * @param {String} str - 原文
+     * @param {Number} offset - 偏移值
      * @returns {*}
      */
     left: function left(str, offset) {
@@ -549,7 +552,7 @@ var arrayARR = {
      * 对象数组查找
      * 从对象数组中提取出一个对象，根据对象的一个属性值。
      * arr: [{name:a},{name:b}] getByKey(arr,"name","b") => return {name:b}
-     * @param {Object[]} objectArr 对象数组
+     * @param {[Object]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空
@@ -575,7 +578,7 @@ var arrayARR = {
      * 对象数组删除
      * 从对象数组中找到出一个对象元素，并删除这个元素。
      * arr: [{name:a},{name:b}] deleteByKey(arr,"name","b") => arr: [{name:a}]
-     * @param {Object[]} objectArr 对象数组
+     * @param {[Object]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空

@@ -1,6 +1,6 @@
 {
   "name": "richang.js",
-  "version": "3.0.2-rc4",
+  "version": "3.0.5",
   "description": "richang js code.",
   "main": "dist/Richang.js",
   "scripts": {

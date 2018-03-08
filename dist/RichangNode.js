@@ -33,7 +33,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //             nullice.com
 //            license: MIT
 
-
+/**
+ * 对象操作相关操作
+ * @type {{isEmptyObject: objectOBJ.isEmptyObject, objectCopyToObject: objectOBJ.objectCopyToObject, getObjectValueByNames: objectOBJ.getObjectValueByNames, setObjectValueByNames: objectOBJ.setObjectValueByNames}}
+ */
 var objectOBJ = {
 
     /**
@@ -214,8 +217,8 @@ var stringSTR = {
     /**
      * 取字符串左边
      * ****依赖 stringSTR.right()***
-     * @param {String} str 原文
-     * @param {Number} offset 偏移值
+     * @param {String} str - 原文
+     * @param {Number} offset - 偏移值
      * @returns {*}
      */
     left: function left(str, offset) {
