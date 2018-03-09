@@ -28,81 +28,134 @@
 
 var chalk = require("chalk")
 
-
 var NodeDebug = {
 
     /**
      * 在终端打出红色 log
      * @param text
      */
-    logRed: function (text) {
-        console.log( chalk.red(text))
+    logRed: function (text, text2 = "") {
+        console.log(chalk.red(text), text2)
+    },
+
+    /**
+     * 把文本标记为红色
+     * @param text
+     * @returns {string | *}
+     */
+    cRed: function (text) {
+        return chalk.red(text)
     },
 
     /**
      * 在终端打出蓝色 log
      * @param text
      */
-    logBlue: function (text) {
-        console.log( chalk.blue(text))
+    logBlue: function (text, text2 = "") {
+        console.log(chalk.blue(text), text2)
+    },
+
+    /**
+     * 把文本标记为蓝色
+     * @param text
+     * @returns {*|string}
+     */
+    cBlue: function (text) {
+        return chalk.blue(text)
     },
 
     /**
      * 在终端打出绿色 log
      * @param text
      */
-    logGreen: function (text) {
-        console.log( chalk.green(text))
+    logGreen: function (text, text2 = "") {
+        console.log(chalk.green(text), text2)
+    },
+
+    /**
+     * 把文本标记为绿色
+     * @param text
+     * @returns {string | *}
+     */
+    cGreen: function (text) {
+        return chalk.green(text)
     },
 
     /**
      * 在终端打出灰色 log
      * @param text
      */
-    logGray: function (text) {
-        console.log( chalk.gray(text))
+    logGray: function (text, text2 = "") {
+        console.log(chalk.gray(text), text2)
     },
+
+
+    /**
+     * 把文本标记为灰色
+     * @param text
+     * @returns {string | *}
+     */
+   cGray: function (text) {
+      return chalk.gray(text)
+    },
+
+
     /**
      * 在终端打出黄色 log
      * @param text
      */
-    logYellow: function (text) {
-        console.log( chalk.yellow(text))
+    logYellow: function (text, text2 = "") {
+        console.log(chalk.yellow(text), text2)
     },
+
+
+    /**
+     * 把文本标记为黄色
+     * @param text
+     * @returns {string | *}
+     */
+    cYellow: function (text) {
+        return chalk.yellow(text)
+    },
+
 
     /**
      * 在终端打出红色标签 log
      * @param text
      */
-    logLableRed: function (text) {
-        console.log( chalk.black.bgRed( text))
+    logLableRed: function (text, text2 = "") {
+        console.log(chalk.black.bgRed(text), text2)
     },
 
     /**
      * 在终端打出黄色标签 log
      * @param text
      */
-    logLableYellow: function (text) {
-        console.log( chalk.black.bgYellow(text))
+    logLableYellow: function (text, text2 = "") {
+        console.log(chalk.black.bgYellow(text), text2)
     },
-
 
     /**
      * 在终端打出蓝绿色标签 log
      * @param text
      */
-    logLableCyan: function (text) {
-        console.log( chalk.black.bgCyan(text))
+    logLableCyan: function (text, text2 = "") {
+        console.log(chalk.black.bgCyan(text), text2)
     },
-
+    /**
+     * 在终端打出绿色标签 log
+     * @param text
+     */
+    logLableGreen: function (text, text2 = "") {
+        console.log(chalk.black.bgGreen(text), text2)
+    },
     /**
      * 在终端打出白色色标签 log
      * @param text
      */
-    logLableWhite: function (text) {
-        console.log( chalk.black.bgCyan(text))
+    logLableWhite: function (text, text2 = "") {
+        console.log(chalk.black.bgWhite(text), text2)
     },
 }
 
-
-export default  NodeDebug
+export default NodeDebug

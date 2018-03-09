@@ -83,7 +83,9 @@ var NodeDebug = {
      * @param text
      */
     logRed: function logRed(text) {
-        console.log(chalk.red(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.red(text), text2);
     },
 
     /**
@@ -91,7 +93,9 @@ var NodeDebug = {
      * @param text
      */
     logBlue: function logBlue(text) {
-        console.log(chalk.blue(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.blue(text), text2);
     },
 
     /**
@@ -99,7 +103,9 @@ var NodeDebug = {
      * @param text
      */
     logGreen: function logGreen(text) {
-        console.log(chalk.green(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.green(text), text2);
     },
 
     /**
@@ -107,14 +113,18 @@ var NodeDebug = {
      * @param text
      */
     logGray: function logGray(text) {
-        console.log(chalk.gray(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.gray(text), text2);
     },
     /**
      * 在终端打出黄色 log
      * @param text
      */
     logYellow: function logYellow(text) {
-        console.log(chalk.yellow(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.yellow(text), text2);
     },
 
     /**
@@ -122,7 +132,9 @@ var NodeDebug = {
      * @param text
      */
     logLableRed: function logLableRed(text) {
-        console.log(chalk.black.bgRed(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.black.bgRed(text), text2);
     },
 
     /**
@@ -130,7 +142,9 @@ var NodeDebug = {
      * @param text
      */
     logLableYellow: function logLableYellow(text) {
-        console.log(chalk.black.bgYellow(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.black.bgYellow(text), text2);
     },
 
     /**
@@ -138,7 +152,9 @@ var NodeDebug = {
      * @param text
      */
     logLableCyan: function logLableCyan(text) {
-        console.log(chalk.black.bgCyan(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.black.bgCyan(text), text2);
     },
 
     /**
@@ -146,7 +162,9 @@ var NodeDebug = {
      * @param text
      */
     logLableWhite: function logLableWhite(text) {
-        console.log(chalk.black.bgCyan(text));
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+        console.log(chalk.black.bgWhite(text), text2);
     }
 };
 
