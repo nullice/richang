@@ -46,6 +46,63 @@ var NodeDebug = {
     logBlue: function (text) {
         console.log( chalk.blue(text))
     },
+
+    /**
+     * 在终端打出绿色 log
+     * @param text
+     */
+    logGreen: function (text) {
+        console.log( chalk.green(text))
+    },
+
+    /**
+     * 在终端打出灰色 log
+     * @param text
+     */
+    logGray: function (text) {
+        console.log( chalk.gray(text))
+    },
+    /**
+     * 在终端打出黄色 log
+     * @param text
+     */
+    logYellow: function (text) {
+        console.log( chalk.yellow(text))
+    },
+
+    /**
+     * 在终端打出红色标签 log
+     * @param text
+     */
+    logLableRed: function (text) {
+        console.log( chalk.black.bgRed( text))
+    },
+
+    /**
+     * 在终端打出黄色标签 log
+     * @param text
+     */
+    logLableYellow: function (text) {
+        console.log( chalk.black.bgYellow(text))
+    },
+
+
+    /**
+     * 在终端打出蓝绿色标签 log
+     * @param text
+     */
+    logLableCyan: function (text) {
+        console.log( chalk.black.bgCyan(text))
+    },
+
+    /**
+     * 在终端打出白色色标签 log
+     * @param text
+     */
+    logLableWhite: function (text) {
+        console.log( chalk.black.bgCyan(text))
+    },
 }
+
 
 export default  NodeDebug

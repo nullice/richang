@@ -1,5 +1,198 @@
 'use strict';
 
+/**
+ * Created by bgllj on 2017/03/10.
+ */
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · File ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+
+var fileFIL = {};
+var fs = require("fs");
+
+/**
+ * 去除一个字符串中不符合成为文件名的字符
+ * @param name
+ * @param fix 非法字符替代
+ * @returns {*}
+ */
+fileFIL.filterFileName = function (name, fix) {
+    if (name != undefined && name.length != undefined) {
+        var reg = /[\\/:*?"<>]/g;
+        name = name.replace(reg, fix || "");
+        return name;
+    } else {
+        return null;
+    }
+};
+
+/**
+ * Created by bgllj on 2018/03/9.
+ */
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//            · NodeDebug ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+var chalk = require("chalk");
+
+var NodeDebug = {
+
+    /**
+     * 在终端打出红色 log
+     * @param text
+     */
+    logRed: function logRed(text) {
+        console.log(chalk.red(text));
+    },
+
+    /**
+     * 在终端打出蓝色 log
+     * @param text
+     */
+    logBlue: function logBlue(text) {
+        console.log(chalk.blue(text));
+    },
+
+    /**
+     * 在终端打出绿色 log
+     * @param text
+     */
+    logGreen: function logGreen(text) {
+        console.log(chalk.green(text));
+    },
+
+    /**
+     * 在终端打出灰色 log
+     * @param text
+     */
+    logGray: function logGray(text) {
+        console.log(chalk.gray(text));
+    },
+    /**
+     * 在终端打出黄色 log
+     * @param text
+     */
+    logYellow: function logYellow(text) {
+        console.log(chalk.yellow(text));
+    },
+
+    /**
+     * 在终端打出红色标签 log
+     * @param text
+     */
+    logLableRed: function logLableRed(text) {
+        console.log(chalk.black.bgRed(text));
+    },
+
+    /**
+     * 在终端打出黄色标签 log
+     * @param text
+     */
+    logLableYellow: function logLableYellow(text) {
+        console.log(chalk.black.bgYellow(text));
+    },
+
+    /**
+     * 在终端打出蓝绿色标签 log
+     * @param text
+     */
+    logLableCyan: function logLableCyan(text) {
+        console.log(chalk.black.bgCyan(text));
+    },
+
+    /**
+     * 在终端打出白色色标签 log
+     * @param text
+     */
+    logLableWhite: function logLableWhite(text) {
+        console.log(chalk.black.bgCyan(text));
+    }
+};
+
+/**
+ * Created by bgllj on 2017/09/5.
+ */
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · Console ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+/**
+ * 控制台相关功能模块
+ * @type {{}}
+ */
+var consoleCON = {
+
+  /**
+   * 控制台颜色
+   * 用法：
+   *   console.log("%c test", CSS_POST)
+   */
+  CSS_POST: "background: rgb(44, 132, 226);border-radius: 2px 25px 25px 2px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
+  CSS_POST_RESULT: "background: rgb(51, 197, 138);border-radius: 25px 2px 2px 25px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;"
+
+};
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -258,6 +451,152 @@ var stringSTR = {
         return str.slice(0, start) + inStr + str.slice(start + Math.abs(offset));
     }
 
+};
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//               · Rect ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+
+var Rect = {};
+
+/**
+ * 坐标转换
+ * 把 {right, left, top, bottom} 转化为 {x, y , w, h}
+ * @param boundsInfo
+ * @returns {{x: null, y: null, w: null, h: null}}
+ */
+Rect.rltb2xywh = function (boundsInfo) {
+    var newBoundsInfo = { x: null, y: null, w: null, h: null };
+    newBoundsInfo.x = boundsInfo.left;
+    newBoundsInfo.y = boundsInfo.top;
+    newBoundsInfo.h = boundsInfo.bottom - boundsInfo.top;
+    newBoundsInfo.w = boundsInfo.right - boundsInfo.left;
+    return newBoundsInfo;
+};
+
+/**
+ * 坐标转换
+ * 把 {x, y , w, h} 转化为 {right, left, top, bottom}
+ * @param boundsInfo
+ * @returns {{left: null, right: null, top: null, bottom: null}}
+ */
+Rect.xywh2rltb = function (boundsInfo) {
+    var newBoundsInfo = { left: null, right: null, top: null, bottom: null };
+    newBoundsInfo.left = boundsInfo.x;
+    newBoundsInfo.top = boundsInfo.y;
+    newBoundsInfo.right = boundsInfo.x + boundsInfo.w;
+    newBoundsInfo.bottom = boundsInfo.y + boundsInfo.h;
+    return newBoundsInfo;
+};
+
+/**
+ * 给 xywh 添加内边距
+ *
+ * paddingXywh(xywh, 5)
+ * paddingXywh(xywh, [3,4,5,10])
+ *
+ * @param xywh
+ * @param padding
+ * @returns {{x: null, y: null, w: null, h: null}}
+ */
+Rect.paddingXywh = function (xywh, padding) {
+
+    var rltb = Rect.xywh2rltb(xywh);
+    if (padding.length && padding.length == 4) {
+        rltb.left -= padding[0];
+        rltb.top -= padding[1];
+        rltb.right += padding[2];
+        rltb.bottom += padding[3];
+
+        return Rect.rltb2xywh(rltb);
+    }
+
+    rltb.left -= padding;
+    rltb.top -= padding;
+    rltb.right += padding;
+    rltb.bottom += padding;
+    return Rect.rltb2xywh(rltb);
+};
+
+/**
+ * 计算多个 xywh 矩形的边界
+ *
+ * getXywhsRange([xywh])
+ * @param xywhs
+ * @returns {{x: null, y: null, w: null, h: null}}
+ */
+Rect.getXywhsRange = function (xywhs) {
+
+    var range = { left: null, right: null, top: null, bottom: null };
+    for (var i = 0; i < xywhs.length; i++) {
+        var rltb = Rect.xywh2rltb(xywhs[i]);
+
+        if (range.left == undefined) range.left = rltb.left;
+        if (range.top == undefined) range.top = rltb.top;
+        if (range.right == undefined) range.right = rltb.right;
+        if (range.bottom == undefined) range.bottom = rltb.bottom;
+
+        if (rltb.left < range.left) range.left = rltb.left;
+        if (rltb.top < range.top) range.top = rltb.top;
+        if (rltb.right > range.right) range.right = rltb.right;
+        if (rltb.bottom > range.bottom) range.bottom = rltb.bottom;
+    }
+
+    return Rect.rltb2xywh(range);
+};
+
+/**
+ * 整体移动多个 xywh 到某点，保留原 xywhs 相对位置。
+ * 会改变 xywhs 里每个 xywh 对象的 x，y 值。
+ * @param xywhs
+ * @param xy
+ */
+Rect.moveXywhs = function (xywhs, xy) {
+
+    var range = Rect.getXywhsRange(xywhs);
+    for (var i = 0; i < xywhs.length; i++) {
+        var xywh = xywhs[i];
+        xywh.x = xy.x + xywh.x - range.x;
+        xywh.y = xy.y + xywh.y - range.y;
+    }
+
+    return xywhs;
+};
+
+/**
+ * 2 个 xywh 是否有重叠
+ * @param xywhA
+ * @param xywhB
+ * @return {boolean}
+ */
+Rect.xywhHasCover = function (xywhA, xywhB) {
+
+    var rltbA = Rect.xywh2rltb(xywhA);
+    var rltbB = Rect.xywh2rltb(xywhB);
+
+    var hasOverlay = !!(rltbA.left <= rltbB.right && rltbA.right >= rltbB.left && rltbA.top <= rltbB.bottom && rltbA.bottom >= rltbB.top);
+
+    return hasOverlay;
 };
 
 /**
@@ -640,309 +979,16 @@ var arrayARR = {
 
 };
 
-//      ___                       ___           ___           ___           ___           ___
-//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
-//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
-//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
-//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
-// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
-// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
-//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
-//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
-//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
-//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
-//
-//
-//                日常
-//        +-------------------+
-//        |   Richang  JSEX   |
-//        +-------------------+
-//               · Rect ·
-//
-//       By nullice ui@nullice.com
-//             nullice.com
-//            license: MIT
-
-
-var Rect = {};
-
-/**
- * 坐标转换
- * 把 {right, left, top, bottom} 转化为 {x, y , w, h}
- * @param boundsInfo
- * @returns {{x: null, y: null, w: null, h: null}}
- */
-Rect.rltb2xywh = function (boundsInfo) {
-    var newBoundsInfo = { x: null, y: null, w: null, h: null };
-    newBoundsInfo.x = boundsInfo.left;
-    newBoundsInfo.y = boundsInfo.top;
-    newBoundsInfo.h = boundsInfo.bottom - boundsInfo.top;
-    newBoundsInfo.w = boundsInfo.right - boundsInfo.left;
-    return newBoundsInfo;
-};
-
-/**
- * 坐标转换
- * 把 {x, y , w, h} 转化为 {right, left, top, bottom}
- * @param boundsInfo
- * @returns {{left: null, right: null, top: null, bottom: null}}
- */
-Rect.xywh2rltb = function (boundsInfo) {
-    var newBoundsInfo = { left: null, right: null, top: null, bottom: null };
-    newBoundsInfo.left = boundsInfo.x;
-    newBoundsInfo.top = boundsInfo.y;
-    newBoundsInfo.right = boundsInfo.x + boundsInfo.w;
-    newBoundsInfo.bottom = boundsInfo.y + boundsInfo.h;
-    return newBoundsInfo;
-};
-
-/**
- * 给 xywh 添加内边距
- *
- * paddingXywh(xywh, 5)
- * paddingXywh(xywh, [3,4,5,10])
- *
- * @param xywh
- * @param padding
- * @returns {{x: null, y: null, w: null, h: null}}
- */
-Rect.paddingXywh = function (xywh, padding) {
-
-    var rltb = Rect.xywh2rltb(xywh);
-    if (padding.length && padding.length == 4) {
-        rltb.left -= padding[0];
-        rltb.top -= padding[1];
-        rltb.right += padding[2];
-        rltb.bottom += padding[3];
-
-        return Rect.rltb2xywh(rltb);
-    }
-
-    rltb.left -= padding;
-    rltb.top -= padding;
-    rltb.right += padding;
-    rltb.bottom += padding;
-    return Rect.rltb2xywh(rltb);
-};
-
-/**
- * 计算多个 xywh 矩形的边界
- *
- * getXywhsRange([xywh])
- * @param xywhs
- * @returns {{x: null, y: null, w: null, h: null}}
- */
-Rect.getXywhsRange = function (xywhs) {
-
-    var range = { left: null, right: null, top: null, bottom: null };
-    for (var i = 0; i < xywhs.length; i++) {
-        var rltb = Rect.xywh2rltb(xywhs[i]);
-
-        if (range.left == undefined) range.left = rltb.left;
-        if (range.top == undefined) range.top = rltb.top;
-        if (range.right == undefined) range.right = rltb.right;
-        if (range.bottom == undefined) range.bottom = rltb.bottom;
-
-        if (rltb.left < range.left) range.left = rltb.left;
-        if (rltb.top < range.top) range.top = rltb.top;
-        if (rltb.right > range.right) range.right = rltb.right;
-        if (rltb.bottom > range.bottom) range.bottom = rltb.bottom;
-    }
-
-    return Rect.rltb2xywh(range);
-};
-
-/**
- * 整体移动多个 xywh 到某点，保留原 xywhs 相对位置。
- * 会改变 xywhs 里每个 xywh 对象的 x，y 值。
- * @param xywhs
- * @param xy
- */
-Rect.moveXywhs = function (xywhs, xy) {
-
-    var range = Rect.getXywhsRange(xywhs);
-    for (var i = 0; i < xywhs.length; i++) {
-        var xywh = xywhs[i];
-        xywh.x = xy.x + xywh.x - range.x;
-        xywh.y = xy.y + xywh.y - range.y;
-    }
-
-    return xywhs;
-};
-
-/**
- * 2 个 xywh 是否有重叠
- * @param xywhA
- * @param xywhB
- * @return {boolean}
- */
-Rect.xywhHasCover = function (xywhA, xywhB) {
-
-    var rltbA = Rect.xywh2rltb(xywhA);
-    var rltbB = Rect.xywh2rltb(xywhB);
-
-    var hasOverlay = !!(rltbA.left <= rltbB.right && rltbA.right >= rltbB.left && rltbA.top <= rltbB.bottom && rltbA.bottom >= rltbB.top);
-
-    return hasOverlay;
-};
-
-/**
- * Created by bgllj on 2017/09/5.
- */
-
-//      ___                       ___           ___           ___           ___           ___
-//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
-//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
-//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
-//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
-// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
-// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
-//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
-//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
-//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
-//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
-//
-//
-//                日常
-//        +-------------------+
-//        |   Richang  JSEX   |
-//        +-------------------+
-//              · Console ·
-//
-//       By nullice ui@nullice.com
-//             nullice.com
-//            license: MIT
-
-/**
- * 控制台相关功能模块
- * @type {{}}
- */
-var consoleCON = {
-
-  /**
-   * 控制台颜色
-   * 用法：
-   *   console.log("%c test", CSS_POST)
-   */
-  CSS_POST: "background: rgb(44, 132, 226);border-radius: 2px 25px 25px 2px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
-  CSS_POST_RESULT: "background: rgb(51, 197, 138);border-radius: 25px 2px 2px 25px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;"
-
-};
-
-var Richang = {
+var RichangNode = {
     Object: objectOBJ,
     String: stringSTR,
     Type: typeTYP,
     Array: arrayARR,
     Rect: Rect,
-    Console: consoleCON
-
+    Console: consoleCON,
+    File: fileFIL,
+    NodeDebug: NodeDebug
     /**
-     * @export Richang
+     * @export RichangNode
      */
-};
-
-/**
- * Created by bgllj on 2017/03/10.
- */
-
-//      ___                       ___           ___           ___           ___           ___
-//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
-//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
-//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
-//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
-// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
-// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
-//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
-//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
-//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
-//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
-//
-//
-//                日常
-//        +-------------------+
-//        |   Richang  JSEX   |
-//        +-------------------+
-//              · File ·
-//
-//       By nullice ui@nullice.com
-//             nullice.com
-//            license: MIT
-
-
-var fileFIL = {};
-var fs = require("fs");
-
-/**
- * 去除一个字符串中不符合成为文件名的字符
- * @param name
- * @param fix 非法字符替代
- * @returns {*}
- */
-fileFIL.filterFileName = function (name, fix) {
-    if (name != undefined && name.length != undefined) {
-        var reg = /[\\/:*?"<>]/g;
-        name = name.replace(reg, fix || "");
-        return name;
-    } else {
-        return null;
-    }
-};
-
-/**
- * Created by bgllj on 2018/03/9.
- */
-
-//      ___                       ___           ___           ___           ___           ___
-//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
-//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
-//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
-//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
-// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
-// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
-//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
-//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
-//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
-//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
-//
-//
-//                日常
-//        +-------------------+
-//        |   Richang  JSEX   |
-//        +-------------------+
-//            · NodeDebug ·
-//
-//       By nullice ui@nullice.com
-//             nullice.com
-//            license: MIT
-
-var chalk = require("chalk");
-
-var NodeDebug = {
-
-    /**
-     * 在终端打出红色 log
-     * @param text
-     */
-    logRed: function logRed(text) {
-        console.log(chalk.red(text));
-    },
-
-    /**
-     * 在终端打出蓝色 log
-     * @param text
-     */
-    logBlue: function logBlue(text) {
-        console.log(chalk.blue(text));
-    }
-};
-
-var RichangNode = Object.assign(Richang, {
-  File: fileFIL,
-  NodeDebug: NodeDebug
-});
-
-/**
- * @export RichangNode
- */
-module.exports = RichangNode;
+};module.exports = RichangNode;
