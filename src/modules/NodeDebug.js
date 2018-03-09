@@ -1,6 +1,7 @@
 /**
- * Created by bgllj on 2017/09/5.
+ * Created by bgllj on 2018/03/9.
  */
+
 
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -19,27 +20,32 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//              · Console ·
+//            · NodeDebug ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
 //            license: MIT
 
-/**
- * 控制台相关功能模块
- * @type {{}}
- */
-var consoleCON = {
+var chalk = require("chalk")
+
+
+var NodeDebug = {
 
     /**
-     * 控制台颜色
-     * 用法：
-     *   console.log("%c test", CSS_POST)
+     * 在终端打出红色 log
+     * @param text
      */
-    CSS_POST:"background: rgb(44, 132, 226);border-radius: 2px 25px 25px 2px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
-    CSS_POST_RESULT:"background: rgb(51, 197, 138);border-radius: 25px 2px 2px 25px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
+    logRed: function (text) {
+        console.log( chalk.red(text))
+    },
 
-
+    /**
+     * 在终端打出蓝色 log
+     * @param text
+     */
+    logBlue: function (text) {
+        console.log( chalk.blue(text))
+    },
 }
 
-export  default  consoleCON
+export default  NodeDebug

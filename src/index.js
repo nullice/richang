@@ -1,17 +1,17 @@
+import _Object from "./modules/Object"
+import _String from "./modules/String"
+import _Type from "./modules/Type"
+import _Array from "./modules/Aarry"
+import _Rect from "./modules/Rect"
+import _Console from "./modules/Console.js"
 
-
-import Object from "./modules/Object"
-import String from "./modules/String"
-import Type from "./modules/Type"
-import Array from "./modules/Aarry"
-import Rect from "./modules/Rect"
-
-const Richang ={
-    Object,
-    String,
-    Type,
-    Array,
-    Rect,
+const Richang = {
+    Object: _Object,
+    String: _String,
+    Type: _Type,
+    Array: _Array,
+    Rect: _Rect,
+    Console: _Console,
 }
 
 /**
