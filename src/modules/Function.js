@@ -19,27 +19,37 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//             · Console ·
+//             · Function ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
 //            license: MIT
 
 /**
- * 控制台相关功能模块
- * @type {{}}
+ *
+ * @type {{getFunctionAagsName: functionFNC.getFunctionAagsName}}
  */
-var consoleCON = {
-
+var functionFNC = {
     /**
-     * 控制台颜色
-     * 用法：
-     *   console.log("%c test", CSS_POST)
+     * 获取一个函数的参数参数名.
+     *
+     * @param {Function} func - 函数.
+     * @returns {Array} arg - 函数的参数名列表.
      */
-    CSS_POST:"background: rgb(44, 132, 226);border-radius: 2px 25px 25px 2px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
-    CSS_POST_RESULT:"background: rgb(51, 197, 138);border-radius: 25px 2px 2px 25px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
-
+    getFunctionAagsName: function (func) {
+        // First match everything inside the function argument parens.
+        var args = func.toString().match(/function\s.*?\(([^)]*)\)/)[1]
+        // Split the arguments string into an array comma delimited.
+        return args.split(", ").map(function (arg) {
+            // Ensure no inline comments are parsed and trim the whitespace.
+            return arg.replace(/\/\*.*\*\//, "").trim()
+        }).filter(function (arg) {
+            // Ensure no undefineds are added.
+            return arg
+        })
+    },
 
 }
 
-export  default  consoleCON
+export default consoleCON
+

@@ -89,6 +89,15 @@ var NodeDebug = {
     },
 
     /**
+     * 把文本标记为红色
+     * @param text
+     * @returns {string | *}
+     */
+    cRed: function cRed(text) {
+        return chalk.red(text);
+    },
+
+    /**
      * 在终端打出蓝色 log
      * @param text
      */
@@ -96,6 +105,15 @@ var NodeDebug = {
         var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
 
         console.log(chalk.blue(text), text2);
+    },
+
+    /**
+     * 把文本标记为蓝色
+     * @param text
+     * @returns {*|string}
+     */
+    cBlue: function cBlue(text) {
+        return chalk.blue(text);
     },
 
     /**
@@ -109,6 +127,15 @@ var NodeDebug = {
     },
 
     /**
+     * 把文本标记为绿色
+     * @param text
+     * @returns {string | *}
+     */
+    cGreen: function cGreen(text) {
+        return chalk.green(text);
+    },
+
+    /**
      * 在终端打出灰色 log
      * @param text
      */
@@ -117,6 +144,16 @@ var NodeDebug = {
 
         console.log(chalk.gray(text), text2);
     },
+
+    /**
+     * 把文本标记为灰色
+     * @param text
+     * @returns {string | *}
+     */
+    cGray: function cGray(text) {
+        return chalk.gray(text);
+    },
+
     /**
      * 在终端打出黄色 log
      * @param text
@@ -125,6 +162,15 @@ var NodeDebug = {
         var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
 
         console.log(chalk.yellow(text), text2);
+    },
+
+    /**
+     * 把文本标记为黄色
+     * @param text
+     * @returns {string | *}
+     */
+    cYellow: function cYellow(text) {
+        return chalk.yellow(text);
     },
 
     /**
@@ -156,7 +202,15 @@ var NodeDebug = {
 
         console.log(chalk.black.bgCyan(text), text2);
     },
+    /**
+     * 在终端打出绿色标签 log
+     * @param text
+     */
+    logLableGreen: function logLableGreen(text) {
+        var text2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
 
+        console.log(chalk.black.bgGreen(text), text2);
+    },
     /**
      * 在终端打出白色色标签 log
      * @param text
