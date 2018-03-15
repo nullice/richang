@@ -78,5 +78,5 @@ var NodeTool = {
 
 }
 
-console.log(NodeTool.getSHA256("白色的空曲奇在发热"))
-// export default NodeTool
+// console.log(NodeTool.getSHA256("白色的空曲奇在发热"))
+export default NodeTool

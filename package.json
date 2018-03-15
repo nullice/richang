@@ -18,7 +18,9 @@
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "chalk": "^2.3.2",
-    "rmdir-cli": "^2.0.6"
+    "pngjs": "^3.3.2",
+    "rmdir-cli": "^2.0.6",
+    "stream-to-buffer": "^0.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
