@@ -156,6 +156,7 @@ var NodeDebug = {
     logLableWhite: function (text, text2 = "") {
         console.log(chalk.black.bgWhite(text), text2)
     },
+
 }
 
 export default NodeDebug
