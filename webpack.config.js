@@ -1,55 +1,18 @@
 const path = require("path")
 
-const nodeBuiltInList = [
-    "assert",
-    "async_hooks",
-    "buffer",
-    "child_process",
-    "cluster",
-    "console",
-    "constants",
-    "crypto",
-    "dgram",
-    "dns",
-    "domain",
-    "events",
-    "fs",
-    "http",
-    "http2",
-    "https",
-    "inspector",
-    "module",
-    "net",
-    "os",
-    "path",
-    "perf_hooks",
-    "process",
-    "punycode",
-    "querystring",
-    "readline",
-    "repl",
-    "stream",
-    "string_decoder",
-    "timers",
-    "tls",
-    "tty",
-    "url",
-    "util",
-    "v8",
-    "vm",
-    "zlib",
-]
-
 module.exports = [
     {
         entry: "./src/index.node.js",
         mode: "development",
-        target: "web",
+        target: "node",
         output: {
+            library: "Richang",
+            libraryTarget: "umd",
+            libraryExport: "default",
             filename: "RichangNode.bundle.js",
             path: path.resolve(__dirname, "dist"),
         },
-        externals: nodeBuiltInList,
+        // externals: nodeBuiltInList,
         module: {
             rules: [
                 {
@@ -57,6 +20,7 @@ module.exports = [
                     use: {
                         loader: "babel-loader",
                         options: {
+                            // plugins: ['transform-runtime'],
                             presets: [
                                 [
                                     "env", {
@@ -81,8 +45,11 @@ module.exports = [
         output: {
             filename: "RichangEs.bundle.js",
             path: path.resolve(__dirname, "dist"),
+            library: "Richang",
+            libraryTarget: "umd",
+            libraryExport: "default",
+            filename: "RichangEs.bundle.js",
         },
-        externals: nodeBuiltInList,
         module: {
             rules: [
                 {
@@ -90,7 +57,11 @@ module.exports = [
                     use: {
                         loader: "babel-loader",
                         options: {
-                            presets: ["env"],
+                            presets: [
+                                [
+                                    "env", {
+                                    "modules": false,
+                                }]],
                         },
                     },
 

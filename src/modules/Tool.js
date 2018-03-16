@@ -29,9 +29,9 @@ const getUUIDv4 = require("uuid/v4")
 var Tool = {
 
     /**
-     * 生成一个随机的 UUID -
+     * 生成一个随机的 UUID
      *
-     *
+     * genUUID_v4() => 'f64f2940-fae4-11e7-8c5f-ef356f279131'
      * @return {string}
      */
     genUUID_v4: function () {

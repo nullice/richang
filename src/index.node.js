@@ -10,7 +10,7 @@ import _Type from "./modules/Type"
 import _Array from "./modules/Aarry"
 import _Tool from "./modules/Tool.js"
 
-const RichangNode = {
+var RichangNode = {
     Object: _Object,
     String: _String,
     Type: _Type,
@@ -23,7 +23,16 @@ const RichangNode = {
     NodeTool,
     NodeImage,
 }
+
+// import Richang from "./index"
+
 /**
  * @export RichangNode
  */
-module.exports = RichangNode
+
+
+// var XXX = function app () {
+//     console.log("rc2001")
+// }
+
+export default RichangNode

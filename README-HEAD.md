@@ -20,6 +20,7 @@
 //        |   Richang  JSEX   |
 //        +-------------------+
 
+```
 
 
 ## Install
@@ -28,7 +29,8 @@
 npm i -S richang.js
 ```
 
-### 无 Node 模块
+
+### 不使用 Node 相关模块
 ```js
 // ES6 modules
 import Richang from "richang.js"
@@ -39,30 +41,33 @@ var Richang =  require ("richang.js")
 // 载入纯 ES6 modules
 import Richang from "richang.js/dist/RichangEs.js"
 
+// 捆绑了所有 node_modules 依赖
+import Richang from "richang.js/dist/RichangEs.bundle.js"
 ```
 
-### 有 Node 模块
+### 使用 Node 相关模块
 ```js
 // 依赖在 node_modules 中
 var Richang =  require ("richang.js/dist/RichangNode.js")
 
-
-// 捆绑所有依赖 without node_modules
+// 捆绑了所有 node_modules 依赖(bable 目标 Node 1.2 的模块, transform-runtime)
 var Richang =  require ("richang.js/dist/RichangNode.bundle.js")
-```
 
-### Node 直接使用
-
-
-
-
-
-// 载入捆绑了所有 Node 依赖（ node_modules 中的内容），并 bable 转换目标为 Node 1.2 的模块
-import Richang require ("richang.js/dist/RichangNode.bundle.js")
-
-
-
-
-
+// 如果项目没有使用 babel, 可能需要单独使用 babel-polyfill
+require("babel-polyfill")
+var Richang =  require ("richang.js/dist/RichangNode.bundle.js")
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
