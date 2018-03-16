@@ -21,12 +21,27 @@
 //             nullice.com
 //            license: MIT
 
-
-
-
+const getUUIDv4 = require("uuid/v4")
+/**
+ * 通用工具相关模块
+ * @type {{genUUID_v4: Tool.genUUID_v4}}
+ */
 var Tool = {
 
-
-
+    /**
+     * 生成一个随机的 UUID -
+     *
+     *
+     * @return {string}
+     */
+    genUUID_v4: function () {
+        return getUUIDv4()
+    },
 }
-export  default Tool;
+
+console.log()
+
+/**
+ * @exports Tool
+ */
+export default Tool

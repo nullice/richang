@@ -1,8 +1,4 @@
-/**
- * Created by bgllj on 2017/03/10.
- */
-
-
+//  Created by bgllj on 2017/03/10.
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
 //    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
@@ -26,28 +22,33 @@
 //             nullice.com
 //            license: MIT
 
-
-var fileFIL = {}
-var fs = require("fs")
-
+const fs = require("fs")
 
 /**
- * 去除一个字符串中不符合成为文件名的字符
- * @param name
- * @param fix 非法字符替代
- * @returns {*}
+ * 文件操作相关模块
+ * @type {{filterFileName: FileFIL.filterFileName}}
  */
-fileFIL.filterFileName = function (name, fix) {
-    if (name != undefined && name.length != undefined)
-    {
-        var reg = /[\\/:*?"<>]/g
-        name = name.replace(reg, fix || "")
-        return name
-    } else
-    {
-        return null
-    }
+var FileFIL = {
+
+    /**
+     * 去除一个字符串中不符合成为文件名的字符
+     * @param name
+     * @param fix 非法字符替代
+     * @returns {*}
+     */
+    filterFileName: function (name, fix) {
+        if (name != undefined && name.length != undefined)
+        {
+            var reg = /[\\/:*?"<>]/g
+            name = name.replace(reg, fix || "")
+            return name
+        } else
+        {
+            return null
+        }
+    },
 }
-
-
-export default fileFIL;
+/**
+ * @exports FileFIL
+ */
+export default FileFIL

@@ -21,7 +21,10 @@
 //             nullice.com
 //            license: MIT
 
-
+/**
+ * 矩形处理相关模块
+ * @type {{}}
+ */
 var Rect = {}
 
 /**

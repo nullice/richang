@@ -4,7 +4,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
-/**
+/*
  * Created by bgllj on 2016/10/26.
  */
 
@@ -33,9 +33,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /**
  * 对象操作相关操作
- * @type {{isEmptyObject: objectOBJ.isEmptyObject, objectCopyToObject: objectOBJ.objectCopyToObject, getObjectValueByNames: objectOBJ.getObjectValueByNames, setObjectValueByNames: objectOBJ.setObjectValueByNames}}
+ * @type {{isEmptyObject: ObjectOBJ.isEmptyObject, objectCopyToObject: ObjectOBJ.objectCopyToObject, getObjectValueByNames: ObjectOBJ.getObjectValueByNames, setObjectValueByNames: ObjectOBJ.setObjectValueByNames}}
  */
-var objectOBJ = {
+var ObjectOBJ = {
 
     /**
      * 对象是否为空
@@ -177,6 +177,9 @@ var objectOBJ = {
         }
     }
 
+    /**
+     * @exports ObjectOBJ
+     */
 };
 
 /**
@@ -206,12 +209,11 @@ var objectOBJ = {
 //             nullice.com
 //            license: MIT
 
-
 /**
  * 字符串相关功能模块
- * @type {{left: stringSTR.left, right: stringSTR.right, insert: stringSTR.insert}}
+ * @type {{left: StringSTR.left, right: StringSTR.right, insert: StringSTR.insert}}
  */
-var stringSTR = {
+var StringSTR = {
     /**
      * 取字符串左边
      * ****依赖 stringSTR.right()***
@@ -256,9 +258,12 @@ var stringSTR = {
         return str.slice(0, start) + inStr + str.slice(start + Math.abs(offset));
     }
 
+    /**
+     * @exports StringSTR
+     */
 };
 
-/**
+/*
  * Created by bgllj on 2016/12/11.
  */
 
@@ -285,8 +290,11 @@ var stringSTR = {
 //             nullice.com
 //            license: MIT
 
-
-var typeTYP = {
+/**
+ * 类型相关模块
+ * @type {{getType: TypeTYP.getType}}
+ */
+var TypeTYP = {
 
     /**
      * 得到指定值的数据类型。返回数据类型名称字符串，如 "boolean","object","string" 。
@@ -314,11 +322,13 @@ var typeTYP = {
         }
     }
 
+    /**
+     * @exports TypeTYP
+     */
 };
 
-/**
- * Created by bgllj on 2016/10/10.
- */
+// Created by bgllj on 2016/10/10.
+
 
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -346,12 +356,13 @@ var typeTYP = {
 
 /**
  * 数组相关功能模块
- * @type {{}}
+ * @type {{symDifference: AarryArr.symDifference, symDifference_ObjectArray: AarryArr.symDifference_ObjectArray, difference: AarryArr.difference, union: AarryArr.union, intersection: AarryArr.intersection, remove: AarryArr.remove, hasMember: AarryArr.hasMember, getByKey: AarryArr.getByKey, deleteByKey: AarryArr.deleteByKey, sortObjectArray: AarryArr.sortObjectArray}}
  */
-var arrayARR = {
+var AarryArr = {
 
     /**
-     * 对称差。（不支持对象数组）---
+     * 对称差。（不支持对象数组）
+     *
      * a:[1,2,3] b:[1,2,4]  a△b => [3,4]
      * @param {Array} a
      * @param {Array} b
@@ -552,7 +563,7 @@ var arrayARR = {
      * 对象数组查找
      * 从对象数组中提取出一个对象，根据对象的一个属性值。
      * arr: [{name:a},{name:b}] getByKey(arr,"name","b") => return {name:b}
-     * @param {[Object]} objectArr 对象数组
+     * @param {Object[]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空
@@ -578,7 +589,7 @@ var arrayARR = {
      * 对象数组删除
      * 从对象数组中找到出一个对象元素，并删除这个元素。
      * arr: [{name:a},{name:b}] deleteByKey(arr,"name","b") => arr: [{name:a}]
-     * @param {[Object]} objectArr 对象数组
+     * @param {Object[]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空
@@ -636,6 +647,9 @@ var arrayARR = {
         }
     }
 
+    /**
+     * @exports AarryArr
+     */
 };
 
 //      ___                       ___           ___           ___           ___           ___
@@ -661,7 +675,10 @@ var arrayARR = {
 //             nullice.com
 //            license: MIT
 
-
+/**
+ * 矩形处理相关模块
+ * @type {{}}
+ */
 var Rect = {};
 
 /**
@@ -784,9 +801,7 @@ Rect.xywhHasCover = function (xywhA, xywhB) {
     return hasOverlay;
 };
 
-/**
- * Created by bgllj on 2017/09/5.
- */
+// Created by bgllj on 2017/09/5.
 
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -805,7 +820,7 @@ Rect.xywhHasCover = function (xywhA, xywhB) {
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//              · Console ·
+//             · Console ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
@@ -813,27 +828,74 @@ Rect.xywhHasCover = function (xywhA, xywhB) {
 
 /**
  * 控制台相关功能模块
- * @type {{}}
+ * @type {{CSS_POST: string, CSS_POST_RESULT: string}}
  */
-var consoleCON = {
+var ConsoleCON = {
 
   /**
    * 控制台颜色
+   *
    * 用法：
    *   console.log("%c test", CSS_POST)
    */
   CSS_POST: "background: rgb(44, 132, 226);border-radius: 2px 25px 25px 2px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
   CSS_POST_RESULT: "background: rgb(51, 197, 138);border-radius: 25px 2px 2px 25px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;"
-
+  /**
+   * @exports ConsoleCON
+   */
 };
 
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · Tool ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+var getUUIDv4 = require("uuid/v4");
+/**
+ * 通用工具相关模块
+ * @type {{genUUID_v4: Tool.genUUID_v4}}
+ */
+var Tool = {
+
+  /**
+   * 生成一个随机的 UUID -
+   *
+   *
+   * @return {string}
+   */
+  genUUID_v4: function genUUID_v4() {
+    return getUUIDv4();
+  }
+};
+
+console.log();
+
 var Richang = {
-    Object: objectOBJ,
-    String: stringSTR,
-    Type: typeTYP,
-    Array: arrayARR,
+    Object: ObjectOBJ,
+    String: StringSTR,
+    Type: TypeTYP,
+    Array: AarryArr,
     Rect: Rect,
-    Console: consoleCON
+    Console: ConsoleCON,
+    Tool: Tool
 
     /**
      * @export Richang

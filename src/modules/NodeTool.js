@@ -1,4 +1,4 @@
-/**
+/*
  * Created by bgllj on 2018/03/9.
  */
 
@@ -27,14 +27,16 @@
 
 var nodeCrypto = require("crypto")
 /**
- *  Node 工具
- * @type {{}}
+ *  Node 通用工具
+ * @type {{getMD5: NodeTool.getMD5, getSHA256: NodeTool.getSHA256, arrayBuffertoBuffer: NodeTool.arrayBuffertoBuffer}}
  */
 var NodeTool = {
 
     /**
-     * 获取数据的 MD5 值 -
+     * 获取数据的 MD5 值
+     *
      * getMD5("白色的空曲奇在发热") => 3b81233f69cc6dbf83899148b888f0db
+     *
      * @param {buffer|string} inData 输入的数据
      * @returns {*|PromiseLike<ArrayBuffer>}
      */
@@ -46,8 +48,10 @@ var NodeTool = {
     },
 
     /**
-     * 获取数据的 getSHA256 值 -
+     * 获取数据的 getSHA256 值
+     *
      * getSHA256("白色的空曲奇在发热") => 5be124e39cb90f3144fba1a798ab3a8472c24a44c0f9efc305f76c1e34de848f
+     *
      * @param {buffer|string} inData 输入的数据
      * @returns {*|PromiseLike<ArrayBuffer>}
      */
@@ -57,7 +61,6 @@ var NodeTool = {
         var str = md5.digest("hex")
         return str
     },
-
 
 
 
@@ -79,4 +82,8 @@ var NodeTool = {
 }
 
 // console.log(NodeTool.getSHA256("白色的空曲奇在发热"))
+
+/**
+ * @exports NodeTool
+ */
 export default NodeTool

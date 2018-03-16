@@ -1,7 +1,4 @@
-/**
- * Created by bgllj on 2017/09/5.
- */
-
+// Created by bgllj on 2017/09/5.
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
 //    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
@@ -26,10 +23,10 @@
 //            license: MIT
 
 /**
- *
- * @type {{getFunctionAagsName: functionFNC.getFunctionAagsName}}
+ * 函数相关模块
+ * @type {{getFunctionAagsName: FunctionFNC.getFunctionAagsName}}
  */
-var functionFNC = {
+var FunctionFNC = {
     /**
      * 获取一个函数的参数参数名.
      *
@@ -50,6 +47,8 @@ var functionFNC = {
     },
 
 }
-
-export default consoleCON
+/**
+ * @exports FunctionFNC
+ */
+export default FunctionFNC
 

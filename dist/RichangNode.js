@@ -1,9 +1,6 @@
 'use strict';
 
-/**
- * Created by bgllj on 2017/03/10.
- */
-
+//  Created by bgllj on 2017/03/10.
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
 //    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
@@ -27,27 +24,35 @@
 //             nullice.com
 //            license: MIT
 
-
-var fileFIL = {};
 var fs = require("fs");
 
 /**
- * 去除一个字符串中不符合成为文件名的字符
- * @param name
- * @param fix 非法字符替代
- * @returns {*}
+ * 文件操作相关模块
+ * @type {{filterFileName: FileFIL.filterFileName}}
  */
-fileFIL.filterFileName = function (name, fix) {
-    if (name != undefined && name.length != undefined) {
-        var reg = /[\\/:*?"<>]/g;
-        name = name.replace(reg, fix || "");
-        return name;
-    } else {
-        return null;
+var FileFIL = {
+
+    /**
+     * 去除一个字符串中不符合成为文件名的字符
+     * @param name
+     * @param fix 非法字符替代
+     * @returns {*}
+     */
+    filterFileName: function filterFileName(name, fix) {
+        if (name != undefined && name.length != undefined) {
+            var reg = /[\\/:*?"<>]/g;
+            name = name.replace(reg, fix || "");
+            return name;
+        } else {
+            return null;
+        }
     }
+    /**
+     * @exports FileFIL
+     */
 };
 
-/**
+/*
  * Created by bgllj on 2018/03/9.
  */
 
@@ -76,6 +81,10 @@ fileFIL.filterFileName = function (name, fix) {
 
 var chalk = require("chalk");
 
+/**
+ * Node 调试相关模块
+ * @type {{logRed: NodeDebug.logRed, cRed: NodeDebug.cRed, logBlue: NodeDebug.logBlue, cBlue: NodeDebug.cBlue, logGreen: NodeDebug.logGreen, cGreen: NodeDebug.cGreen, logGray: NodeDebug.logGray, cGray: NodeDebug.cGray, logYellow: NodeDebug.logYellow, cYellow: NodeDebug.cYellow, logLableRed: NodeDebug.logLableRed, logLableYellow: NodeDebug.logLableYellow, logLableCyan: NodeDebug.logLableCyan, logLableGreen: NodeDebug.logLableGreen, logLableWhite: NodeDebug.logLableWhite}}
+ */
 var NodeDebug = {
 
     /**
@@ -220,10 +229,49 @@ var NodeDebug = {
 
         console.log(chalk.black.bgWhite(text), text2);
     }
+
+    /**
+     * @exports NodeDebug
+     */
 };
 
-/**
- * Created by bgllj on 2017/09/5.
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+var asyncToGenerator = function (fn) {
+  return function () {
+    var gen = fn.apply(this, arguments);
+    return new Promise(function (resolve, reject) {
+      function step(key, arg) {
+        try {
+          var info = gen[key](arg);
+          var value = info.value;
+        } catch (error) {
+          reject(error);
+          return;
+        }
+
+        if (info.done) {
+          resolve(value);
+        } else {
+          return Promise.resolve(value).then(function (value) {
+            step("next", value);
+          }, function (err) {
+            step("throw", err);
+          });
+        }
+      }
+
+      return step("next");
+    });
+  };
+};
+
+/*
+ * Created by bgllj on 2018/03/9.
  */
 
 //      ___                       ___           ___           ___           ___           ___
@@ -243,7 +291,219 @@ var NodeDebug = {
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//              · Console ·
+//            · NodeImage ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+var PNGJS = require("pngjs").PNG;
+var fs$1 = require("fs");
+var stream = require("stream");
+var streamToBuffer = require("stream-to-buffer");
+
+/**
+ *  Node 图片相关模块
+ * @type {{getPngData: NodeImage.getPngData, ARGB_BufferToPngFileBuffer: NodeImage.ARGB_BufferToPngFileBuffer}}
+ */
+var NodeImage = {
+
+    /**
+     * 获取 PNG 图片的像素数据 Buffer
+     * @param data
+     * @returns {Promise<Buffer>}
+     */
+    getPngData: function () {
+        var _ref = asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(data) {
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            return _context.abrupt("return", new Promise(function (resolve, reject) {
+                                if (stream.PassThrough) {
+                                    var bufferStream = new stream.PassThrough();
+                                    bufferStream.end(data);
+                                    bufferStream.pipe(new PNGJS({
+                                        filterType: 4
+                                    })).on("parsed", function () {
+                                        resolve(this.data);
+                                    });
+                                } else {
+                                    new PNGJS({ filterType: 4 }).parse(data, function (error, png) {
+                                        if (error) {
+                                            reject("err pngParseAsync:", error);
+                                        }
+                                        resolve(png.data);
+                                    });
+                                }
+                            }));
+
+                        case 1:
+                        case "end":
+                            return _context.stop();
+                    }
+                }
+            }, _callee, this);
+        }));
+
+        function getPngData(_x) {
+            return _ref.apply(this, arguments);
+        }
+
+        return getPngData;
+    }(),
+
+    /**
+     * 把 ARGB 格式的像素 buffer 转化为可直接写入文件的 PNG buffer
+     * @param {buffer} argbBuffer - argb
+     * @param {number} channelCount - 通道数量 1-4
+     * @param {object} wh - 高宽 {w, h}
+     * @returns {Promise<buufer>}
+     * @constructor
+     */
+    ARGB_BufferToPngFileBuffer: function ARGB_BufferToPngFileBuffer(argbBuffer, channelCount, wh) {
+
+        return new Promise(function (resove, reject) {
+
+            var len = argbBuffer.length;
+            var channels = channelCount || 4;
+
+            // convert from ARGB to RGBA, we do this every 4 pixel values (channelCount)
+            for (var i = 0; i < len; i += channels) {
+                var a = argbBuffer[i];
+                argbBuffer[i] = argbBuffer[i + 1];
+                argbBuffer[i + 1] = argbBuffer[i + 2];
+                argbBuffer[i + 2] = argbBuffer[i + 3];
+                argbBuffer[i + 3] = a;
+            }
+
+            // init a new PNG
+            var png = new PNGJS({
+                width: wh.w,
+                height: wh.h
+            });
+
+            // set pixel data
+            png.data = argbBuffer;
+            streamToBuffer(png.pack(), function (err, buffer) {
+                if (err) {
+                    reject(err);
+                }
+                resove(buffer);
+            });
+        });
+    }
+
+    /**
+     * @exports NodeImage
+     */
+};
+
+/*
+ * Created by bgllj on 2018/03/9.
+ */
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//            · NodeTool ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+var nodeCrypto = require("crypto");
+/**
+ *  Node 通用工具
+ * @type {{getMD5: NodeTool.getMD5, getSHA256: NodeTool.getSHA256, arrayBuffertoBuffer: NodeTool.arrayBuffertoBuffer}}
+ */
+var NodeTool = {
+
+    /**
+     * 获取数据的 MD5 值
+     *
+     * getMD5("白色的空曲奇在发热") => 3b81233f69cc6dbf83899148b888f0db
+     *
+     * @param {buffer|string} inData 输入的数据
+     * @returns {*|PromiseLike<ArrayBuffer>}
+     */
+    getMD5: function getMD5(inData) {
+        var md5 = nodeCrypto.createHash("md5");
+        md5.update(inData);
+        var str = md5.digest("hex");
+        return str;
+    },
+
+    /**
+     * 获取数据的 getSHA256 值
+     *
+     * getSHA256("白色的空曲奇在发热") => 5be124e39cb90f3144fba1a798ab3a8472c24a44c0f9efc305f76c1e34de848f
+     *
+     * @param {buffer|string} inData 输入的数据
+     * @returns {*|PromiseLike<ArrayBuffer>}
+     */
+    getSHA256: function getSHA256(inData) {
+        var md5 = nodeCrypto.createHash("sha256");
+        md5.update(inData);
+        var str = md5.digest("hex");
+        return str;
+    },
+
+    /**
+     *  ArrayBuffer to Buffer
+     * @param {arrayBuffer} arrayBuffer
+     * @returns {Buffer}
+     */
+    arrayBuffertoBuffer: function arrayBuffertoBuffer(arrayBuffer) {
+        var buf = new Buffer(arrayBuffer.byteLength);
+        var view = new Uint8Array(arrayBuffer);
+        for (var i = 0; i < buf.length; ++i) {
+            buf[i] = view[i];
+        }
+        return buf;
+    }
+
+    // console.log(NodeTool.getSHA256("白色的空曲奇在发热"))
+
+    /**
+     * @exports NodeTool
+     */
+};
+
+// Created by bgllj on 2017/09/5.
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//             · Console ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
@@ -251,27 +511,24 @@ var NodeDebug = {
 
 /**
  * 控制台相关功能模块
- * @type {{}}
+ * @type {{CSS_POST: string, CSS_POST_RESULT: string}}
  */
-var consoleCON = {
+var ConsoleCON = {
 
   /**
    * 控制台颜色
+   *
    * 用法：
    *   console.log("%c test", CSS_POST)
    */
   CSS_POST: "background: rgb(44, 132, 226);border-radius: 2px 25px 25px 2px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;",
   CSS_POST_RESULT: "background: rgb(51, 197, 138);border-radius: 25px 2px 2px 25px;padding: 2px 8px;color: rgba(255, 255, 255, 1);display: inline-block;min-width: 100px;"
-
+  /**
+   * @exports ConsoleCON
+   */
 };
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-/**
+/*
  * Created by bgllj on 2016/10/26.
  */
 
@@ -300,9 +557,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /**
  * 对象操作相关操作
- * @type {{isEmptyObject: objectOBJ.isEmptyObject, objectCopyToObject: objectOBJ.objectCopyToObject, getObjectValueByNames: objectOBJ.getObjectValueByNames, setObjectValueByNames: objectOBJ.setObjectValueByNames}}
+ * @type {{isEmptyObject: ObjectOBJ.isEmptyObject, objectCopyToObject: ObjectOBJ.objectCopyToObject, getObjectValueByNames: ObjectOBJ.getObjectValueByNames, setObjectValueByNames: ObjectOBJ.setObjectValueByNames}}
  */
-var objectOBJ = {
+var ObjectOBJ = {
 
     /**
      * 对象是否为空
@@ -444,6 +701,9 @@ var objectOBJ = {
         }
     }
 
+    /**
+     * @exports ObjectOBJ
+     */
 };
 
 /**
@@ -473,12 +733,11 @@ var objectOBJ = {
 //             nullice.com
 //            license: MIT
 
-
 /**
  * 字符串相关功能模块
- * @type {{left: stringSTR.left, right: stringSTR.right, insert: stringSTR.insert}}
+ * @type {{left: StringSTR.left, right: StringSTR.right, insert: StringSTR.insert}}
  */
-var stringSTR = {
+var StringSTR = {
     /**
      * 取字符串左边
      * ****依赖 stringSTR.right()***
@@ -523,6 +782,9 @@ var stringSTR = {
         return str.slice(0, start) + inStr + str.slice(start + Math.abs(offset));
     }
 
+    /**
+     * @exports StringSTR
+     */
 };
 
 //      ___                       ___           ___           ___           ___           ___
@@ -548,7 +810,10 @@ var stringSTR = {
 //             nullice.com
 //            license: MIT
 
-
+/**
+ * 矩形处理相关模块
+ * @type {{}}
+ */
 var Rect = {};
 
 /**
@@ -671,7 +936,7 @@ Rect.xywhHasCover = function (xywhA, xywhB) {
     return hasOverlay;
 };
 
-/**
+/*
  * Created by bgllj on 2016/12/11.
  */
 
@@ -698,8 +963,11 @@ Rect.xywhHasCover = function (xywhA, xywhB) {
 //             nullice.com
 //            license: MIT
 
-
-var typeTYP = {
+/**
+ * 类型相关模块
+ * @type {{getType: TypeTYP.getType}}
+ */
+var TypeTYP = {
 
     /**
      * 得到指定值的数据类型。返回数据类型名称字符串，如 "boolean","object","string" 。
@@ -727,11 +995,13 @@ var typeTYP = {
         }
     }
 
+    /**
+     * @exports TypeTYP
+     */
 };
 
-/**
- * Created by bgllj on 2016/10/10.
- */
+// Created by bgllj on 2016/10/10.
+
 
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -759,12 +1029,13 @@ var typeTYP = {
 
 /**
  * 数组相关功能模块
- * @type {{}}
+ * @type {{symDifference: AarryArr.symDifference, symDifference_ObjectArray: AarryArr.symDifference_ObjectArray, difference: AarryArr.difference, union: AarryArr.union, intersection: AarryArr.intersection, remove: AarryArr.remove, hasMember: AarryArr.hasMember, getByKey: AarryArr.getByKey, deleteByKey: AarryArr.deleteByKey, sortObjectArray: AarryArr.sortObjectArray}}
  */
-var arrayARR = {
+var AarryArr = {
 
     /**
-     * 对称差。（不支持对象数组）---
+     * 对称差。（不支持对象数组）
+     *
      * a:[1,2,3] b:[1,2,4]  a△b => [3,4]
      * @param {Array} a
      * @param {Array} b
@@ -965,7 +1236,7 @@ var arrayARR = {
      * 对象数组查找
      * 从对象数组中提取出一个对象，根据对象的一个属性值。
      * arr: [{name:a},{name:b}] getByKey(arr,"name","b") => return {name:b}
-     * @param {[Object]} objectArr 对象数组
+     * @param {Object[]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空
@@ -991,7 +1262,7 @@ var arrayARR = {
      * 对象数组删除
      * 从对象数组中找到出一个对象元素，并删除这个元素。
      * arr: [{name:a},{name:b}] deleteByKey(arr,"name","b") => arr: [{name:a}]
-     * @param {[Object]} objectArr 对象数组
+     * @param {Object[]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空
@@ -1049,17 +1320,66 @@ var arrayARR = {
         }
     }
 
+    /**
+     * @exports AarryArr
+     */
 };
 
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · Tool ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+var getUUIDv4 = require("uuid/v4");
+/**
+ * 通用工具相关模块
+ * @type {{genUUID_v4: Tool.genUUID_v4}}
+ */
+var Tool = {
+
+  /**
+   * 生成一个随机的 UUID -
+   *
+   *
+   * @return {string}
+   */
+  genUUID_v4: function genUUID_v4() {
+    return getUUIDv4();
+  }
+};
+
+console.log();
+
 var RichangNode = {
-    Object: objectOBJ,
-    String: stringSTR,
-    Type: typeTYP,
-    Array: arrayARR,
+    Object: ObjectOBJ,
+    String: StringSTR,
+    Type: TypeTYP,
+    Array: AarryArr,
     Rect: Rect,
-    Console: consoleCON,
-    File: fileFIL,
-    NodeDebug: NodeDebug
+    Console: ConsoleCON,
+    Tool: Tool,
+    NodeFile: FileFIL,
+    NodeDebug: NodeDebug,
+    NodeTool: NodeTool,
+    NodeImage: NodeImage
     /**
      * @export RichangNode
      */

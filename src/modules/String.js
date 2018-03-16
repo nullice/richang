@@ -2,8 +2,6 @@
  * Created by bgllj on 2016/9/8.
  */
 
-
-
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
 //    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
@@ -27,12 +25,11 @@
 //             nullice.com
 //            license: MIT
 
-
 /**
  * 字符串相关功能模块
- * @type {{left: stringSTR.left, right: stringSTR.right, insert: stringSTR.insert}}
+ * @type {{left: StringSTR.left, right: StringSTR.right, insert: StringSTR.insert}}
  */
-var stringSTR = {
+var StringSTR = {
     /**
      * 取字符串左边
      * ****依赖 stringSTR.right()***
@@ -40,16 +37,15 @@ var stringSTR = {
      * @param {Number} offset - 偏移值
      * @returns {*}
      */
-    left: function (str, offset)
-    {
+    left: function (str, offset) {
 
         if (offset >= 0)
         {
-            var s = str.substr(0, offset);
-            return s;
+            var s = str.substr(0, offset)
+            return s
         } else
         {
-            return this.right(str, -offset);
+            return this.right(str, -offset)
         }
     },
     /**
@@ -59,15 +55,14 @@ var stringSTR = {
      * @param {Number} offset 偏移值
      * @returns {*}
      */
-    right: function (str, offset)
-    {
+    right: function (str, offset) {
         if (offset >= 0)
         {
-            var s = str.substr(str.length - offset, offset);
-            return s;
+            var s = str.substr(str.length - offset, offset)
+            return s
         } else
         {
-            return this.left(str, -offset);
+            return this.left(str, -offset)
         }
     },
 
@@ -79,13 +74,13 @@ var stringSTR = {
      * @param {String} inStr 要插入的文本
      * @returns {*}
      */
-    insert: function (str, start, offset, inStr)
-    {
-        return str.slice(0, start) + inStr + str.slice(start + Math.abs(offset));
+    insert: function (str, start, offset, inStr) {
+        return str.slice(0, start) + inStr + str.slice(start + Math.abs(offset))
     },
-
 
 }
 
-
-export  default stringSTR;
+/**
+ * @exports StringSTR
+ */
+export default StringSTR

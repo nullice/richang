@@ -1,15 +1,17 @@
 {
   "name": "richang.js",
-  "version": "3.0.35",
+  "version": "3.4.2",
   "description": "richang js code.",
   "main": "dist/Richang.js",
   "scripts": {
     "test": "jest",
+    "build-and-publish": "npm run build  && npm run build-min && npm run build-node-bundle && npm run doc && npm run publish",
     "publish": "npm publish --registry=https://registry.npmjs.org/ --disturl=/",
     "watch": "rollup -c -w",
     "build": "rollup -c",
     "build-min": "rollup -c rollup-min.config.js",
-    "doc": "jsdoc2md dist/RichangEs.js > doc/RichangEs.md && type README-HEAD.MD > README.MD && type doc\\RichangEs.md >> README.MD"
+    "build-node-bundle": "webpack --verbose",
+    "doc": "jsdoc2md dist/RichangNode.js > doc/RichangNode.md && type README-HEAD.MD > README.MD && type doc\\RichangNode.md >> README.MD"
   },
   "author": "nullice",
   "license": "MIT",
@@ -23,9 +25,6 @@
     "stream-to-buffer": "^0.1.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-jest": "^22.4.1",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
@@ -35,7 +34,14 @@
     "rollup": "^0.56.5",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-node-resolve": "^3.2.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.1",
+    "babel-loader": "^7.1.4",
     "rollup-plugin-uglify": "^3.0.0",
-    "tern": "^0.21.0"
+    "tern": "^0.21.0",
+    "uuid": "^3.2.1",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12"
   }
 }

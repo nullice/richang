@@ -1,4 +1,4 @@
-/**
+/*
  * Created by bgllj on 2018/03/9.
  */
 
@@ -26,8 +26,12 @@
 //             nullice.com
 //            license: MIT
 
-var chalk = require("chalk")
+const chalk = require("chalk")
 
+/**
+ * Node 调试相关模块
+ * @type {{logRed: NodeDebug.logRed, cRed: NodeDebug.cRed, logBlue: NodeDebug.logBlue, cBlue: NodeDebug.cBlue, logGreen: NodeDebug.logGreen, cGreen: NodeDebug.cGreen, logGray: NodeDebug.logGray, cGray: NodeDebug.cGray, logYellow: NodeDebug.logYellow, cYellow: NodeDebug.cYellow, logLableRed: NodeDebug.logLableRed, logLableYellow: NodeDebug.logLableYellow, logLableCyan: NodeDebug.logLableCyan, logLableGreen: NodeDebug.logLableGreen, logLableWhite: NodeDebug.logLableWhite}}
+ */
 var NodeDebug = {
 
     /**
@@ -159,4 +163,7 @@ var NodeDebug = {
 
 }
 
+/**
+ * @exports NodeDebug
+ */
 export default NodeDebug

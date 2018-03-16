@@ -1,4 +1,4 @@
-/**
+/*
  * Created by bgllj on 2016/10/26.
  */
 
@@ -27,9 +27,9 @@
 
 /**
  * 对象操作相关操作
- * @type {{isEmptyObject: objectOBJ.isEmptyObject, objectCopyToObject: objectOBJ.objectCopyToObject, getObjectValueByNames: objectOBJ.getObjectValueByNames, setObjectValueByNames: objectOBJ.setObjectValueByNames}}
+ * @type {{isEmptyObject: ObjectOBJ.isEmptyObject, objectCopyToObject: ObjectOBJ.objectCopyToObject, getObjectValueByNames: ObjectOBJ.getObjectValueByNames, setObjectValueByNames: ObjectOBJ.setObjectValueByNames}}
  */
-var objectOBJ = {
+var ObjectOBJ = {
 
 
     /**
@@ -221,5 +221,7 @@ var objectOBJ = {
 
 }
 
-
-export default objectOBJ
+/**
+ * @exports ObjectOBJ
+ */
+export default ObjectOBJ

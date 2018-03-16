@@ -1,6 +1,4 @@
-/**
- * Created by bgllj on 2016/10/10.
- */
+// Created by bgllj on 2016/10/10.
 
 
 //      ___                       ___           ___           ___           ___           ___
@@ -29,12 +27,13 @@
 
 /**
  * 数组相关功能模块
- * @type {{}}
+ * @type {{symDifference: AarryArr.symDifference, symDifference_ObjectArray: AarryArr.symDifference_ObjectArray, difference: AarryArr.difference, union: AarryArr.union, intersection: AarryArr.intersection, remove: AarryArr.remove, hasMember: AarryArr.hasMember, getByKey: AarryArr.getByKey, deleteByKey: AarryArr.deleteByKey, sortObjectArray: AarryArr.sortObjectArray}}
  */
-var arrayARR = {
+var AarryArr = {
 
     /**
-     * 对称差。（不支持对象数组）---
+     * 对称差。（不支持对象数组）
+     *
      * a:[1,2,3] b:[1,2,4]  a△b => [3,4]
      * @param {Array} a
      * @param {Array} b
@@ -293,7 +292,7 @@ var arrayARR = {
      * 对象数组查找
      * 从对象数组中提取出一个对象，根据对象的一个属性值。
      * arr: [{name:a},{name:b}] getByKey(arr,"name","b") => return {name:b}
-     * @param {[Object]} objectArr 对象数组
+     * @param {Object[]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空
@@ -328,7 +327,7 @@ var arrayARR = {
      * 对象数组删除
      * 从对象数组中找到出一个对象元素，并删除这个元素。
      * arr: [{name:a},{name:b}] deleteByKey(arr,"name","b") => arr: [{name:a}]
-     * @param {[Object]} objectArr 对象数组
+     * @param {Object[]} objectArr 对象数组
      * @param {String} key 关键属性
      * @param keyValue 欲提取的关键属性值
      * @param equalRule 值比较函数，可空
@@ -414,5 +413,7 @@ var arrayARR = {
 
 }
 
-
-export default arrayARR;
+/**
+ * @exports AarryArr
+ */
+export default AarryArr;

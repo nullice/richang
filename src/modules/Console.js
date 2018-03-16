@@ -1,6 +1,4 @@
-/**
- * Created by bgllj on 2017/09/5.
- */
+// Created by bgllj on 2017/09/5.
 
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -27,12 +25,13 @@
 
 /**
  * 控制台相关功能模块
- * @type {{}}
+ * @type {{CSS_POST: string, CSS_POST_RESULT: string}}
  */
-var consoleCON = {
+var ConsoleCON = {
 
     /**
      * 控制台颜色
+     *
      * 用法：
      *   console.log("%c test", CSS_POST)
      */
@@ -41,5 +40,7 @@ var consoleCON = {
 
 
 }
-
-export  default  consoleCON
+/**
+ * @exports ConsoleCON
+ */
+export  default  ConsoleCON

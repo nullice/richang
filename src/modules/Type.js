@@ -1,7 +1,6 @@
-/**
+/*
  * Created by bgllj on 2016/12/11.
  */
-
 
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -26,16 +25,18 @@
 //             nullice.com
 //            license: MIT
 
-
-var typeTYP = {
+/**
+ * 类型相关模块
+ * @type {{getType: TypeTYP.getType}}
+ */
+var TypeTYP = {
 
     /**
      * 得到指定值的数据类型。返回数据类型名称字符串，如 "boolean","object","string" 。
      * @param value
      * @returns {*}
      */
-    getType: function (value)
-    {
+    getType: function (value) {
         var typeList = {
             "[object Boolean]": "boolean",
             "[object Number]": "number",
@@ -45,24 +46,26 @@ var typeTYP = {
             "[object Date]": "date",
             "[object RegExp]": "regexp",
             "[object Object]": "object",
-            "[object Error]": "error"
+            "[object Error]": "error",
         }
         if (value === null)
         {
-            return "null";
+            return "null"
         }
         else if (typeof value === "undefined")
         {
-            return "undefined";
+            return "undefined"
 
         } else
         {
-            return typeof value === "object" || typeof value === "function" ?
-            typeList[typeList.toString.call(value)] || "object" :
-                typeof value;
+            return typeof value === "object" || typeof value === "function" ? typeList[typeList.toString.call(value)] || "object" : typeof value
         }
 
-    }
+    },
 
 }
-export  default typeTYP;
+
+/**
+ * @exports TypeTYP
+ */
+export default TypeTYP
