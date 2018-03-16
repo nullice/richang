@@ -5,3 +5,4 @@
 .gitattributes
 .idea/*
 node_modules
+.idea/**
