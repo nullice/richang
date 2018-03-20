@@ -1,5 +1,5 @@
 const path = require("path")
-
+require("./build-fix.js")
 module.exports = [
     {
         entry: "./src/index.node.js",

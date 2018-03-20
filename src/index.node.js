@@ -9,6 +9,7 @@ import _Rect from "./modules/Rect"
 import _Type from "./modules/Type"
 import _Array from "./modules/Aarry"
 import _Tool from "./modules/Tool.js"
+import _Calc from "./modules/Calc.js"
 
 var RichangNode = {
     Object: _Object,
@@ -18,6 +19,7 @@ var RichangNode = {
     Rect: _Rect,
     Console: _Console,
     Tool: _Tool,
+    Calc:_Calc,
     NodeFile,
     NodeDebug,
     NodeTool,
