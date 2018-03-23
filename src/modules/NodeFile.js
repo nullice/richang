@@ -63,6 +63,7 @@ var NodeFile = {
 
         var tempDirManager = {
             tempDir: tempDir,
+            mianTempDir:mianTempDir,
             timestamp: timestamp,
             /**
              * 销毁临时目录
