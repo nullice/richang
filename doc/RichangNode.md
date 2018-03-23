@@ -178,7 +178,7 @@
 <a name="NodeFile.getTempDirManager"></a>
 
 ### NodeFile.getTempDirManager(name) ⇒ <code>\*</code>
-生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹可以用得到的 TempDirManager，申请临时文件名，和销毁临时文件夹var tepmDM = getTempDirManager("siphonink")tepmDM.genTempFilePath() - 申请一个临时文件路径tepmDM.destroy() - 销毁临时目录
+生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹，和一个实例临时文件夹可以用得到的 TempDirManager，申请临时文件名，和销毁临时文件夹var tepmDM = getTempDirManager("siphonink")tepmDM.genTempFilePath(subDir) - 申请一个临时文件路径,可用提供一个子文件夹名tepmDM.destroy() - 销毁临时目录tepmDM.clear(day) - 清除 day 天前的实例临时文件夹
 
 **Kind**: static method of [<code>NodeFile</code>](#NodeFile)  
 

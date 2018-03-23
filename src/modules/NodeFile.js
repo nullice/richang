@@ -38,12 +38,13 @@ var moment = require("moment")
 var NodeFile = {
 
     /**
-     * 生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹
+     * 生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹，和一个实例临时文件夹
      * 可以用得到的 TempDirManager，申请临时文件名，和销毁临时文件夹
      *
      * var tepmDM = getTempDirManager("siphonink")
-     * tepmDM.genTempFilePath() - 申请一个临时文件路径
+     * tepmDM.genTempFilePath(subDir) - 申请一个临时文件路径,可用提供一个子文件夹名
      * tepmDM.destroy() - 销毁临时目录
+     * tepmDM.clear(day) - 清除 day 天前的实例临时文件夹
      *
      *
      * @param name
@@ -77,15 +78,15 @@ var NodeFile = {
              * 清除过时的临时实例文件夹
              * @param day 清除这个天数（包括）之前的文件夹
              */
-            clean (day = 0)
+            clear (day = 0)
             {
                 var now = new Date()
                 var dirs = fs.readdirSync(this.mianTempDir)
                 for (var i = 0; i < dirs.length; i++)
                 {
-                    if (dirs != timestamp) // 不清除
+                    var itemDir = dirs[i]
+                    if (itemDir != timestamp) // 不清除
                     {
-                        var itemDir = dirs[i]
                         var itemPath = path.join(this.mianTempDir, itemDir)
                         var stat = fs.statSync(itemPath)
                         var diffDay = moment(now).diff(stat.mtime, "days")
