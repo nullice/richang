@@ -1,5 +1,222 @@
 'use strict';
 
+// Created by nullice on 2018/03/21 - 11:30
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · Time ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+
+var moment = require('moment');
+/**
+ * 时间日期操作相关模块
+ * @type {{genTimestamp: Time.genTimestamp, parseTimestamp: Time.parseTimestamp}}
+ */
+var Time = {
+
+    /**
+     * 生成时间戳（当前时间的 32 进制）
+     *
+     * @param {{boolean}} [raw] - 获取原始格式，比如 1521602474428
+     */
+    genTimestamp: function genTimestamp(raw) {
+        var timeInt = new Date().getTime();
+        if (raw) {
+            return timeInt;
+        } else {
+            return timeInt.toString(36).toUpperCase();
+        }
+    },
+
+    /**
+     * 解析一个时间戳返回 date
+     * @param timestamp
+     * @returns {Date}
+     */
+    parseTimestamp: function parseTimestamp(timestamp) {
+
+        if (Number.isInteger(+timestamp)) {
+
+            return new Date(+timestamp);
+        } else {
+            return new Date(parseInt(timestamp, 36));
+        }
+    }
+
+    /**
+     * @exports Time
+     */
+};
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · Tool ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+var uuidv4 = require("uuid/v4");
+var uuidv5 = require("uuid/v5");
+var isUUID = require("is-uuid");
+var sha1 = require("uuid/lib/sha1-browser.js");
+
+/**
+ * 通用工具相关模块
+ * @type {{genUUID_v4: Tool.genUUID_v4, genUUID_v5: Tool.genUUID_v5, genSHA1: Tool.genSHA1, formatUUID: Tool.formatUUID, checkUUID: Tool.checkUUID, roll: Tool.roll, rollString: Tool.rollString}}
+ */
+var Tool = {
+
+    /**
+     * 生成一个随机的 UUID
+     *
+     * genUUID_v4() => 'f8061fba-842b-4cc5-9872-9348e2e06916'
+     * @return {string}
+     */
+    genUUID_v4: function genUUID_v4() {
+        return uuidv4();
+    },
+
+    /**
+     * 根据一个名字和命名空间生成一个 UUID，这个 UUID 与名称+命名空间有一一对应，不随机
+     * （与标准不同，这里命名空间可不用 UUID 而是任何字符串，我们会用默认 UUID 和给命名空间生成一个 UUID）
+     *
+     *genUUID_v5("Gasoft_Mobiusbug.exe","BGLL") => '2cb20c42-026f-5d56-b33f-008e354ac8d3'
+     * @param  {string} name - 名称
+     * @param {string} [namespace] - 命名空间,
+     * @returns {*}
+     */
+    genUUID_v5: function genUUID_v5(name) {
+        var namespace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "f8061fba-842b-4cc5-9872-9348e2e06916";
+
+
+        // 如果命名空间不是 UUID ，给定默认 UUID 生成一个命名空间的 UUID
+
+        if (namespace.length !== 36) {
+            var namespace = uuidv5(namespace, "f8061fba-842b-4cc5-9872-9348e2e06916");
+        }
+
+        return uuidv5(name, namespace);
+    },
+
+    /**
+     * 用 sha1 生成一个字符串
+     *
+     * genSHA1("nullice") => 51918a176c8e2b0af211a94c5478c58a54f239cd
+     * @param {string} str
+     * @returns {*}
+     */
+    genSHA1: function genSHA1(str) {
+
+        function byteArraytoHexString(byteArray) {
+            return Array.from(byteArray, function (byte) {
+                return ("0" + (byte & 0xFF).toString(16)).slice(-2);
+            }).join("");
+        }
+
+        return byteArraytoHexString(sha1(str));
+    },
+
+    /**
+     * 把36位字符串转换成带横杠 UUID 的格式
+     *
+     * formatUUID("e9411a6f1a2e22dd2244b78ee491c616") => "e9411a6f1a2e22dd2244b78ee491c616"
+     * @param {string}  str
+     * @returns {string}
+     */
+    formatUUID: function formatUUID(str) {
+        var str = str.toLowerCase();
+        var newStr = "";
+        newStr += str.slice(0, 8) + "-";
+        newStr += str.slice(8, 12) + "-";
+        newStr += str.slice(12, 16) + "-";
+        newStr += str.slice(16, 20) + "-";
+        newStr += str.slice(20, 36);
+        return newStr;
+    },
+
+    /**
+     * 检查一个字符串是 UUID 的版本或者是否是 UUID，返回 UUID 的版本，如果为 0 则说明不是 UUID
+     * @param {string} uuid - uuid
+     * @return {number}
+     */
+    checkUUID: function checkUUID(uuid) {
+
+        var funcs = [isUUID.v4, isUUID.v5, isUUID.v3, isUUID.v2, isUUID.v1];
+        var index = [4, 5, 3, 2, 1];
+        for (var i = 0; i < funcs.length; i++) {
+            if (funcs[i](uuid)) {
+                return index[i];
+            }
+        }
+        return 0;
+    },
+
+    /**
+     * 生成一个随机整数
+     * @param {number} max - 最大值
+     * @param {number} min - 最小值
+     */
+    roll: function roll() {
+        var max = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
+        var min = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    },
+
+    /**
+     * 生成一个随机字符串
+     * @param {number} length - 随机字符串长度
+     * @param {string} [dict] - 随机字符字典，默认为 a—Z0-9
+     * @returns {string}
+     */
+    rollString: function rollString(length, dict) {
+        var text = "";
+        var possible = dict || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (var i = 0; i < length; i++) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }return text;
+    }
+
+    /**
+     * @exports Tool
+     */
+};
+
 //  Created by bgllj on 2017/03/10.
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -18,37 +235,122 @@
 //        +-------------------+
 //        |   Richang  JSEX   |
 //        +-------------------+
-//              · File ·
+//             · NodeFile ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
 //            license: MIT
 
 var fs = require("fs");
+var path = require("path");
+var fsex = require("fs-extra");
 
+var os = require("os");
+
+var moment$1 = require("moment");
 /**
  * 文件操作相关模块
- * @type {{filterFileName: FileFIL.filterFileName}}
+ * @type {{getTempDirManager: NodeFile.getTempDirManager}}
  */
-var FileFIL = {
+var NodeFile = {
 
     /**
-     * 去除一个字符串中不符合成为文件名的字符
+     * 生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹
+     * 可以用得到的 TempDirManager，申请临时文件名，和销毁临时文件夹
+     *
+     * var tepmDM = getTempDirManager("siphonink")
+     * tepmDM.genTempFilePath() - 申请一个临时文件路径
+     * tepmDM.destroy() - 销毁临时目录
+     *
+     *
      * @param name
-     * @param fix 非法字符替代
      * @returns {*}
      */
-    filterFileName: function filterFileName(name, fix) {
-        if (name != undefined && name.length != undefined) {
-            var reg = /[\\/:*?"<>]/g;
-            name = name.replace(reg, fix || "");
-            return name;
-        } else {
-            return null;
-        }
+    getTempDirManager: function getTempDirManager(name) {
+        var sysTempDir = os.tmpdir();
+
+        // 创建主临时文件夹
+        var mianTempDir = path.join(sysTempDir, name);
+        fsex.ensureDirSync(mianTempDir);
+
+        // 创建实例临时文件夹
+        var timestamp = Time.genTimestamp();
+        var tempDir = path.join(mianTempDir, timestamp);
+        fsex.ensureDirSync(tempDir);
+
+        var tempDirManager = {
+            tempDir: tempDir,
+            timestamp: timestamp,
+            /**
+             * 销毁临时目录
+             */
+            destroy: function destroy() {
+                fsex.removeSync(this.tempDir);
+            },
+
+
+            /**
+             * 清除过时的临时实例文件夹
+             * @param day 清除这个天数（包括）之前的文件夹
+             */
+            clean: function clean() {
+                var day = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+                var now = new Date();
+                var dirs = fs.readdirSync(this.mianTempDir);
+                for (var i = 0; i < dirs.length; i++) {
+                    if (dirs != timestamp) // 不清除
+                        {
+                            var itemDir = dirs[i];
+                            var itemPath = path.join(this.mianTempDir, itemDir);
+                            var stat = fs.statSync(itemPath);
+                            var diffDay = moment$1(now).diff(stat.mtime, "days");
+
+                            if (diffDay >= day) {
+                                fsex.remove(itemPath);
+                            }
+                            // console.log("diffDay:",diffDay >= day, diffDay  )
+                        }
+                }
+            },
+
+
+            /**
+             * 申请一个临时文件路径
+             *
+             * genTempFilePath() => "c:/temp/xd123fs43aew"
+             * 可用提供一个子文件夹名
+             * genTempFilePath("static") => "c:/temp/static/xd123fs43aew"
+             * @param subDir 子文件夹名
+             * @return {*}
+             */
+            genTempFilePath: function genTempFilePath(subDir) {
+                var _this = this;
+
+                var genName = function genName() {
+                    var rollName = Tool.rollString(12);
+                    var name = rollName;
+
+                    if (subDir) {
+                        var filePath = path.join(_this.tempDir, subDir, name);
+                    } else {
+                        var filePath = path.join(_this.tempDir, name);
+                    }
+
+                    if (fsex.pathExistsSync(filePath)) {
+                        return genName();
+                    } else {
+                        return filePath;
+                    }
+                };
+                return genName();
+            }
+        };
+        return tempDirManager;
     }
+
     /**
-     * @exports FileFIL
+     * @exports NodeFile
      */
 };
 
@@ -309,8 +611,8 @@ var streamToBuffer = require("stream-to-buffer");
 var NodeImage = {
 
     /**
-     * 获取 PNG 图片的像素数据 Buffer
-     * @param data
+     * 获取 PNG 图片文件的像素数据 Buffer
+     * @param {buffer} data - PNG 文件的 buffer
      * @returns {Promise<Buffer>}
      */
     getPngData: function () {
@@ -1325,157 +1627,6 @@ var AarryArr = {
      */
 };
 
-//      ___                       ___           ___           ___           ___           ___
-//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
-//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
-//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
-//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
-// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
-// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
-//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
-//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
-//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
-//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
-//
-//
-//                日常
-//        +-------------------+
-//        |   Richang  JSEX   |
-//        +-------------------+
-//              · Tool ·
-//
-//       By nullice ui@nullice.com
-//             nullice.com
-//            license: MIT
-
-var uuidv4 = require("uuid/v4");
-var uuidv5 = require("uuid/v5");
-var isUUID = require("is-uuid");
-var sha1 = require("uuid/lib/sha1-browser.js");
-
-/**
- * 通用工具相关模块
- * @type {{genUUID_v4: Tool.genUUID_v4}}
- */
-var Tool = {
-
-    /**
-     * 生成一个随机的 UUID
-     *
-     * genUUID_v4() => 'f8061fba-842b-4cc5-9872-9348e2e06916'
-     * @return {string}
-     */
-    genUUID_v4: function genUUID_v4() {
-        return uuidv4();
-    },
-
-    /**
-     * 根据一个名字和命名空间生成一个 UUID，这个 UUID 与名称+命名空间有一一对应，不随机
-     * （与标准不同，这里命名空间可不用 UUID 而是任何字符串，我们会用默认 UUID 和给命名空间生成一个 UUID）
-     *
-     *genUUID_v5("Gasoft_Mobiusbug.exe","BGLL") => '2cb20c42-026f-5d56-b33f-008e354ac8d3'
-     * @param  {string} name - 名称
-     * @param {string} [namespace] - 命名空间,
-     * @returns {*}
-     */
-    genUUID_v5: function genUUID_v5(name) {
-        var namespace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "f8061fba-842b-4cc5-9872-9348e2e06916";
-
-
-        // 如果命名空间不是 UUID ，给定默认 UUID 生成一个命名空间的 UUID
-
-        if (namespace.length !== 36) {
-            var namespace = uuidv5(namespace, "f8061fba-842b-4cc5-9872-9348e2e06916");
-        }
-
-        return uuidv5(name, namespace);
-    },
-
-    /**
-     * 用 sha1 生成一个字符串
-     *
-     * genSHA1("nullice") => 51918a176c8e2b0af211a94c5478c58a54f239cd
-     * @param {string} str
-     * @returns {*}
-     */
-    genSHA1: function genSHA1(str) {
-
-        function byteArraytoHexString(byteArray) {
-            return Array.from(byteArray, function (byte) {
-                return ("0" + (byte & 0xFF).toString(16)).slice(-2);
-            }).join("");
-        }
-
-        return byteArraytoHexString(sha1(str));
-    },
-
-    /**
-     * 把36位字符串转换成带横杠 UUID 的格式
-     *
-     * formatUUID("e9411a6f1a2e22dd2244b78ee491c616") => "e9411a6f1a2e22dd2244b78ee491c616"
-     * @param {string}  str
-     * @returns {string}
-     */
-    formatUUID: function formatUUID(str) {
-        var str = str.toLowerCase();
-        var newStr = "";
-        newStr += str.slice(0, 8) + "-";
-        newStr += str.slice(8, 12) + "-";
-        newStr += str.slice(12, 16) + "-";
-        newStr += str.slice(16, 20) + "-";
-        newStr += str.slice(20, 36);
-        return newStr;
-    },
-
-    /**
-     * 检查一个字符串是 UUID 的版本或者是否是 UUID，返回 UUID 的版本，如果为 0 则说明不是 UUID
-     * @param {string} uuid - uuid
-     * @return {number}
-     */
-    checkUUID: function checkUUID(uuid) {
-
-        var funcs = [isUUID.v4, isUUID.v5, isUUID.v3, isUUID.v2, isUUID.v1];
-        var index = [4, 5, 3, 2, 1];
-        for (var i = 0; i < funcs.length; i++) {
-            if (funcs[i](uuid)) {
-                return index[i];
-            }
-        }
-        return 0;
-    },
-
-    /**
-     * 生成一个随机整数
-     * @param {number} max - 最大值
-     * @param {number} min - 最小值
-     */
-    roll: function roll() {
-        var max = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
-        var min = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    },
-
-    /**
-     * 生成一个随机字符串
-     * @param {number} length - 随机字符串长度
-     * @param {string} [dict] - 随机字符字典，默认为 a—Z0-9
-     * @returns {string}
-     */
-    rollString: function rollString(length, dict) {
-        var text = "";
-        var possible = dict || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (var i = 0; i < length; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }return text;
-    }
-
-    /**
-     * @exports Tool
-     */
-};
-
 // Created by nullice on 2018/03/19 - 17:37
 //      ___                       ___           ___           ___           ___           ___
 //     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
@@ -1506,6 +1657,57 @@ var Tool = {
  */
 var Calc = {};
 
+//  Created by bgllj on 2017/03/10.
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · File ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+
+/**
+ * 文件操作相关模块
+ * @type {{filterFileName: FileFIL.filterFileName}}
+ */
+var FileFIL = {
+
+    /**
+     * 去除一个字符串中不符合成为文件名的字符
+     * @param name
+     * @param fix 非法字符替代
+     * @returns {*}
+     */
+    filterFileName: function filterFileName(name, fix) {
+        if (name != undefined && name.length != undefined) {
+            var reg = /[\\/:*?"<>]/g;
+            name = name.replace(reg, fix || "");
+            return name;
+        } else {
+            return null;
+        }
+    }
+    /**
+     * @exports FileFIL
+     */
+};
+
 var RichangNode = {
     Object: ObjectOBJ,
     String: StringSTR,
@@ -1515,7 +1717,8 @@ var RichangNode = {
     Console: ConsoleCON,
     Tool: Tool,
     Calc: Calc,
-    NodeFile: FileFIL,
+    File: FileFIL,
+    NodeFile: NodeFile,
     NodeDebug: NodeDebug,
     NodeTool: NodeTool,
     NodeImage: NodeImage

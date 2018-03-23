@@ -39,8 +39,8 @@ var streamToBuffer = require("stream-to-buffer")
 var NodeImage = {
 
     /**
-     * 获取 PNG 图片的像素数据 Buffer
-     * @param data
+     * 获取 PNG 图片文件的像素数据 Buffer
+     * @param {buffer} data - PNG 文件的 buffer
      * @returns {Promise<Buffer>}
      */
     getPngData: async function (data) {

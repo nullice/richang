@@ -10,6 +10,7 @@ import _Type from "./modules/Type"
 import _Array from "./modules/Aarry"
 import _Tool from "./modules/Tool.js"
 import _Calc from "./modules/Calc.js"
+import _File from "./modules/File.js"
 
 var RichangNode = {
     Object: _Object,
@@ -20,6 +21,7 @@ var RichangNode = {
     Console: _Console,
     Tool: _Tool,
     Calc:_Calc,
+    File: _File,
     NodeFile,
     NodeDebug,
     NodeTool,

@@ -1,7 +1,13 @@
 ## Members
 
 <dl>
-<dt><a href="#FileFIL">FileFIL</a> : <code>Object</code></dt>
+<dt><a href="#Time">Time</a> : <code>Object</code></dt>
+<dd><p>时间日期操作相关模块</p>
+</dd>
+<dt><a href="#Tool">Tool</a> : <code>Object</code></dt>
+<dd><p>通用工具相关模块</p>
+</dd>
+<dt><a href="#NodeFile">NodeFile</a> : <code>Object</code></dt>
 <dd><p>文件操作相关模块</p>
 </dd>
 <dt><a href="#NodeDebug">NodeDebug</a> : <code>Object</code></dt>
@@ -31,31 +37,154 @@
 <dt><a href="#AarryArr">AarryArr</a> : <code>Object</code></dt>
 <dd><p>数组相关功能模块</p>
 </dd>
-<dt><a href="#Tool">Tool</a> : <code>Object</code></dt>
-<dd><p>通用工具相关模块</p>
-</dd>
 <dt><a href="#Calc">Calc</a> : <code>Object</code></dt>
 <dd><p>计算相关功能模块</p>
 </dd>
+<dt><a href="#FileFIL">FileFIL</a> : <code>Object</code></dt>
+<dd><p>文件操作相关模块</p>
+</dd>
 </dl>
 
-<a name="FileFIL"></a>
+<a name="Time"></a>
 
-## FileFIL : <code>Object</code>
+## Time : <code>Object</code>
+时间日期操作相关模块
+
+**Kind**: global variable  
+
+* [Time](#Time) : <code>Object</code>
+    * [.genTimestamp([raw])](#Time.genTimestamp)
+    * [.parseTimestamp(timestamp)](#Time.parseTimestamp) ⇒ <code>Date</code>
+
+<a name="Time.genTimestamp"></a>
+
+### Time.genTimestamp([raw])
+生成时间戳（当前时间的 32 进制）
+
+**Kind**: static method of [<code>Time</code>](#Time)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [raw] | <code>Object</code> | 获取原始格式，比如 1521602474428 |
+
+<a name="Time.parseTimestamp"></a>
+
+### Time.parseTimestamp(timestamp) ⇒ <code>Date</code>
+解析一个时间戳返回 date
+
+**Kind**: static method of [<code>Time</code>](#Time)  
+
+| Param |
+| --- |
+| timestamp | 
+
+<a name="Tool"></a>
+
+## Tool : <code>Object</code>
+通用工具相关模块
+
+**Kind**: global variable  
+
+* [Tool](#Tool) : <code>Object</code>
+    * [.genUUID_v4()](#Tool.genUUID_v4) ⇒ <code>string</code>
+    * [.genUUID_v5(name, [namespace])](#Tool.genUUID_v5) ⇒ <code>\*</code>
+    * [.genSHA1(str)](#Tool.genSHA1) ⇒ <code>\*</code>
+    * [.formatUUID(str)](#Tool.formatUUID) ⇒ <code>string</code>
+    * [.checkUUID(uuid)](#Tool.checkUUID) ⇒ <code>number</code>
+    * [.roll(max, min)](#Tool.roll)
+    * [.rollString(length, [dict])](#Tool.rollString) ⇒ <code>string</code>
+
+<a name="Tool.genUUID_v4"></a>
+
+### Tool.genUUID_v4() ⇒ <code>string</code>
+生成一个随机的 UUIDgenUUID_v4() => 'f8061fba-842b-4cc5-9872-9348e2e06916'
+
+**Kind**: static method of [<code>Tool</code>](#Tool)  
+<a name="Tool.genUUID_v5"></a>
+
+### Tool.genUUID_v5(name, [namespace]) ⇒ <code>\*</code>
+根据一个名字和命名空间生成一个 UUID，这个 UUID 与名称+命名空间有一一对应，不随机（与标准不同，这里命名空间可不用 UUID 而是任何字符串，我们会用默认 UUID 和给命名空间生成一个 UUID）genUUID_v5("Gasoft_Mobiusbug.exe","BGLL") => '2cb20c42-026f-5d56-b33f-008e354ac8d3'
+
+**Kind**: static method of [<code>Tool</code>](#Tool)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | 名称 |
+| [namespace] | <code>string</code> | 命名空间, |
+
+<a name="Tool.genSHA1"></a>
+
+### Tool.genSHA1(str) ⇒ <code>\*</code>
+用 sha1 生成一个字符串genSHA1("nullice") => 51918a176c8e2b0af211a94c5478c58a54f239cd
+
+**Kind**: static method of [<code>Tool</code>](#Tool)  
+
+| Param | Type |
+| --- | --- |
+| str | <code>string</code> | 
+
+<a name="Tool.formatUUID"></a>
+
+### Tool.formatUUID(str) ⇒ <code>string</code>
+把36位字符串转换成带横杠 UUID 的格式formatUUID("e9411a6f1a2e22dd2244b78ee491c616") => "e9411a6f1a2e22dd2244b78ee491c616"
+
+**Kind**: static method of [<code>Tool</code>](#Tool)  
+
+| Param | Type |
+| --- | --- |
+| str | <code>string</code> | 
+
+<a name="Tool.checkUUID"></a>
+
+### Tool.checkUUID(uuid) ⇒ <code>number</code>
+检查一个字符串是 UUID 的版本或者是否是 UUID，返回 UUID 的版本，如果为 0 则说明不是 UUID
+
+**Kind**: static method of [<code>Tool</code>](#Tool)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| uuid | <code>string</code> | uuid |
+
+<a name="Tool.roll"></a>
+
+### Tool.roll(max, min)
+生成一个随机整数
+
+**Kind**: static method of [<code>Tool</code>](#Tool)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| max | <code>number</code> | 最大值 |
+| min | <code>number</code> | 最小值 |
+
+<a name="Tool.rollString"></a>
+
+### Tool.rollString(length, [dict]) ⇒ <code>string</code>
+生成一个随机字符串
+
+**Kind**: static method of [<code>Tool</code>](#Tool)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| length | <code>number</code> | 随机字符串长度 |
+| [dict] | <code>string</code> | 随机字符字典，默认为 a—Z0-9 |
+
+<a name="NodeFile"></a>
+
+## NodeFile : <code>Object</code>
 文件操作相关模块
 
 **Kind**: global variable  
-<a name="FileFIL.filterFileName"></a>
+<a name="NodeFile.getTempDirManager"></a>
 
-### FileFIL.filterFileName(name, fix) ⇒ <code>\*</code>
-去除一个字符串中不符合成为文件名的字符
+### NodeFile.getTempDirManager(name) ⇒ <code>\*</code>
+生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹可以用得到的 TempDirManager，申请临时文件名，和销毁临时文件夹var tepmDM = getTempDirManager("siphonink")tepmDM.genTempFilePath() - 申请一个临时文件路径tepmDM.destroy() - 销毁临时目录
 
-**Kind**: static method of [<code>FileFIL</code>](#FileFIL)  
+**Kind**: static method of [<code>NodeFile</code>](#NodeFile)  
 
-| Param | Description |
-| --- | --- |
-| name |  |
-| fix | 非法字符替代 |
+| Param |
+| --- |
+| name | 
 
 <a name="NodeDebug"></a>
 
@@ -277,13 +406,13 @@ Node 图片相关模块
 <a name="NodeImage.getPngData"></a>
 
 ### NodeImage.getPngData ⇒ <code>Promise.&lt;Buffer&gt;</code>
-获取 PNG 图片的像素数据 Buffer
+获取 PNG 图片文件的像素数据 Buffer
 
 **Kind**: static property of [<code>NodeImage</code>](#NodeImage)  
 
-| Param |
-| --- |
-| data | 
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>buffer</code> | PNG 文件的 buffer |
 
 <a name="NodeTool"></a>
 
@@ -686,100 +815,27 @@ ArrayBuffer to Buffer
 | key | <code>a:12</code> | 对象排序的键值，如 [, {a:33}] , key 为 "a" 则以 a 排序 |
 | bigFront |  | 大值在前 |
 
-<a name="Tool"></a>
-
-## Tool : <code>Object</code>
-通用工具相关模块
-
-**Kind**: global variable  
-
-* [Tool](#Tool) : <code>Object</code>
-    * [.genUUID_v4()](#Tool.genUUID_v4) ⇒ <code>string</code>
-    * [.genUUID_v5(name, [namespace])](#Tool.genUUID_v5) ⇒ <code>\*</code>
-    * [.genSHA1(str)](#Tool.genSHA1) ⇒ <code>\*</code>
-    * [.formatUUID(str)](#Tool.formatUUID) ⇒ <code>string</code>
-    * [.checkUUID(uuid)](#Tool.checkUUID) ⇒ <code>number</code>
-    * [.roll(max, min)](#Tool.roll)
-    * [.rollString(length, [dict])](#Tool.rollString) ⇒ <code>string</code>
-
-<a name="Tool.genUUID_v4"></a>
-
-### Tool.genUUID_v4() ⇒ <code>string</code>
-生成一个随机的 UUIDgenUUID_v4() => 'f8061fba-842b-4cc5-9872-9348e2e06916'
-
-**Kind**: static method of [<code>Tool</code>](#Tool)  
-<a name="Tool.genUUID_v5"></a>
-
-### Tool.genUUID_v5(name, [namespace]) ⇒ <code>\*</code>
-根据一个名字和命名空间生成一个 UUID，这个 UUID 与名称+命名空间有一一对应，不随机（与标准不同，这里命名空间可不用 UUID 而是任何字符串，我们会用默认 UUID 和给命名空间生成一个 UUID）genUUID_v5("Gasoft_Mobiusbug.exe","BGLL") => '2cb20c42-026f-5d56-b33f-008e354ac8d3'
-
-**Kind**: static method of [<code>Tool</code>](#Tool)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name | <code>string</code> | 名称 |
-| [namespace] | <code>string</code> | 命名空间, |
-
-<a name="Tool.genSHA1"></a>
-
-### Tool.genSHA1(str) ⇒ <code>\*</code>
-用 sha1 生成一个字符串genSHA1("nullice") => 51918a176c8e2b0af211a94c5478c58a54f239cd
-
-**Kind**: static method of [<code>Tool</code>](#Tool)  
-
-| Param | Type |
-| --- | --- |
-| str | <code>string</code> | 
-
-<a name="Tool.formatUUID"></a>
-
-### Tool.formatUUID(str) ⇒ <code>string</code>
-把36位字符串转换成带横杠 UUID 的格式formatUUID("e9411a6f1a2e22dd2244b78ee491c616") => "e9411a6f1a2e22dd2244b78ee491c616"
-
-**Kind**: static method of [<code>Tool</code>](#Tool)  
-
-| Param | Type |
-| --- | --- |
-| str | <code>string</code> | 
-
-<a name="Tool.checkUUID"></a>
-
-### Tool.checkUUID(uuid) ⇒ <code>number</code>
-检查一个字符串是 UUID 的版本或者是否是 UUID，返回 UUID 的版本，如果为 0 则说明不是 UUID
-
-**Kind**: static method of [<code>Tool</code>](#Tool)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| uuid | <code>string</code> | uuid |
-
-<a name="Tool.roll"></a>
-
-### Tool.roll(max, min)
-生成一个随机整数
-
-**Kind**: static method of [<code>Tool</code>](#Tool)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| max | <code>number</code> | 最大值 |
-| min | <code>number</code> | 最小值 |
-
-<a name="Tool.rollString"></a>
-
-### Tool.rollString(length, [dict]) ⇒ <code>string</code>
-生成一个随机字符串
-
-**Kind**: static method of [<code>Tool</code>](#Tool)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| length | <code>number</code> | 随机字符串长度 |
-| [dict] | <code>string</code> | 随机字符字典，默认为 a—Z0-9 |
-
 <a name="Calc"></a>
 
 ## Calc : <code>Object</code>
 计算相关功能模块
 
 **Kind**: global variable  
+<a name="FileFIL"></a>
+
+## FileFIL : <code>Object</code>
+文件操作相关模块
+
+**Kind**: global variable  
+<a name="FileFIL.filterFileName"></a>
+
+### FileFIL.filterFileName(name, fix) ⇒ <code>\*</code>
+去除一个字符串中不符合成为文件名的字符
+
+**Kind**: static method of [<code>FileFIL</code>](#FileFIL)  
+
+| Param | Description |
+| --- | --- |
+| name |  |
+| fix | 非法字符替代 |
+

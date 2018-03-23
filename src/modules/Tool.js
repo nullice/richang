@@ -28,7 +28,7 @@ const sha1 = require("uuid/lib/sha1-browser.js")
 
 /**
  * 通用工具相关模块
- * @type {{genUUID_v4: Tool.genUUID_v4}}
+ * @type {{genUUID_v4: Tool.genUUID_v4, genUUID_v5: Tool.genUUID_v5, genSHA1: Tool.genSHA1, formatUUID: Tool.formatUUID, checkUUID: Tool.checkUUID, roll: Tool.roll, rollString: Tool.rollString}}
  */
 var Tool = {
 
@@ -144,11 +144,6 @@ var Tool = {
     },
 
 }
-
-
-
-
-
 
 /**
  * @exports Tool

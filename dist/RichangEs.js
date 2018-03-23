@@ -875,7 +875,7 @@ var sha1 = require("uuid/lib/sha1-browser.js");
 
 /**
  * 通用工具相关模块
- * @type {{genUUID_v4: Tool.genUUID_v4}}
+ * @type {{genUUID_v4: Tool.genUUID_v4, genUUID_v5: Tool.genUUID_v5, genSHA1: Tool.genSHA1, formatUUID: Tool.formatUUID, checkUUID: Tool.checkUUID, roll: Tool.roll, rollString: Tool.rollString}}
  */
 var Tool = {
 
@@ -1026,6 +1026,57 @@ var Tool = {
  */
 var Calc = {};
 
+//  Created by bgllj on 2017/03/10.
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · File ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+
+/**
+ * 文件操作相关模块
+ * @type {{filterFileName: FileFIL.filterFileName}}
+ */
+var FileFIL = {
+
+    /**
+     * 去除一个字符串中不符合成为文件名的字符
+     * @param name
+     * @param fix 非法字符替代
+     * @returns {*}
+     */
+    filterFileName: function filterFileName(name, fix) {
+        if (name != undefined && name.length != undefined) {
+            var reg = /[\\/:*?"<>]/g;
+            name = name.replace(reg, fix || "");
+            return name;
+        } else {
+            return null;
+        }
+    }
+    /**
+     * @exports FileFIL
+     */
+};
+
 var Richang = {
     Object: ObjectOBJ,
     String: StringSTR,
@@ -1034,6 +1085,7 @@ var Richang = {
     Rect: Rect,
     Console: ConsoleCON,
     Tool: Tool,
+    File: FileFIL,
     Calc: Calc
 
     /**
