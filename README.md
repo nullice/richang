@@ -555,6 +555,8 @@ ArrayBuffer to Buffer
     * [.isEmptyObject(obj)](#ObjectOBJ.isEmptyObject) ⇒ <code>boolean</code>
     * [.objectCopyToObject(ob1, ob2, func_allowCopy, func_rename, func_valueFiter, func_for)](#ObjectOBJ.objectCopyToObject)
     * [.setObjectValueByNames(object, names, value)](#ObjectOBJ.setObjectValueByNames)
+    * [.treeFind(objectArr, match, childrenKey, findAll, depthFirst)](#ObjectOBJ.treeFind) ⇒ <code>array</code> \| <code>null</code>
+    * [.treeEach(objectArr, eachFunc, childrenKey, depthFirst)](#ObjectOBJ.treeEach) ⇒ <code>Object</code>
 
 <a name="ObjectOBJ.isEmptyObject"></a>
 
@@ -595,6 +597,35 @@ ArrayBuffer to Buffer
 | object | 对象 |
 | names | 属性名路径列表，如 [position,enableAssigns,y] |
 | value | 值 |
+
+<a name="ObjectOBJ.treeFind"></a>
+
+### ObjectOBJ.treeFind(objectArr, match, childrenKey, findAll, depthFirst) ⇒ <code>array</code> \| <code>null</code>
+在由对象数组组成的树中查找对象。如果查找全部结果会以数组返回，否则直接返回找到的对象。tree =[  {id: 1, children: [{id: 4}]},  {id: 2},]findTree (tree, 4, "children", false, false) => {id: 4}
+
+**Kind**: static method of [<code>ObjectOBJ</code>](#ObjectOBJ)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| objectArr | <code>Array.&lt;object&gt;</code> | 对象数组组成的树 |
+| match | <code>function</code> | 匹配器 -  如果是字符串则是匹配对象下的 id 键，也可提供一个匹配函数，匹配函数通过参数接收遍历到的对象，返回是否匹配的 boolen (ob)={retrun ob.name=="xxx">} |
+| childrenKey | <code>string</code> | 子树键名 - 通过这个名字在对象中找子树 |
+| findAll | <code>boolean</code> | 是否查找全部 |
+| depthFirst | <code>boolean</code> | 深度优先 - 默认是广度优先 |
+
+<a name="ObjectOBJ.treeEach"></a>
+
+### ObjectOBJ.treeEach(objectArr, eachFunc, childrenKey, depthFirst) ⇒ <code>Object</code>
+在由对象数组组成的树中遍历处理树的每个节点。处理函数：eachFunc(单个对象, 遍历深度, 当层深度节点计数, 总节点计数)在 eachFunc 中 return true 可以提前终止遍历返回树的信息：{     struct:[4,2,5], // 每层节点数     deep:3,         // 树深度     total: 11       // 总节点数}
+
+**Kind**: static method of [<code>ObjectOBJ</code>](#ObjectOBJ)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| objectArr | <code>Array.&lt;object&gt;</code> | 对象数组组成的树 |
+| eachFunc | <code>function</code> | 处理函数 |
+| childrenKey | <code>string</code> | 子树键名 - 通过这个名字在对象中找子树 |
+| depthFirst | <code>boolean</code> | 深度优先 - 默认是广度优先 |
 
 <a name="StringSTR"></a>
 

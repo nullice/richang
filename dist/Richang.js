@@ -181,6 +181,156 @@ var ObjectOBJ = {
                 }
             }
         }
+    },
+
+    /**
+     * 在由对象数组组成的树中查找对象。如果查找全部结果会以数组返回，否则直接返回找到的对象。
+     *
+     * tree =
+     * [
+     *   {id: 1, children: [{id: 4}]},
+     *   {id: 2},
+     * ]
+     * findTree (tree, 4, "children", false, false) => {id: 4}
+     *
+     * @param {object[]} objectArr 对象数组组成的树
+     * @param {function} match 匹配器 -  如果是字符串则是匹配对象下的 id 键，也可提供一个匹配函数，匹配函数通过参数接收遍历到的对象，返回是否匹配的 boolen (ob)={retrun ob.name=="xxx">}
+     * @param {string} childrenKey 子树键名 - 通过这个名字在对象中找子树
+     * @param {boolean} findAll 是否查找全部
+     * @param {boolean} depthFirst 深度优先 - 默认是广度优先
+     * @return {array|null}
+     */
+    treeFind: function treeFind(objectArr, match, childrenKey, findAll, depthFirst) {
+
+        if (typeof match == "function") {
+            // 使用输入的匹配 function
+            var matchFunc = match;
+        } else {
+            var matchFunc = function matchFunc(ob) {
+                return ob.id == match;
+            };
+        }
+
+        function once(objectArr, match, childrenKey, findAll, depthFirst) {
+            var reslut = [];
+            var children = [];
+            for (var i = 0; i < objectArr.length; i++) {
+                var item = objectArr[i];
+
+                if (matchFunc(item)) {
+                    reslut.push(item);
+                    if (!findAll) {
+                        return reslut;
+                    }
+                }
+
+                if (item[childrenKey]) {
+                    if (depthFirst) {
+                        var re = once(item[childrenKey], match, childrenKey, findAll, depthFirst);
+                        if (!findAll && re.length > 0) {
+                            return re;
+                        }
+                        reslut = reslut.concat(re);
+                    } else {
+                        children.push(item[childrenKey]);
+                    }
+                }
+            }
+
+            if (!depthFirst) {
+                for (var i = 0; i < children.length; i++) {
+                    var re = once(children[i], match, childrenKey, findAll, depthFirst);
+                    if (!findAll && re.length > 0) {
+                        return re;
+                    }
+                    reslut = reslut.concat(re);
+                }
+            }
+
+            return reslut;
+        }
+
+        var re = once(objectArr, matchFunc, childrenKey, findAll, depthFirst);
+        if (!findAll) {
+            return re.length > 0 ? re[0] : null;
+        } else {
+            return re;
+        }
+    },
+
+    /**
+     * 在由对象数组组成的树中遍历处理树的每个节点。
+     *
+     * 处理函数：
+     * eachFunc(单个对象, 遍历深度, 当层深度节点计数, 总节点计数)
+     * 在 eachFunc 中 return true 可以提前终止遍历
+     *
+     * 返回树的信息：
+     * {
+     *      struct:[4,2,5], // 每层节点数
+     *      deep:3,         // 树深度
+     *      total: 11       // 总节点数
+     * }
+     *
+     * @param {object[]} objectArr 对象数组组成的树
+     * @param {function} eachFunc 处理函数
+     * @param {string} childrenKey 子树键名 - 通过这个名字在对象中找子树
+     * @param {boolean} depthFirst 深度优先 - 默认是广度优先
+     * @return {{struct: Array, deep: number, total: number}}
+     */
+    treeEach: function treeEach(objectArr, eachFunc, childrenKey, depthFirst) {
+        var deepLengths = [];
+        var count = 0;
+        var deepAll = 0;
+
+        if (!eachFunc) {
+            eachFunc = function eachFunc(o) {};
+        }
+
+        once(objectArr, eachFunc, childrenKey, depthFirst, 0);
+        return { struct: deepLengths, deep: deepAll + 1, total: count };
+
+        function once(objectArr, eachFunc, childrenKey, depthFirst, deep) {
+            if (deep > deepAll) {
+                deepAll = deep;
+            }
+
+            var children = [];
+            for (var i = 0; i < objectArr.length; i++) {
+                count++;
+                if (deepLengths[deep] == undefined) {
+                    deepLengths[deep] = 1;
+                } else {
+                    deepLengths[deep]++;
+                }
+
+                var item = objectArr[i];
+                if (eachFunc(item, deep, deepLengths[deep], count)) {
+                    return;
+                }
+
+                if (item[childrenKey]) {
+                    if (depthFirst) {
+                        var re = once(item[childrenKey], eachFunc, childrenKey, depthFirst, deep + 1);
+                        if (re) {
+                            return;
+                        }
+                    } else {
+                        children.push(item[childrenKey]);
+                    }
+                }
+            }
+
+            if (!depthFirst) {
+                for (var i = 0; i < children.length; i++) {
+                    var re = once(children[i], eachFunc, childrenKey, depthFirst, deep + 1);
+                    if (re) {
+                        return;
+                    }
+                }
+            }
+            return;
+        }
     }
 
     /**
