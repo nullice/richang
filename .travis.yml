@@ -8,6 +8,3 @@ before_script:
 after_script:
      - npm run test-coveralls
 
-script:
-  - bundle exec rspec
-
