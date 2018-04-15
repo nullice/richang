@@ -1,10 +1,11 @@
 {
   "name": "richang.js",
-  "version": "3.5.7",
+  "version": "3.5.8",
   "description": "richang js code.",
   "main": "dist/Richang.js",
   "scripts": {
     "test": "jest",
+    "test-coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "build-and-publish": "npm run build  && npm run build-min && npm run build-node-bundle && npm run doc && npm run publish",
     "publish": "npm publish --registry=https://registry.npmjs.org/ --disturl=/",
     "watch": "rollup -c -w",
