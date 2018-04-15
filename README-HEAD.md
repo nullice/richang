@@ -1,4 +1,8 @@
 
+# Richang.js
+
+[![Coverage Status](https://coveralls.io/repos/github/nullice/Richang.js/badge.svg?branch=master)](https://coveralls.io/github/nullice/Richang.js?branch=master)
+[![Build Status](https://travis-ci.org/nullice/Richang.js.svg?branch=master)](https://travis-ci.org/nullice/Richang.js)
 
 
 ``` js
