@@ -21,10 +21,10 @@
 //             nullice.com
 //            license: MIT
 
-const uuidv4 = require("uuid/v4")
-const uuidv5 = require("uuid/v5")
-const isUUID = require("is-uuid")
-const sha1 = require("uuid/lib/sha1-browser.js")
+import uuidv4 from "uuid/v4"
+import uuidv5 from "uuid/v5"
+import isUUID from "is-uuid"
+import sha1 from "uuid/lib/sha1-browser.js"
 
 /**
  * 通用工具相关模块

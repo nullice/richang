@@ -27,7 +27,7 @@
 
 /**
  * 对象操作相关操作
- * @type {{isEmptyObject: ObjectOBJ.isEmptyObject, objectCopyToObject: ObjectOBJ.objectCopyToObject, getObjectValueByNames: ObjectOBJ.getObjectValueByNames, setObjectValueByNames: ObjectOBJ.setObjectValueByNames}}
+ * @type {{isEmptyObject: ObjectOBJ.isEmptyObject, objectCopyToObject: ObjectOBJ.objectCopyToObject, getObjectValueByNames: ObjectOBJ.getObjectValueByNames, setObjectValueByNames: ObjectOBJ.setObjectValueByNames, treeFind: ObjectOBJ.treeFind, treeEach: function(Object[], Function, string, boolean): {struct: Array, deep: number, total: number}, pathEach(Object, Function): void}}
  */
 var ObjectOBJ = {
 
@@ -36,7 +36,8 @@ var ObjectOBJ = {
      * @param obj
      * @returns {boolean}
      */
-    isEmptyObject: function (obj) {
+    isEmptyObject: function (obj)
+    {
         for (var name in obj)
         {
             return false
@@ -54,7 +55,8 @@ var ObjectOBJ = {
      * @param func_for 每次循环执行的函数 func_for(ob1,ob2,x)。可空
      */
 
-    objectCopyToObject: function (ob1, ob2, func_allowCopy, func_rename, func_valueFiter, func_for) {
+    objectCopyToObject: function (ob1, ob2, func_allowCopy, func_rename, func_valueFiter, func_for)
+    {
 
         if (ob2 == undefined)
         {return}
@@ -112,7 +114,8 @@ var ObjectOBJ = {
      * @returns {*}
      * @private
      */
-    getObjectValueByNames: function (object, names, aheadEndTime) {
+    getObjectValueByNames: function (object, names, aheadEndTime)
+    {
         var nowValue
         for (var i = 0; i < (names.length - (aheadEndTime || 0)); i++)
         {
@@ -123,7 +126,7 @@ var ObjectOBJ = {
                     nowValue = object[names[i]]
                 } else
                 {
-                    return null
+                    return undefined
                 }
 
             } else
@@ -135,7 +138,7 @@ var ObjectOBJ = {
                 }
                 else
                 {
-                    return null
+                    return undefined
                 }
 
             }
@@ -151,7 +154,8 @@ var ObjectOBJ = {
      * @param names 属性名路径列表，如 [position,enableAssigns,y]
      * @param value 值
      */
-    setObjectValueByNames: function (object, names, value) {
+    setObjectValueByNames: function (object, names, value)
+    {
         var nowObject
 
         if (names.length == 1)
@@ -227,7 +231,8 @@ var ObjectOBJ = {
      * @param {boolean} depthFirst 深度优先 - 默认是广度优先
      * @return {array|null}
      */
-    treeFind: function (objectArr, match, childrenKey, findAll, depthFirst) {
+    treeFind: function (objectArr, match, childrenKey, findAll, depthFirst)
+    {
 
         if (typeof match == "function")
         {
@@ -235,7 +240,8 @@ var ObjectOBJ = {
             var matchFunc = match
         } else
         {
-            var matchFunc = function (ob) {
+            var matchFunc = function (ob)
+            {
                 return (ob.id == match)
             }
         }
@@ -309,7 +315,6 @@ var ObjectOBJ = {
      * eachFunc(单个对象, 遍历深度, 当层深度节点计数, 总节点计数, 当前子树, 当前子树位置)
      * 在 eachFunc 中 return true 可以提前终止遍历。
      * 当前子树[当前子树位置+1] 可获取下一个节点。
-     *1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
      * 返回树的信息：
      * {
      *      struct:[4,2,5], // 每层节点数
@@ -323,7 +328,8 @@ var ObjectOBJ = {
      * @param {boolean} depthFirst 深度优先 - 默认是广度优先
      * @return {{struct: Array, deep: number, total: number}}
      */
-    treeEach: function (objectArr, eachFunc, childrenKey, depthFirst) {
+    treeEach: function (objectArr, eachFunc, childrenKey, depthFirst)
+    {
         var deepLengths = []
         var count = 0
         var deepAll = 0
@@ -387,6 +393,40 @@ var ObjectOBJ = {
                 }
             }
             return
+        }
+    },
+
+    /**
+     * 遍历对象每一个元素，可以获取对象键名组成的 path  (["c","d","e"])
+     *
+     * 处理函数：
+     * eachFunc(当前元素, 当前 path, 当层深度 )
+     *
+     * pathEach( {
+     *  b:111,
+     *  c:{d:{e:222}}
+     * })
+     *
+     * @param {object} object
+     * @param {function} eachFunc 处理函数
+     */
+    pathEach (object, eachFunc)
+    {
+        _each(object, [], 0)
+
+        function _each (object, path = [], deep = 0)
+        {
+            for (var key in object)
+            {
+                var item = object[key]
+                var nowPath = [...path, key]
+                eachFunc(item, nowPath, deep)
+
+                if (typeof  item === "object")
+                {
+                    _each(item, nowPath, deep + 1)
+                }
+            }
         }
     },
 

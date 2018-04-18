@@ -1,7 +1,8 @@
 import rcObject from "../../src/modules/Object.js"
 import _ from "lodash"
 
-test("Object.isEmptyObject({}) === true （对象是否为空）", () => {
+test("Object.isEmptyObject({}) === true （对象是否为空）", () =>
+{
     expect(rcObject.isEmptyObject({})).toBe(true)
 })
 
@@ -5858,13 +5859,15 @@ var tree = [
     },
 ]
 
-test("Object.treeFind 指定 id key", () => {
+test("Object.treeFind 指定 id key", () =>
+{
 
     var fd = rcObject.treeFind(tree, 2215, "layers")
     expect(fd.id).toBe(2215)
 })
 
-test("Object.treeFind 指定匹配函数", () => {
+test("Object.treeFind 指定匹配函数", () =>
+{
 
     var fd = rcObject.treeFind(tree, (o) => {return !o.visible}, "layers", true)
     expect(fd.length).toBe(17)
@@ -5874,13 +5877,15 @@ test("Object.treeFind 指定匹配函数", () => {
     }
 })
 
-test("Object.treeFind 指定 id key [深度优先]", () => {
+test("Object.treeFind 指定 id key [深度优先]", () =>
+{
 
     var fd = rcObject.treeFind(tree, 2215, "layers", false, true)
     expect(fd.id).toBe(2215)
 })
 
-test("Object.treeFind 指定匹配函数 [深度优先]", () => {
+test("Object.treeFind 指定匹配函数 [深度优先]", () =>
+{
 
     var fd = rcObject.treeFind(tree, (o) => {return !o.visible}, "layers", true, true)
     expect(fd.length).toBe(17)
@@ -5890,7 +5895,8 @@ test("Object.treeFind 指定匹配函数 [深度优先]", () => {
     }
 })
 
-test("Object.treeEach 遍历所有", () => {
+test("Object.treeEach 遍历所有", () =>
+{
 
     var fd = []
     rcObject.treeEach(tree, (o) => { fd.push(o.id)}, "layers", true)
@@ -5898,10 +5904,12 @@ test("Object.treeEach 遍历所有", () => {
 })
 
 var tree2 = _.cloneDeep(tree)
-test("Object.treeEach 删除元素", () => {
+test("Object.treeEach 删除元素", () =>
+{
 
     var fd = []
-    rcObject.treeEach(tree2, (o) => {
+    rcObject.treeEach(tree2, (o) =>
+    {
         if (o.bounds)
         {
             delete  o.bounds
@@ -5909,15 +5917,18 @@ test("Object.treeEach 删除元素", () => {
 
     }, "layers", false)
 
-    rcObject.treeEach(tree2, (o) => {
+    rcObject.treeEach(tree2, (o) =>
+    {
         expect(o.bounds === undefined).toBe(true)
     }, "layers", false)
 
 })
 
 var tree3 = _.cloneDeep(tree)
-test("Object.treeEach 3 层及以上深度的节点 ", () => {
-    rcObject.treeEach(tree3, (o, deep) => {
+test("Object.treeEach 3 层及以上深度的节点 ", () =>
+{
+    rcObject.treeEach(tree3, (o, deep) =>
+    {
         if (deep == 2)
         {
             delete  o.layers
@@ -5931,9 +5942,11 @@ test("Object.treeEach 3 层及以上深度的节点 ", () => {
 })
 
 var tree4 = _.cloneDeep(tree)
-test("Object.treeEach 4 层以上深度的节点 [深度优先]", () => {
+test("Object.treeEach 4 层以上深度的节点 [深度优先]", () =>
+{
 
-    rcObject.treeEach(tree4, (o, deep) => {
+    rcObject.treeEach(tree4, (o, deep) =>
+    {
         if (deep == 3)
         {
             delete  o.layers
@@ -5946,10 +5959,41 @@ test("Object.treeEach 4 层以上深度的节点 [深度优先]", () => {
     expect(re.deep).toBe(4)
 })
 
-test("Object.treeEach 返回树信息 struct conut 验证", () => {
+test("Object.treeEach 返回树信息 struct conut 验证", () =>
+{
 
     var re = rcObject.treeEach(tree, (o) => {}, "layers", true)
     var conut = 0
     re.struct.forEach((x) => {conut += x})
     expect(conut).toBe(re.total)
+})
+
+test("Object.pathEach 遍历对象", () =>
+{
+
+    let ob = {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: {
+            d1: 11,
+            d2: 22,
+            d3: 33,
+            e: {
+                e1: {},
+                e2: {
+                    d: {k: 123},
+                },
+            },
+            array: [1, 2, 33, 55, "123", {s1: 123, s2: 124}],
+
+        },
+    }
+    var re = rcObject.pathEach(ob, (item, path, deep) =>
+    {
+
+        var value = rcObject.getObjectValueByNames(ob, path)
+        expect(value).toEqual(item)
+    })
+
 })

@@ -2,40 +2,15 @@
  * Created by nullice on 2017/4/5.
  */
 
-import uglify from 'rollup-plugin-uglify';
-import babel from 'rollup-plugin-babel';
-export default [{
-    input: 'src/index.js',
-    output: {
+import uglify from "rollup-plugin-uglify"
+import babel from "rollup-plugin-babel"
 
-        file:"./dist/Richang.min.js",
-        format: 'umd',
-        name:"Richang",
-    },
-    plugins: [
-        babel({
-            exclude: 'node_modules/**',
-            plugins: ['external-helpers']
-        })
-        , uglify()
-    ]
+import configs from "./rollup.config"
 
-},
-    {
-        input: 'src/index.node.js',
-        output: {
-            file:"./dist/RichangNode.min.js",
-            format: 'cjs',
-            name:"Richang",
-        },
-        plugins: [
-            babel({
-                exclude: 'node_modules/**',
-                plugins: ['external-helpers']
-            }), uglify()
-        ]
+configs.forEach((x) =>
+{
+    x.plugins.push(uglify())
+    x.output.file =  x.output.file.replace(/\.js$/,".min.js")
+})
 
-    }];
-
-
-import ""
+export default configs
