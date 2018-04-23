@@ -495,7 +495,7 @@ ArrayBuffer to Buffer
     * [.setObjectValueByNames(object, names, value)](#ObjectOBJ.setObjectValueByNames)
     * [.treeFind(objectArr, match, childrenKey, findAll, depthFirst)](#ObjectOBJ.treeFind) ⇒ <code>array</code> \| <code>null</code>
     * [.treeEach(objectArr, eachFunc, childrenKey, depthFirst)](#ObjectOBJ.treeEach) ⇒ <code>Object</code>
-    * [.pathEach(object, eachFunc)](#ObjectOBJ.pathEach)
+    * [.pathEach(object, eachFunc, [checkCycle])](#ObjectOBJ.pathEach)
 
 <a name="ObjectOBJ.isEmptyObject"></a>
 
@@ -568,7 +568,7 @@ ArrayBuffer to Buffer
 
 <a name="ObjectOBJ.pathEach"></a>
 
-### ObjectOBJ.pathEach(object, eachFunc)
+### ObjectOBJ.pathEach(object, eachFunc, [checkCycle])
 遍历对象每一个元素，可以获取对象键名组成的 path  (["c","d","e"])处理函数：eachFunc(当前元素, 当前 path, 当层深度 )pathEach( { b:111, c:{d:{e:222}}})
 
 **Kind**: static method of [<code>ObjectOBJ</code>](#ObjectOBJ)  
@@ -577,6 +577,7 @@ ArrayBuffer to Buffer
 | --- | --- | --- |
 | object | <code>object</code> |  |
 | eachFunc | <code>function</code> | 处理函数 |
+| [checkCycle] | <code>boolean</code> | 是否检查循环引用 |
 
 <a name="StringSTR"></a>
 

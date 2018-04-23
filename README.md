@@ -190,18 +190,13 @@ XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 <a name="Tool.genUUID_v4"></a>
 
 ### Tool.genUUID_v4() ⇒ <code>string</code>
-生成一个随机的 UUID
-
-genUUID_v4() => 'f8061fba-842b-4cc5-9872-9348e2e06916'
+生成一个随机的 UUIDgenUUID_v4() => 'f8061fba-842b-4cc5-9872-9348e2e06916'
 
 **Kind**: static method of [<code>Tool</code>](#Tool)  
 <a name="Tool.genUUID_v5"></a>
 
 ### Tool.genUUID_v5(name, [namespace]) ⇒ <code>\*</code>
-根据一个名字和命名空间生成一个 UUID，这个 UUID 与名称+命名空间有一一对应，不随机
-（与标准不同，这里命名空间可不用 UUID 而是任何字符串，我们会用默认 UUID 和给命名空间生成一个 UUID）
-
-genUUID_v5("Gasoft_Mobiusbug.exe","BGLL") => '2cb20c42-026f-5d56-b33f-008e354ac8d3'
+根据一个名字和命名空间生成一个 UUID，这个 UUID 与名称+命名空间有一一对应，不随机（与标准不同，这里命名空间可不用 UUID 而是任何字符串，我们会用默认 UUID 和给命名空间生成一个 UUID）genUUID_v5("Gasoft_Mobiusbug.exe","BGLL") => '2cb20c42-026f-5d56-b33f-008e354ac8d3'
 
 **Kind**: static method of [<code>Tool</code>](#Tool)  
 
@@ -213,9 +208,7 @@ genUUID_v5("Gasoft_Mobiusbug.exe","BGLL") => '2cb20c42-026f-5d56-b33f-008e354ac8
 <a name="Tool.genSHA1"></a>
 
 ### Tool.genSHA1(str) ⇒ <code>\*</code>
-用 sha1 生成一个字符串
-
-genSHA1("nullice") => 51918a176c8e2b0af211a94c5478c58a54f239cd
+用 sha1 生成一个字符串genSHA1("nullice") => 51918a176c8e2b0af211a94c5478c58a54f239cd
 
 **Kind**: static method of [<code>Tool</code>](#Tool)  
 
@@ -226,9 +219,7 @@ genSHA1("nullice") => 51918a176c8e2b0af211a94c5478c58a54f239cd
 <a name="Tool.formatUUID"></a>
 
 ### Tool.formatUUID(str) ⇒ <code>string</code>
-把36位字符串转换成带横杠 UUID 的格式
-
-formatUUID("e9411a6f1a2e22dd2244b78ee491c616") => "e9411a6f1a2e22dd2244b78ee491c616"
+把36位字符串转换成带横杠 UUID 的格式formatUUID("e9411a6f1a2e22dd2244b78ee491c616") => "e9411a6f1a2e22dd2244b78ee491c616"
 
 **Kind**: static method of [<code>Tool</code>](#Tool)  
 
@@ -280,13 +271,7 @@ formatUUID("e9411a6f1a2e22dd2244b78ee491c616") => "e9411a6f1a2e22dd2244b78ee491c
 <a name="NodeFile.getTempDirManager"></a>
 
 ### NodeFile.getTempDirManager(name) ⇒ <code>\*</code>
-生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹，和一个实例临时文件夹
-可以用得到的 TempDirManager，申请临时文件名，和销毁临时文件夹
-
-var tepmDM = getTempDirManager("siphonink")
-tepmDM.genTempFilePath(subDir) - 申请一个临时文件路径,可用提供一个子文件夹名
-tepmDM.destroy() - 销毁临时目录
-tepmDM.clear(day) - 清除 day 天前的实例临时文件夹
+生成一个临时文件夹管理器，会在系统临时目录中创建一个指定名字的临时文件夹，和一个实例临时文件夹可以用得到的 TempDirManager，申请临时文件名，和销毁临时文件夹var tepmDM = getTempDirManager("siphonink")tepmDM.genTempFilePath(subDir) - 申请一个临时文件路径,可用提供一个子文件夹名tepmDM.destroy() - 销毁临时目录tepmDM.clear(day) - 清除 day 天前的实例临时文件夹
 
 **Kind**: static method of [<code>NodeFile</code>](#NodeFile)  
 
@@ -537,9 +522,7 @@ Node 通用工具
 <a name="NodeTool.getMD5"></a>
 
 ### NodeTool.getMD5(inData) ⇒ <code>\*</code> \| <code>PromiseLike.&lt;ArrayBuffer&gt;</code>
-获取数据的 MD5 值
-
-getMD5("白色的空曲奇在发热") => 3b81233f69cc6dbf83899148b888f0db
+获取数据的 MD5 值getMD5("白色的空曲奇在发热") => 3b81233f69cc6dbf83899148b888f0db
 
 **Kind**: static method of [<code>NodeTool</code>](#NodeTool)  
 
@@ -550,9 +533,7 @@ getMD5("白色的空曲奇在发热") => 3b81233f69cc6dbf83899148b888f0db
 <a name="NodeTool.getSHA256"></a>
 
 ### NodeTool.getSHA256(inData) ⇒ <code>\*</code> \| <code>PromiseLike.&lt;ArrayBuffer&gt;</code>
-获取数据的 getSHA256 值
-
-getSHA256("白色的空曲奇在发热") => 5be124e39cb90f3144fba1a798ab3a8472c24a44c0f9efc305f76c1e34de848f
+获取数据的 getSHA256 值getSHA256("白色的空曲奇在发热") => 5be124e39cb90f3144fba1a798ab3a8472c24a44c0f9efc305f76c1e34de848f
 
 **Kind**: static method of [<code>NodeTool</code>](#NodeTool)  
 
@@ -580,10 +561,7 @@ ArrayBuffer to Buffer
 <a name="ConsoleCON.CSS_POST"></a>
 
 ### ConsoleCON.CSS_POST
-控制台颜色
-
-用法：
-  console.log("%c test", CSS_POST)
+控制台颜色用法：  console.log("%c test", CSS_POST)
 
 **Kind**: static property of [<code>ConsoleCON</code>](#ConsoleCON)  
 <a name="ObjectOBJ"></a>
@@ -599,7 +577,7 @@ ArrayBuffer to Buffer
     * [.setObjectValueByNames(object, names, value)](#ObjectOBJ.setObjectValueByNames)
     * [.treeFind(objectArr, match, childrenKey, findAll, depthFirst)](#ObjectOBJ.treeFind) ⇒ <code>array</code> \| <code>null</code>
     * [.treeEach(objectArr, eachFunc, childrenKey, depthFirst)](#ObjectOBJ.treeEach) ⇒ <code>Object</code>
-    * [.pathEach(object, eachFunc)](#ObjectOBJ.pathEach)
+    * [.pathEach(object, eachFunc, [checkCycle])](#ObjectOBJ.pathEach)
 
 <a name="ObjectOBJ.isEmptyObject"></a>
 
@@ -644,14 +622,7 @@ ArrayBuffer to Buffer
 <a name="ObjectOBJ.treeFind"></a>
 
 ### ObjectOBJ.treeFind(objectArr, match, childrenKey, findAll, depthFirst) ⇒ <code>array</code> \| <code>null</code>
-在由对象数组组成的树中查找对象。如果查找全部结果会以数组返回，否则直接返回找到的对象。
-
-tree =
-[
-  {id: 1, children: [{id: 4}]},
-  {id: 2},
-]
-findTree (tree, 4, "children", false, false) => {id: 4}
+在由对象数组组成的树中查找对象。如果查找全部结果会以数组返回，否则直接返回找到的对象。tree =[  {id: 1, children: [{id: 4}]},  {id: 2},]findTree (tree, 4, "children", false, false) => {id: 4}
 
 **Kind**: static method of [<code>ObjectOBJ</code>](#ObjectOBJ)  
 
@@ -666,18 +637,7 @@ findTree (tree, 4, "children", false, false) => {id: 4}
 <a name="ObjectOBJ.treeEach"></a>
 
 ### ObjectOBJ.treeEach(objectArr, eachFunc, childrenKey, depthFirst) ⇒ <code>Object</code>
-在由对象数组组成的树中遍历处理树的每个节点。
-
-处理函数：
-eachFunc(单个对象, 遍历深度, 当层深度节点计数, 总节点计数, 当前子树, 当前子树位置)
-在 eachFunc 中 return true 可以提前终止遍历。
-当前子树[当前子树位置+1] 可获取下一个节点。
-返回树的信息：
-{
-     struct:[4,2,5], // 每层节点数
-     deep:3,         // 树深度
-     total: 11       // 总节点数
-}
+在由对象数组组成的树中遍历处理树的每个节点。处理函数：eachFunc(单个对象, 遍历深度, 当层深度节点计数, 总节点计数, 当前子树, 当前子树位置)在 eachFunc 中 return true 可以提前终止遍历。当前子树[当前子树位置+1] 可获取下一个节点。返回树的信息：{     struct:[4,2,5], // 每层节点数     deep:3,         // 树深度     total: 11       // 总节点数}
 
 **Kind**: static method of [<code>ObjectOBJ</code>](#ObjectOBJ)  
 
@@ -690,16 +650,8 @@ eachFunc(单个对象, 遍历深度, 当层深度节点计数, 总节点计数, 
 
 <a name="ObjectOBJ.pathEach"></a>
 
-### ObjectOBJ.pathEach(object, eachFunc)
-遍历对象每一个元素，可以获取对象键名组成的 path  (["c","d","e"])
-
-处理函数：
-eachFunc(当前元素, 当前 path, 当层深度 )
-
-pathEach( {
- b:111,
- c:{d:{e:222}}
-})
+### ObjectOBJ.pathEach(object, eachFunc, [checkCycle])
+遍历对象每一个元素，可以获取对象键名组成的 path  (["c","d","e"])处理函数：eachFunc(当前元素, 当前 path, 当层深度 )pathEach( { b:111, c:{d:{e:222}}})
 
 **Kind**: static method of [<code>ObjectOBJ</code>](#ObjectOBJ)  
 
@@ -707,6 +659,7 @@ pathEach( {
 | --- | --- | --- |
 | object | <code>object</code> |  |
 | eachFunc | <code>function</code> | 处理函数 |
+| [checkCycle] | <code>boolean</code> | 是否检查循环引用 |
 
 <a name="StringSTR"></a>
 
@@ -723,8 +676,7 @@ pathEach( {
 <a name="StringSTR.left"></a>
 
 ### StringSTR.left(str, offset) ⇒ <code>\*</code>
-取字符串左边
-****依赖 stringSTR.right()***
+取字符串左边****依赖 stringSTR.right()***
 
 **Kind**: static method of [<code>StringSTR</code>](#StringSTR)  
 
@@ -736,8 +688,7 @@ pathEach( {
 <a name="StringSTR.right"></a>
 
 ### StringSTR.right(str, offset) ⇒ <code>\*</code>
-取字符串右边。
-****依赖 stringSTR.left()***
+取字符串右边。****依赖 stringSTR.left()***
 
 **Kind**: static method of [<code>StringSTR</code>](#StringSTR)  
 
@@ -778,8 +729,7 @@ pathEach( {
 <a name="Rect.rltb2xywh"></a>
 
 ### Rect.rltb2xywh(boundsInfo) ⇒ <code>Object</code>
-坐标转换
-把 {right, left, top, bottom} 转化为 {x, y , w, h}
+坐标转换把 {right, left, top, bottom} 转化为 {x, y , w, h}
 
 **Kind**: static method of [<code>Rect</code>](#Rect)  
 
@@ -790,8 +740,7 @@ pathEach( {
 <a name="Rect.xywh2rltb"></a>
 
 ### Rect.xywh2rltb(boundsInfo) ⇒ <code>Object</code>
-坐标转换
-把 {x, y , w, h} 转化为 {right, left, top, bottom}
+坐标转换把 {x, y , w, h} 转化为 {right, left, top, bottom}
 
 **Kind**: static method of [<code>Rect</code>](#Rect)  
 
@@ -802,10 +751,7 @@ pathEach( {
 <a name="Rect.paddingXywh"></a>
 
 ### Rect.paddingXywh(xywh, padding) ⇒ <code>Object</code>
-给 xywh 添加内边距
-
-paddingXywh(xywh, 5)
-paddingXywh(xywh, [3,4,5,10])
+给 xywh 添加内边距paddingXywh(xywh, 5)paddingXywh(xywh, [3,4,5,10])
 
 **Kind**: static method of [<code>Rect</code>](#Rect)  
 
@@ -817,9 +763,7 @@ paddingXywh(xywh, [3,4,5,10])
 <a name="Rect.getXywhsRange"></a>
 
 ### Rect.getXywhsRange(xywhs) ⇒ <code>Object</code>
-计算多个 xywh 矩形的边界
-
-getXywhsRange([xywh])
+计算多个 xywh 矩形的边界getXywhsRange([xywh])
 
 **Kind**: static method of [<code>Rect</code>](#Rect)  
 
@@ -830,8 +774,7 @@ getXywhsRange([xywh])
 <a name="Rect.moveXywhs"></a>
 
 ### Rect.moveXywhs(xywhs, xy)
-整体移动多个 xywh 到某点，保留原 xywhs 相对位置。
-会改变 xywhs 里每个 xywh 对象的 x，y 值。
+整体移动多个 xywh 到某点，保留原 xywhs 相对位置。会改变 xywhs 里每个 xywh 对象的 x，y 值。
 
 **Kind**: static method of [<code>Rect</code>](#Rect)  
 
@@ -891,9 +834,7 @@ getXywhsRange([xywh])
 <a name="AarryArr.symDifference"></a>
 
 ### AarryArr.symDifference(a, b) ⇒ <code>Array</code>
-对称差。（不支持对象数组）
-
-a:[1,2,3] b:[1,2,4]  a△b => [3,4]
+对称差。（不支持对象数组）a:[1,2,3] b:[1,2,4]  a△b => [3,4]
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 
@@ -905,8 +846,7 @@ a:[1,2,3] b:[1,2,4]  a△b => [3,4]
 <a name="AarryArr.symDifference_ObjectArray"></a>
 
 ### AarryArr.symDifference_ObjectArray(a, b, key) ⇒ <code>Array</code>
-对称差。对象数组。
- a:[{key:1}, {key:2}]  b:[{key:2}, {key:3}]  a△b => [{key:1},{key:3}]
+对称差。对象数组。 a:[{key:1}, {key:2}]  b:[{key:2}, {key:3}]  a△b => [{key:1},{key:3}]
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 
@@ -919,8 +859,7 @@ a:[1,2,3] b:[1,2,4]  a△b => [3,4]
 <a name="AarryArr.difference"></a>
 
 ### AarryArr.difference(a, b) ⇒ <code>Array</code>
-差集。（不支持对象数组）
-a:[1,2,3] b:[1,2,4]   a-b => [3]
+差集。（不支持对象数组）a:[1,2,3] b:[1,2,4]   a-b => [3]
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 
@@ -932,8 +871,7 @@ a:[1,2,3] b:[1,2,4]   a-b => [3]
 <a name="AarryArr.union"></a>
 
 ### AarryArr.union(a, b) ⇒ <code>Array</code>
-并集。（不支持对象数组）
-a:[1,2,3] b:[1,2,4]   a∪b => [1,2,3,4]
+并集。（不支持对象数组）a:[1,2,3] b:[1,2,4]   a∪b => [1,2,3,4]
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 
@@ -945,8 +883,7 @@ a:[1,2,3] b:[1,2,4]   a∪b => [1,2,3,4]
 <a name="AarryArr.intersection"></a>
 
 ### AarryArr.intersection() ⇒ <code>Array</code>
-交集。（不支持对象数组）
-a:[1,2,3] b:[1,2,4]   a∩b => [1,2]
+交集。（不支持对象数组）a:[1,2,3] b:[1,2,4]   a∩b => [1,2]
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 <a name="AarryArr.remove"></a>
@@ -965,8 +902,7 @@ a:[1,2,3] b:[1,2,4]   a∩b => [1,2]
 <a name="AarryArr.hasMember"></a>
 
 ### AarryArr.hasMember(arr, memberValue, equalFunc) ⇒ <code>boolean</code>
-数组是否拥有指定成员
-arr:["A","B","C"] => hasMember(arr, "C") => true
+数组是否拥有指定成员arr:["A","B","C"] => hasMember(arr, "C") => true
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 
@@ -979,9 +915,7 @@ arr:["A","B","C"] => hasMember(arr, "C") => true
 <a name="AarryArr.getByKey"></a>
 
 ### AarryArr.getByKey(objectArr, key, keyValue, equalRule) ⇒ <code>\*</code>
-对象数组查找
-从对象数组中提取出一个对象，根据对象的一个属性值。
-arr: [{name:a},{name:b}] getByKey(arr,"name","b") => return {name:b}
+对象数组查找从对象数组中提取出一个对象，根据对象的一个属性值。arr: [{name:a},{name:b}] getByKey(arr,"name","b") => return {name:b}
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 
@@ -995,9 +929,7 @@ arr: [{name:a},{name:b}] getByKey(arr,"name","b") => return {name:b}
 <a name="AarryArr.deleteByKey"></a>
 
 ### AarryArr.deleteByKey(objectArr, key, keyValue, equalRule) ⇒ <code>\*</code>
-对象数组删除
-从对象数组中找到出一个对象元素，并删除这个元素。
-arr: [{name:a},{name:b}] deleteByKey(arr,"name","b") => arr: [{name:a}]
+对象数组删除从对象数组中找到出一个对象元素，并删除这个元素。arr: [{name:a},{name:b}] deleteByKey(arr,"name","b") => arr: [{name:a}]
 
 **Kind**: static method of [<code>AarryArr</code>](#AarryArr)  
 
