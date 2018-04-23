@@ -2,9 +2,7 @@ language: node_js
 node_js:
   - "8"
 before_script:
-     - npm run build
-     - npm run build-node-bundle
-     - npm run build-min
+     - npm run build-all
 after_script:
      - npm run test-coveralls
 

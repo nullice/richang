@@ -7,6 +7,7 @@ import Console from "./modules/Console.js"
 import Tool from "./modules/Tool.js"
 import Calc from "./modules/Calc.js"
 import File from "./modules/File.js"
+import Url from "./modules/Url.js"
 
 const Richang = {
     Object,
@@ -18,13 +19,12 @@ const Richang = {
     Tool,
     File,
     Calc,
+    Url
 }
 
 
 
-/**
- * @export Richang
- */
+
 export {
     Object,
     String,
@@ -35,6 +35,9 @@ export {
     Tool,
     File,
     Calc,
+    Url
 }
-
+/**
+ * @export Richang
+ */
 export default  Richang

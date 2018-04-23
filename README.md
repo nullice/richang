@@ -1,9 +1,15 @@
 
 # Richang.js
 
+[![npm](https://img.shields.io/badge/By%80%80nullice-2017~2018-51cc5d.svg)](https://nullice.com)
+[![GitHub package version](https://img.shields.io/github/package-json/v/nullice/Richang.js.svg)](https://github.com/nullice/Richang.js)
+[![npm](https://img.shields.io/npm/v/richang.js.svg)](https://npmjs.com/package/richang.js)
+
+[![npm](https://img.shields.io/npm/dt/richang.js.svg)]()
 [![Coverage Status](https://coveralls.io/repos/github/nullice/Richang.js/badge.svg?branch=master)](https://coveralls.io/github/nullice/Richang.js?branch=master)
 [![Build Status](https://travis-ci.org/nullice/Richang.js.svg?branch=master)](https://travis-ci.org/nullice/Richang.js)
-
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)
+](./LICENSE)
 
 ``` js
 //      ___                       ___           ___           ___           ___           ___

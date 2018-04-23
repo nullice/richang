@@ -6,12 +6,13 @@ require("babel-polyfill")
 
 
 test('require (RichangNode)', () => {
-    var RichangEs = require("../../dist/RichangNode.js")
-    expect(typeof RichangEs.Type).toBe("object");
-    expect(typeof RichangEs.Array).toBe("object");
-    expect(typeof RichangEs.NodeTool).toBe("object");
-    expect( RichangEs.Tool.checkUUID(RichangEs.Tool.genUUID_v4())).toBe(4);
-    expect(RichangEs.Type.getType(10)).toBe("number");
+    var RichangNode = require("../../dist/RichangNode.js")
+    console.log(RichangNode)
+    expect(typeof RichangNode.Type).toBe("object");
+    expect(typeof RichangNode.Array).toBe("object");
+    expect(typeof RichangNode.NodeTool).toBe("object");
+    expect( RichangNode.Tool.checkUUID(RichangNode.Tool.genUUID_v4())).toBe(4);
+    expect(RichangNode.Type.getType(10)).toBe("number");
 });
 
 
@@ -69,3 +70,17 @@ test('import Richang', () => {
     expect( RichangEs2.Tool.checkUUID(RichangEs2.Tool.genUUID_v4())).toBe(4);
     expect(RichangEs2.Type.getType(10)).toBe("number");
 });
+
+
+
+import  { Type as rcType}  from  "../../dist/Richang"
+test('import  {export as alias} from Richang ', () => {
+    expect(rcType.getType("ssss")).toBe("string");
+});
+
+
+import  { Type as rcTypeEs}  from  "../../dist/RichangEs"
+test('import  {export as alias} from RichangEs ', () => {
+    expect(rcTypeEs.getType("ssss")).toBe("string");
+});
+
