@@ -1,7 +1,7 @@
 
 # Richang.js
 
-[![npm](https://img.shields.io/badge/By%80%80nullice-2017~2018-51cc5d.svg)](https://nullice.com)
+[![npm](https://img.shields.io/badge/By%20%20nullice-2016~2018-51cc5d.svg)](https://nullice.com)
 [![GitHub package version](https://img.shields.io/github/package-json/v/nullice/Richang.js.svg)](https://github.com/nullice/Richang.js)
 [![npm](https://img.shields.io/npm/v/richang.js.svg)](https://npmjs.com/package/richang.js)
 
