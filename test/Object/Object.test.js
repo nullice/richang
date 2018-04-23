@@ -5971,6 +5971,7 @@ test("Object.treeEach 返回树信息 struct conut 验证", () =>
 test("Object.pathEach 遍历对象", () =>
 {
 
+    let count = 0
     let ob = {
         a: 1,
         b: 2,
@@ -5991,9 +5992,43 @@ test("Object.pathEach 遍历对象", () =>
     }
     var re = rcObject.pathEach(ob, (item, path, deep) =>
     {
-
+        count++
         var value = rcObject.getObjectValueByNames(ob, path)
         expect(value).toEqual(item)
-    })
 
+    })
+    expect(count).toEqual(21)
+
+})
+
+test("Object.pathEach cycle  遍历循环引用对象", () =>
+{
+    let count = 0
+    let ob = {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: {
+            d1: 11,
+            d2: 22,
+            d3: 33,
+            e: {
+                e1: {},
+                e2: {
+                    d: {k: 123},
+                },
+            },
+            array: [1, 2, 33, 55, "123", {s1: 123, s2: 124}],
+
+        },
+    }
+
+    ob.cycle = ob
+    var re = rcObject.pathEach(ob, (item, path, deep) =>
+    {
+        count++
+        var value = rcObject.getObjectValueByNames(ob, path)
+        expect(value).toEqual(item)
+    }, true)
+    expect(count).toEqual(21)
 })

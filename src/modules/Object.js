@@ -409,9 +409,17 @@ var ObjectOBJ = {
      *
      * @param {object} object
      * @param {function} eachFunc 处理函数
+     * @param {boolean} [checkCycle] 是否检查循环引用
      */
-    pathEach (object, eachFunc)
+    pathEach (object, eachFunc, checkCycle = false)
     {
+
+        if (checkCycle)
+        {
+            var cycleCache = new WeakMap()
+            cycleCache.set(object, true)
+        }
+
         _each(object, [], 0)
 
         function _each (object, path = [], deep = 0)
@@ -419,6 +427,19 @@ var ObjectOBJ = {
             for (var key in object)
             {
                 var item = object[key]
+
+                // 检查循环引用
+                if (checkCycle && typeof item === "object")
+                {
+                    if (cycleCache.get(item))
+                    {
+                        continue // >_< 忽略循环引用
+                    } else
+                    {
+                        cycleCache.set(item, true)
+                    }
+                }
+
                 var nowPath = [...path, key]
                 eachFunc(item, nowPath, deep)
 
