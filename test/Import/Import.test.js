@@ -7,7 +7,6 @@ require("babel-polyfill")
 
 test('require (RichangNode)', () => {
     var RichangNode = require("../../dist/RichangNode.js")
-    console.log(RichangNode)
     expect(typeof RichangNode.Type).toBe("object");
     expect(typeof RichangNode.Array).toBe("object");
     expect(typeof RichangNode.NodeTool).toBe("object");

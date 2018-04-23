@@ -411,7 +411,7 @@ var ObjectOBJ = {
      * @param {function} eachFunc 处理函数
      * @param {boolean} [checkCycle] 是否检查循环引用
      */
-    pathEach (object, eachFunc, checkCycle = false)
+    pathEach (object, eachFunc, checkCycle)
     {
 
         if (checkCycle)

@@ -13,7 +13,7 @@ declare var ObjectOBJ: {
         deep: number;
         total: number;
     };
-    pathEach: (object: any, eachFunc: any) => void;
+    pathEach: (object: any, eachFunc: any, checkCycle: any) => void;
 };
 /**
  * Created by bgllj on 2016/9/8.
@@ -132,7 +132,7 @@ declare var Richang: {
             deep: number;
             total: number;
         };
-        pathEach: (object: any, eachFunc: any) => void;
+        pathEach: (object: any, eachFunc: any, checkCycle: any) => void;
     };
     String: {
         left: (str: any, offset: any) => any;

@@ -358,9 +358,7 @@ var ObjectOBJ = {
      * @param {function} eachFunc 处理函数
      * @param {boolean} [checkCycle] 是否检查循环引用
      */
-    pathEach: function pathEach(object, eachFunc) {
-        var checkCycle = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
+    pathEach: function pathEach(object, eachFunc, checkCycle) {
 
         if (checkCycle) {
             var cycleCache = new WeakMap();
