@@ -659,7 +659,7 @@ ArrayBuffer to Buffer
 | --- | --- | --- |
 | object | <code>object</code> |  |
 | eachFunc | <code>function</code> | 处理函数 |
-| [checkCycle] | <code>boolean</code> | 是否检查循环引用 |
+| [checkCycle] | <code>boolean</code> \| <code>function</code> | 是否检查循环引用，为 true 会跳过循环引用，还可以提供一个函数 checkCycleCallback(target,path) 来处理一些事 |
 
 <a name="StringSTR"></a>
 

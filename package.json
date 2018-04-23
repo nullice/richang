@@ -1,6 +1,6 @@
 {
   "name": "richang.js",
-  "version": "4.1.1",
+  "version": "4.3.0",
   "description": "richang js code.",
   "main": "dist/Richang.js",
   "module": "dist/RichangEs.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "test": "jest",
     "test-coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "build-and-publish": "npm run build  && npm run build-min && npm run build-node-bundle && npm run doc && npm run publish",
+    "build-and-publish": "npm run build-all && windows-gen-d.ts && npm run doc && npm run publish",
     "publish": "npm publish --registry=https://registry.npmjs.org/ --disturl=/",
     "watch": "rollup -c -w",
     "build": "rollup -c",
