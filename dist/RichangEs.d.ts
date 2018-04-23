@@ -115,6 +115,11 @@ declare var Calc: {};
 declare var FileFIL: {
     filterFileName: (name: any, fix: any) => any;
 };
+declare var Url: {
+    removeQuery: (url: any) => any;
+    getQuery: (url: any, getObject: any) => any;
+    urlParse: () => void;
+};
 declare var Richang: {
     Object: {
         isEmptyObject: (obj: any) => boolean;
@@ -194,6 +199,11 @@ declare var Richang: {
         filterFileName: (name: any, fix: any) => any;
     };
     Calc: {};
+    Url: {
+        removeQuery: (url: any) => any;
+        getQuery: (url: any, getObject: any) => any;
+        urlParse: () => void;
+    };
 };
 export default Richang;
-export { ObjectOBJ as Object, StringSTR as String, TypeTYP as Type, AarryArr as Array, Rect, ConsoleCON as Console, Tool, FileFIL as File, Calc };
+export { ObjectOBJ as Object, StringSTR as String, TypeTYP as Type, AarryArr as Array, Rect, ConsoleCON as Console, Tool, FileFIL as File, Calc, Url };
