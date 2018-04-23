@@ -6033,13 +6033,14 @@ test("Object.pathEach cycle  遍历循环引用对象", () =>
         expect(value).toEqual(item)
     }, true)
 
-
     // 循环引用时的回调
     let countycle = 0
+
     function checkCycleCallback (target, path)
     {
         countycle++
     }
+
     var re = rcObject.pathEach(ob, (item, path, deep) =>
     {
         var value = rcObject.getObjectValueByNames(ob, path)
@@ -6047,4 +6048,44 @@ test("Object.pathEach cycle  遍历循环引用对象", () =>
     }, checkCycleCallback)
 
     expect(countycle).toEqual(1)
+})
+
+test("Object.pathEach cycle 遍历循环引用对象回调", () =>
+{
+    let count = 0
+
+    let ob = {
+        a: 123,
+        b: 234,
+        c: {
+            name: "c",
+            d: {
+                name: "d",
+            },
+        },
+    }
+
+    ob.c.d.toC = ob.c.d
+    ob.cycle = ob
+
+    // 循环引用时的回调
+    let countycle = 0
+
+    function checkCycleCallback (target, path, cyclePath)
+    {
+        // console.log("cc:", path, cyclePath, target)
+        var to1 = rcObject.getObjectValueByNames(ob, path)
+        var to2 = cyclePath.length == 0 ? ob : rcObject.getObjectValueByNames(ob, cyclePath)
+        expect(to1).toBe(to2)
+
+        countycle++
+    }
+
+    var re = rcObject.pathEach(ob, (item, path, deep) =>
+    {
+        var value = rcObject.getObjectValueByNames(ob, path)
+        expect(value).toEqual(item)
+    }, checkCycleCallback)
+
+    expect(countycle).toEqual(2)
 })
