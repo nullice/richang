@@ -372,14 +372,16 @@ var ObjectOBJ = {
 
                 // 检查循环引用
                 if (checkCycle && (typeof item === "undefined" ? "undefined" : _typeof(item)) === "object") {
+                    var nowPath = [].concat(toConsumableArray(path), [key]);
+
                     if (cycleCache.get(item)) {
                         if (useCycleCallback) {
-                            checkCycle(item, path, cycleCache.get(item));
+                            checkCycle(item, nowPath, cycleCache.get(item));
                         }
                         continue; // >_< 忽略循环引用
                     } else {
                         if (useCycleCallback) {
-                            cycleCache.set(item, [].concat(toConsumableArray(path), [key]));
+                            cycleCache.set(item, nowPath);
                         } else {
                             cycleCache.set(item, true);
                         }
