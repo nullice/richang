@@ -409,13 +409,14 @@ var ObjectOBJ = {
      *
      * @param {object} object
      * @param {function} eachFunc 处理函数
-     * @param {boolean} [checkCycle] 是否检查循环引用
+     * @param {boolean|function} [checkCycle] 是否检查循环引用，为 true 会跳过循环引用，还可以提供一个函数 checkCycleCallback(target,path) 来处理一些事
      */
     pathEach (object, eachFunc, checkCycle)
     {
 
         if (checkCycle)
         {
+            var useCycleCallback = typeof checkCycle === "function"
             var cycleCache = new WeakMap()
             cycleCache.set(object, true)
         }
@@ -433,6 +434,10 @@ var ObjectOBJ = {
                 {
                     if (cycleCache.get(item))
                     {
+                        if (useCycleCallback)
+                        {
+                            checkCycle(item, [...path, key])
+                        }
                         continue // >_< 忽略循环引用
                     } else
                     {

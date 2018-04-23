@@ -6004,6 +6004,7 @@ test("Object.pathEach 遍历对象", () =>
 test("Object.pathEach cycle  遍历循环引用对象", () =>
 {
     let count = 0
+
     let ob = {
         a: 1,
         b: 2,
@@ -6024,11 +6025,26 @@ test("Object.pathEach cycle  遍历循环引用对象", () =>
     }
 
     ob.cycle = ob
+
     var re = rcObject.pathEach(ob, (item, path, deep) =>
     {
         count++
         var value = rcObject.getObjectValueByNames(ob, path)
         expect(value).toEqual(item)
     }, true)
-    expect(count).toEqual(21)
+
+
+    // 循环引用时的回调
+    let countycle = 0
+    function checkCycleCallback (target, path)
+    {
+        countycle++
+    }
+    var re = rcObject.pathEach(ob, (item, path, deep) =>
+    {
+        var value = rcObject.getObjectValueByNames(ob, path)
+        expect(value).toEqual(item)
+    }, checkCycleCallback)
+
+    expect(countycle).toEqual(1)
 })
