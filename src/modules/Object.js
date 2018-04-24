@@ -121,9 +121,10 @@ var ObjectOBJ = {
         {
             if (i == 0)
             {
-                if (object[names[i]] != undefined)
+                var item = object[names[i]]
+                if (item != undefined)
                 {
-                    nowValue = object[names[i]]
+                    nowValue = item
                 } else
                 {
                     return undefined
@@ -131,10 +132,10 @@ var ObjectOBJ = {
 
             } else
             {
-
-                if (nowValue[names[i]] != undefined)
+                var item = nowValue[names[i]]
+                if (item != undefined)
                 {
-                    nowValue = nowValue[names[i]]
+                    nowValue = item
                 }
                 else
                 {
@@ -158,9 +159,10 @@ var ObjectOBJ = {
     {
         var nowObject
 
+        var item = object[names[0]]
         if (names.length == 1)
         {
-            object[names[0]] = value
+            item = value
             return
         }
 
@@ -168,30 +170,31 @@ var ObjectOBJ = {
         {
             if (i == 0 && names.length > 2)
             {
-                if (object[names[0]] == undefined)
+                if (item == undefined)
                 {
-                    object[names[0]] = {}
+                    item = {}
                 }
-                nowObject = object[names[0]]
+                nowObject = item
             }
             else if (i < names.length - 2 && names.length > 2)
             {
-                if (nowObject[names[i]] == undefined)
+                var item2 = nowObject[names[i]]
+                if (item2 == undefined)
                 {
-                    nowObject[names[i]] = {}
+                    item2 = {}
                 }
 
-                nowObject = nowObject[names[i]]
+                nowObject = item2
             }
             else if (i == names.length - 2)
             {
                 if (names.length == 2)
                 {
-                    if (object[names[0]] == undefined)
+                    if (item == undefined)
                     {
-                        object[names[0]] = {}
+                        item = {}
                     }
-                    nowObject = object[names[0]]
+                    nowObject = item
 
                     nowObject[names[1]] = value
                     return
@@ -200,12 +203,12 @@ var ObjectOBJ = {
                 else
                 {
 
-                    if (nowObject[names[i]] == undefined)
+                    if (item2 == undefined)
                     {
-                        nowObject[names[i]] = {}
+                        item2 = {}
                     }
 
-                    nowObject = nowObject[names[i]]
+                    nowObject = item2
                     nowObject[names[i + 1]] = value
                     return
                 }
