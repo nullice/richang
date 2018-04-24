@@ -126,15 +126,16 @@ var ObjectOBJ = {
         var nowValue;
         for (var i = 0; i < names.length - (aheadEndTime || 0); i++) {
             if (i == 0) {
-                if (object[names[i]] != undefined) {
-                    nowValue = object[names[i]];
+                var item = object[names[i]];
+                if (item != undefined) {
+                    nowValue = item;
                 } else {
                     return undefined;
                 }
             } else {
-
-                if (nowValue[names[i]] != undefined) {
-                    nowValue = nowValue[names[i]];
+                var item = nowValue[names[i]];
+                if (item != undefined) {
+                    nowValue = item;
                 } else {
                     return undefined;
                 }
@@ -153,39 +154,41 @@ var ObjectOBJ = {
     setObjectValueByNames: function setObjectValueByNames(object, names, value) {
         var nowObject;
 
+        var item = object[names[0]];
         if (names.length == 1) {
-            object[names[0]] = value;
+            item = value;
             return;
         }
 
         for (var i = 0; i < names.length; i++) {
             if (i == 0 && names.length > 2) {
-                if (object[names[0]] == undefined) {
-                    object[names[0]] = {};
+                if (item == undefined) {
+                    item = {};
                 }
-                nowObject = object[names[0]];
+                nowObject = item;
             } else if (i < names.length - 2 && names.length > 2) {
-                if (nowObject[names[i]] == undefined) {
-                    nowObject[names[i]] = {};
+                var item2 = nowObject[names[i]];
+                if (item2 == undefined) {
+                    item2 = {};
                 }
 
-                nowObject = nowObject[names[i]];
+                nowObject = item2;
             } else if (i == names.length - 2) {
                 if (names.length == 2) {
-                    if (object[names[0]] == undefined) {
-                        object[names[0]] = {};
+                    if (item == undefined) {
+                        item = {};
                     }
-                    nowObject = object[names[0]];
+                    nowObject = item;
 
                     nowObject[names[1]] = value;
                     return;
                 } else {
 
-                    if (nowObject[names[i]] == undefined) {
-                        nowObject[names[i]] = {};
+                    if (item2 == undefined) {
+                        item2 = {};
                     }
 
-                    nowObject = nowObject[names[i]];
+                    nowObject = item2;
                     nowObject[names[i + 1]] = value;
                     return;
                 }
