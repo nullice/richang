@@ -1,6 +1,67 @@
 import rcObject from "../../src/modules/Object.js"
 import _ from "lodash"
 
+describe("Object.[set|get]ObjectValueByNames()", () =>
+{
+    var x = {
+        a: {
+            b: {
+                c: {
+                    d: {
+                        d1: 1232, d2: 222, d3: 444,
+                    },
+                },
+            },
+        },
+        a22: 123,
+    }
+
+    test("raw get", () =>
+    {
+        expect(x.a.b.c.d.d1).toBe(1232)
+    })
+    test("getObjectValueByNames ", () =>
+    {
+        let re = rcObject.getObjectValueByNames(x, "a.b.c.d.d1".split("."))
+        expect(re).toBe(1232)
+    })
+    test("setObjectValueByNames", () =>
+    {
+        rcObject.setObjectValueByNames(x, "a.b.c.d.d1".split("."), 666)
+        expect(x.a.b.c.d.d1).toBe(666)
+
+        rcObject.setObjectValueByNames(x, "a2".split("."), "is_a2")
+        expect(x.a2).toBe("is_a2")
+
+        rcObject.setObjectValueByNames(x, "a.b2".split("."), "is_b2")
+        expect(x.a.b2).toBe("is_b2")
+
+        rcObject.setObjectValueByNames(x, "a.b.c2".split("."), "is_c2")
+        expect(x.a.b.c2).toBe("is_c2")
+
+
+        rcObject.setObjectValueByNames(x, "f.ff.fff".split("."), "fff")
+        expect(x.f.ff.fff).toBe("fff")
+    })
+
+    test("set & get ", () =>
+    {
+
+        var path = "a.b.c.d.d1".split(".")
+        rcObject.setObjectValueByNames(x, path, 212)
+        expect(rcObject.getObjectValueByNames(x, path)).toBe(212)
+
+        var path = "a.b.c3".split(".")
+        rcObject.setObjectValueByNames(x, path, 66)
+        expect(rcObject.getObjectValueByNames(x, path)).toBe(66)
+
+
+        var path = "a3".split(".")
+        rcObject.setObjectValueByNames(x, path, 2232)
+        expect(rcObject.getObjectValueByNames(x, path)).toBe(2232)
+    })
+})
+
 test("Object.isEmptyObject({}) === true （对象是否为空）", () =>
 {
     expect(rcObject.isEmptyObject({})).toBe(true)

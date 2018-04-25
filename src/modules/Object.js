@@ -141,11 +141,8 @@ var ObjectOBJ = {
                 {
                     return undefined
                 }
-
             }
-
         }
-
         return nowValue
     },
 
@@ -157,64 +154,40 @@ var ObjectOBJ = {
      */
     setObjectValueByNames: function (object, names, value)
     {
-        var nowObject
-
-        var item = object[names[0]]
-        if (names.length == 1)
+        const namesLen = names.length
+        if (namesLen == 1)
         {
-            item = value
+            object[names[0]] = value
             return
         }
 
-        for (var i = 0; i < (names.length); i++)
+        let nowObject = object
+        let nowKey = null
+        for (var i = 0; i < namesLen; i++)
         {
-            if (i == 0 && names.length > 2)
+            nowKey = names[i]
+
+            if (i == namesLen - 1)
             {
-                if (item == undefined)
-                {
-                    item = {}
-                }
-                nowObject = item
-            }
-            else if (i < names.length - 2 && names.length > 2)
+
+                nowObject[nowKey] = value
+                return
+            } else
             {
-                var item2 = nowObject[names[i]]
-                if (item2 == undefined)
+                // 如果路径上对象不存在则创建对象
+                if (!(nowKey in nowObject))
                 {
-                    item2 = {}
-                }
+                    nowObject[nowKey] = {}
+                    nowObject = nowObject[nowKey]
 
-                nowObject = item2
+                }else
+                {
+                    nowObject = nowObject[nowKey]
+                }
             }
-            else if (i == names.length - 2)
-            {
-                if (names.length == 2)
-                {
-                    if (item == undefined)
-                    {
-                        item = {}
-                    }
-                    nowObject = item
 
-                    nowObject[names[1]] = value
-                    return
-
-                }
-                else
-                {
-
-                    if (item2 == undefined)
-                    {
-                        item2 = {}
-                    }
-
-                    nowObject = item2
-                    nowObject[names[i + 1]] = value
-                    return
-                }
-
-            }
         }
+        return
     },
 
     /**
