@@ -12,6 +12,7 @@ import Tool from "./modules/Tool.js"
 import Calc from "./modules/Calc.js"
 import File from "./modules/File.js"
 import Url from "./modules/Url.js"
+import Cache from "./modules/Cache.js"
 
 var RichangNode = {
     Object,
@@ -24,6 +25,7 @@ var RichangNode = {
     File,
     Calc,
     Url,
+    Cache,
     /*node*/
     NodeFile,
     NodeDebug,
@@ -43,6 +45,7 @@ export {
     File,
     Calc,
     Url,
+    Cache,
     /*node*/
     NodeFile,
     NodeDebug,

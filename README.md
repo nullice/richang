@@ -67,6 +67,7 @@ require("babel-polyfill")
 var Richang =  require ("richang.js/dist/RichangNode.bundle.js")
 
 ```
+> 如果遇到 `ReferenceError: regeneratorRuntime is not defined` ，需要安装 `npm i -S babel-polyfill` ，并且在引入 `Richang.js` 前先引入 `babel-polyfill`
 
 
 
@@ -128,6 +129,9 @@ XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</p>
 </dd>
 <dt><a href="#FileFIL">FileFIL</a> : <code>Object</code></dt>
 <dd><p>文件操作相关模块</p>
+</dd>
+<dt><a href="#Cache">Cache</a> : <code>Object</code></dt>
+<dd><p>缓存相关</p>
 </dd>
 </dl>
 
@@ -659,7 +663,7 @@ ArrayBuffer to Buffer
 | --- | --- | --- |
 | object | <code>object</code> |  |
 | eachFunc | <code>function</code> | 处理函数 |
-| [checkCycle] | <code>boolean</code> \| <code>function</code> | 是否检查循环引用，为 true 会跳过循环引用，还可以提供一个函数 checkCycleCallback(target,path) 来处理一些事 |
+| [checkCycle] | <code>boolean</code> \| <code>function</code> | 是否检查循环引用，为 true 会跳过循环引用，还可以提供一个函数 checkCycleCallback(target, path, cyclePath) 来处理一些事 |
 
 <a name="StringSTR"></a>
 
@@ -977,3 +981,9 @@ ArrayBuffer to Buffer
 | name |  |
 | fix | 非法字符替代 |
 
+<a name="Cache"></a>
+
+## Cache : <code>Object</code>
+缓存相关
+
+**Kind**: global variable  

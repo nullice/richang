@@ -4,6 +4,30 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
 var toConsumableArray = function (arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
@@ -135,7 +159,6 @@ var ObjectOBJ = {
                 }
             }
         }
-
         return nowValue;
     },
 
@@ -146,48 +169,32 @@ var ObjectOBJ = {
      * @param value 值
      */
     setObjectValueByNames: function setObjectValueByNames(object, names, value) {
-        var nowObject;
-
-        var item = object[names[0]];
-        if (names.length == 1) {
-            item = value;
+        var namesLen = names.length;
+        if (namesLen == 1) {
+            object[names[0]] = value;
             return;
         }
 
-        for (var i = 0; i < names.length; i++) {
-            if (i == 0 && names.length > 2) {
-                if (item == undefined) {
-                    item = {};
-                }
-                nowObject = item;
-            } else if (i < names.length - 2 && names.length > 2) {
-                var item2 = nowObject[names[i]];
-                if (item2 == undefined) {
-                    item2 = {};
-                }
+        var nowObject = object;
+        var nowKey = null;
+        for (var i = 0; i < namesLen; i++) {
+            nowKey = names[i];
 
-                nowObject = item2;
-            } else if (i == names.length - 2) {
-                if (names.length == 2) {
-                    if (item == undefined) {
-                        item = {};
-                    }
-                    nowObject = item;
+            if (i == namesLen - 1) {
 
-                    nowObject[names[1]] = value;
-                    return;
+                nowObject[nowKey] = value;
+                return;
+            } else {
+                // 如果路径上对象不存在则创建对象
+                if (!(nowKey in nowObject)) {
+                    nowObject[nowKey] = {};
+                    nowObject = nowObject[nowKey];
                 } else {
-
-                    if (item2 == undefined) {
-                        item2 = {};
-                    }
-
-                    nowObject = item2;
-                    nowObject[names[i + 1]] = value;
-                    return;
+                    nowObject = nowObject[nowKey];
                 }
             }
         }
+        return;
     },
 
     /**
@@ -2203,6 +2210,190 @@ var Url = {
      */
 };
 
+// Created by nullice on 2018/05/02 - 19:33
+
+//      ___                       ___           ___           ___           ___           ___
+//     /\  \                     /\__\         /\  \         /\  \         /\  \         /\__\
+//    /::\  \       ___         /:/  /         \:\  \       /::\  \        \:\  \       /:/ _/_
+//   /:/\:\__\     /\__\       /:/  /           \:\  \     /:/\:\  \        \:\  \     /:/ /\  \
+//  /:/ /:/  /    /:/__/      /:/  /  ___   ___ /::\  \   /:/ /::\  \   _____\:\  \   /:/ /::\  \
+// /:/_/:/__/___ /::\  \     /:/__/  /\__\ /\  /:/\:\__\ /:/_/:/\:\__\ /::::::::\__\ /:/__\/\:\__\
+// \:\/:::::/  / \/\:\  \__  \:\  \ /:/  / \:\/:/  \/__/ \:\/:/  \/__/ \:\~~\~~\/__/ \:\  \ /:/  /
+//  \::/~~/~~~~   ~~\:\/\__\  \:\  /:/  /   \::/__/       \::/__/       \:\  \        \:\  /:/  /
+//   \:\~~\          \::/  /   \:\/:/  /     \:\  \        \:\  \        \:\  \        \:\/:/  /
+//    \:\__\         /:/  /     \::/  /       \:\__\        \:\__\        \:\__\        \::/  /
+//     \/__/         \/__/       \/__/         \/__/         \/__/         \/__/         \/__/
+//
+//
+//                日常
+//        +-------------------+
+//        |   Richang  JSEX   |
+//        +-------------------+
+//              · Cache ·
+//
+//       By nullice ui@nullice.com
+//             nullice.com
+//            license: MIT
+
+/**
+ * 缓存相关
+ * @type {{}}
+ */
+var Cache = {
+
+    CacheObject: function () {
+        /**
+         * 创建一个对象缓存
+         * @param [maxSize] 缓存最大数量，达到最大数量后会清除最后的缓存（LRU 最近最少使用）
+         * @param [blankSize] 预留空位，缓存满时清除末位缓存的数量，设置的大可以减少缓存清理的次数，但是过大会影响缓存可用数。
+         */
+        function CacheObject() {
+            var maxSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 64;
+            var blankSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
+            classCallCheck(this, CacheObject);
+
+
+            /**
+             *  缓存实际存储对象
+             * @type {{}}
+             */
+            this.cacheOb = {};
+            /**
+             * 键队列
+             * @type {Array}
+             */
+            this.keyList = [];
+            this.keyListOffset = 0;
+
+            /**
+             * 键映射
+             * @type {{}}
+             */
+            this.keyMap = {};
+
+            /**
+             * 最大缓存数量
+             * @type {number}
+             */
+            this.maxSize = maxSize;
+
+            /**
+             * 空置数量
+             * @type {number}
+             */
+            this.blankSize = blankSize;
+
+            /**
+             * 当前缓存数量
+             * @type {number}
+             */
+            this.size = 0;
+        }
+
+        createClass(CacheObject, [{
+            key: "get",
+            value: function get$$1(key) {
+                var _this = this;
+
+                // 如果 key 已在 keyList 中存在，则设置它为 undefined
+                if (this.keyMap[key] !== undefined) {
+
+                    var keyIndex = this.keyMap[key] + this.keyListOffset;
+                    this.keyList[keyIndex] = undefined;
+                    this.keyList.push(key);
+                    var index = this.keyList.length - 1;
+                    this.keyMap[key] = index - this.keyListOffset;
+                }
+
+                if (this.keyList.length > 200) {
+                    setTimeout(function () {
+                        _this.reMap();
+                    }, 0);
+                }
+
+                return this.cacheOb[key];
+            }
+        }, {
+            key: "set",
+            value: function set$$1(key, value) {
+                this.size++;
+
+                if (this.size > this.maxSize) {
+                    //开始淘汰
+                    this.eliminate();
+                }
+
+                this.keyList.push(key);
+                var index = this.keyList.length - 1;
+                // 如果 key 已在 keyList 中存在，则设置它为 undefined
+                if (this.keyMap[key] !== undefined) {
+                    this.keyList[this.keyMap[key] + this.keyListOffset] = undefined;
+                    this.size--;
+                }
+                this.keyMap[key] = index - this.keyListOffset;
+                return this.cacheOb[key] = value;
+            }
+
+            /**
+             * 淘汰过期缓存
+             */
+
+        }, {
+            key: "eliminate",
+            value: function eliminate() {
+                for (var i = 0, done = 0; done < this.blankSize; i++) {
+                    var key = this.keyList.shift();
+                    this.keyListOffset--;
+                    if (key !== undefined) {
+
+                        delete this.cacheOb[key];
+                        delete this.keyMap[key];
+                        this.size--;
+                        done++;
+                    }
+                }
+            }
+        }, {
+            key: "reMap",
+            value: function reMap() {
+
+                var newList = [];
+                for (var i = 0; i < this.keyList.length; i++) {
+                    var key = this.keyList[i];
+                    if (key !== undefined) {
+                        newList.push(key);
+                    }
+                }
+                this.keyList = newList;
+                this.keyListOffset = 0;
+                for (var i = 0; i < this.keyList.length; i++) {
+                    var _key = this.keyList[i];
+                    this.keyMap[_key] = i;
+                }
+            }
+
+            /**
+             * 清空所有缓存
+             */
+
+        }, {
+            key: "clear",
+            value: function clear() {
+                this.cacheOb = {};
+                this.keyList = [];
+                this.keyMap = {};
+                this.keyListOffset = 0;
+                this.size = 0;
+            }
+        }]);
+        return CacheObject;
+    }()
+
+    /**
+     * @exports Cache
+     */
+};
+
 var Richang = {
     Object: ObjectOBJ,
     String: StringSTR,
@@ -2213,8 +2404,9 @@ var Richang = {
     Tool: Tool,
     File: FileFIL,
     Calc: Calc,
-    Url: Url
+    Url: Url,
+    Cache: Cache
 };
 
 export default Richang;
-export { ObjectOBJ as Object, StringSTR as String, TypeTYP as Type, AarryArr as Array, Rect, ConsoleCON as Console, Tool, FileFIL as File, Calc, Url };
+export { ObjectOBJ as Object, StringSTR as String, TypeTYP as Type, AarryArr as Array, Rect, ConsoleCON as Console, Tool, FileFIL as File, Calc, Url, Cache };

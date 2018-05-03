@@ -8,6 +8,7 @@ import Tool from "./modules/Tool.js"
 import Calc from "./modules/Calc.js"
 import File from "./modules/File.js"
 import Url from "./modules/Url.js"
+import Cache from "./modules/Cache.js"
 
 const Richang = {
     Object,
@@ -19,7 +20,8 @@ const Richang = {
     Tool,
     File,
     Calc,
-    Url
+    Url,
+    Cache,
 }
 
 
@@ -35,7 +37,8 @@ export {
     Tool,
     File,
     Calc,
-    Url
+    Url,
+    Cache
 }
 /**
  * @export Richang

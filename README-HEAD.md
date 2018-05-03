@@ -67,6 +67,7 @@ require("babel-polyfill")
 var Richang =  require ("richang.js/dist/RichangNode.bundle.js")
 
 ```
+> 如果遇到 `ReferenceError: regeneratorRuntime is not defined` ，需要安装 `npm i -S babel-polyfill` ，并且在引入 `Richang.js` 前先引入 `babel-polyfill`
 
 
 
