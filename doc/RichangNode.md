@@ -496,6 +496,7 @@ ArrayBuffer to Buffer
     * [.isEmptyObject(obj)](#ObjectOBJ.isEmptyObject) ⇒ <code>boolean</code>
     * [.objectCopyToObject(ob1, ob2, func_allowCopy, func_rename, func_valueFiter, func_for)](#ObjectOBJ.objectCopyToObject)
     * [.setObjectValueByNames(object, names, value)](#ObjectOBJ.setObjectValueByNames)
+    * [.deleteObjectValueByNames(object, names)](#ObjectOBJ.deleteObjectValueByNames)
     * [.treeFind(objectArr, match, childrenKey, findAll, depthFirst)](#ObjectOBJ.treeFind) ⇒ <code>array</code> \| <code>null</code>
     * [.treeEach(objectArr, eachFunc, childrenKey, depthFirst)](#ObjectOBJ.treeEach) ⇒ <code>Object</code>
     * [.pathEach(object, eachFunc, [checkCycle])](#ObjectOBJ.pathEach)
@@ -539,6 +540,18 @@ ArrayBuffer to Buffer
 | object | 对象 |
 | names | 属性名路径列表，如 [position,enableAssigns,y] |
 | value | 值 |
+
+<a name="ObjectOBJ.deleteObjectValueByNames"></a>
+
+### ObjectOBJ.deleteObjectValueByNames(object, names)
+根据属性名路径列表（names）对对象属性删除
+
+**Kind**: static method of [<code>ObjectOBJ</code>](#ObjectOBJ)  
+
+| Param | Description |
+| --- | --- |
+| object | 对象 |
+| names | 属性名路径列表，如 [position,enableAssigns,y] |
 
 <a name="ObjectOBJ.treeFind"></a>
 

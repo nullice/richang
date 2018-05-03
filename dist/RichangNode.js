@@ -1274,7 +1274,33 @@ var ObjectOBJ = {
         }
         return;
     },
+    /**
+     * 根据属性名路径列表（names）对对象属性删除
+     * @param object 对象
+     * @param names 属性名路径列表，如 [position,enableAssigns,y]
+     */
+    deleteObjectValueByNames: function deleteObjectValueByNames(object, names) {
+        var namesLen = names.length;
+        if (namesLen == 1) {
+            delete object[names[0]];
+            return;
+        }
 
+        var nowObject = object;
+        var nowKey = null;
+        for (var i = 0; i < namesLen; i++) {
+            nowKey = names[i];
+
+            if (i == namesLen - 1) {
+
+                delete nowObject[nowKey];
+                return;
+            } else {
+                nowObject = nowObject[nowKey];
+            }
+        }
+        return;
+    },
     /**
      * 在由对象数组组成的树中查找对象。如果查找全部结果会以数组返回，否则直接返回找到的对象。
      *
