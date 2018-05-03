@@ -1,7 +1,7 @@
 import rcObject from "../../src/modules/Object.js"
 import _ from "lodash"
 
-describe("Object.[set|get]ObjectValueByNames()", () =>
+describe("Object.[set|get|delete]ObjectValueByNames()", () =>
 {
     var x = {
         a: {
@@ -39,7 +39,6 @@ describe("Object.[set|get]ObjectValueByNames()", () =>
         rcObject.setObjectValueByNames(x, "a.b.c2".split("."), "is_c2")
         expect(x.a.b.c2).toBe("is_c2")
 
-
         rcObject.setObjectValueByNames(x, "f.ff.fff".split("."), "fff")
         expect(x.f.ff.fff).toBe("fff")
     })
@@ -55,11 +54,40 @@ describe("Object.[set|get]ObjectValueByNames()", () =>
         rcObject.setObjectValueByNames(x, path, 66)
         expect(rcObject.getObjectValueByNames(x, path)).toBe(66)
 
-
         var path = "a3".split(".")
         rcObject.setObjectValueByNames(x, path, 2232)
         expect(rcObject.getObjectValueByNames(x, path)).toBe(2232)
     })
+
+    var x = {
+        a: {
+            b: {
+                c: {
+                    d: {
+                        d1: 1232, d2: 222, d3: 444,
+                    },
+                },
+            },
+        },
+        a22: 123,
+    }
+
+    test("delete ", () =>
+    {
+        var path = "a.b.c.d.d1".split(".")
+        rcObject.deleteObjectValueByNames(x, path)
+        expect(rcObject.getObjectValueByNames(x, path)).toBe(undefined)
+        expect(rcObject.getObjectValueByNames(x, "a.b.c.d.d2".split("."))).toBe(222)
+
+        var path = "a.b.c3".split(".")
+        rcObject.deleteObjectValueByNames(x, path)
+        expect(rcObject.getObjectValueByNames(x, path)).toBe(undefined)
+
+        var path = "a3".split(".")
+        rcObject.deleteObjectValueByNames(x, path)
+        expect(rcObject.getObjectValueByNames(x, path)).toBe(undefined)
+    })
+
 })
 
 test("Object.isEmptyObject({}) === true （对象是否为空）", () =>
