@@ -7,6 +7,7 @@ declare var ObjectOBJ: {
     objectCopyToObject: (ob1: any, ob2: any, func_allowCopy: any, func_rename: any, func_valueFiter: any, func_for: any) => void;
     getObjectValueByNames: (object: any, names: any, aheadEndTime: any) => any;
     setObjectValueByNames: (object: any, names: any, value: any) => void;
+    deleteObjectValueByNames: (object: any, names: any) => void;
     treeFind: (objectArr: any, match: any, childrenKey: any, findAll: any, depthFirst: any) => any;
     treeEach: (objectArr: any, eachFunc: any, childrenKey: any, depthFirst: any) => {
         struct: any[];
@@ -120,12 +121,20 @@ declare var Url: {
     getQuery: (url: any, getObject: any) => any;
     urlParse: () => void;
 };
+/**
+ * 缓存相关
+ * @type {{}}
+ */
+declare var Cache: {
+    CacheObject: () => void;
+};
 declare var Richang: {
     Object: {
         isEmptyObject: (obj: any) => boolean;
         objectCopyToObject: (ob1: any, ob2: any, func_allowCopy: any, func_rename: any, func_valueFiter: any, func_for: any) => void;
         getObjectValueByNames: (object: any, names: any, aheadEndTime: any) => any;
         setObjectValueByNames: (object: any, names: any, value: any) => void;
+        deleteObjectValueByNames: (object: any, names: any) => void;
         treeFind: (objectArr: any, match: any, childrenKey: any, findAll: any, depthFirst: any) => any;
         treeEach: (objectArr: any, eachFunc: any, childrenKey: any, depthFirst: any) => {
             struct: any[];
@@ -204,6 +213,9 @@ declare var Richang: {
         getQuery: (url: any, getObject: any) => any;
         urlParse: () => void;
     };
+    Cache: {
+        CacheObject: () => void;
+    };
 };
 export default Richang;
-export { ObjectOBJ as Object, StringSTR as String, TypeTYP as Type, AarryArr as Array, Rect, ConsoleCON as Console, Tool, FileFIL as File, Calc, Url };
+export { ObjectOBJ as Object, StringSTR as String, TypeTYP as Type, AarryArr as Array, Rect, ConsoleCON as Console, Tool, FileFIL as File, Calc, Url, Cache };
