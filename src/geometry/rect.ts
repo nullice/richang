@@ -21,6 +21,8 @@
 //             nullice.com
 //            license: MIT
 
+import { IXy } from "./point"
+
 export interface IRltb {
     right: number
     left: number
@@ -188,9 +190,59 @@ export function getRltbsRange(rltbs: IRltb[]) {
  *
  * getXywhsRange([xywh])
  * @param xywhs
- * @returns {{x: null, y: null, w: null, h: null}}
+ * @returns {IRltb}
  */
 export function getXywhsRange(xywhs: IXywh[]) {
     let rltbs = xywhs.map(xywh => xywh2rltb(xywh))
     return getRltbsRange(rltbs)
+}
+
+/**
+ * 整体移动多个 xywh 到某点，保留原 xywhs 相对位置。
+ * 会改变 xywhs 里每个 xywh 对象的 x，y 值。
+ * @param xywhs
+ * @param xy
+ * @return {IXywh[]}
+ */
+export function moveXywhs(xywhs: IXywh[], xy: IXy) {
+    let range = getXywhsRange(xywhs)
+    let offsetX = xy.x - range.left
+    let offsetY = xy.y - range.top
+
+    for (let i = 0, len = xywhs.length; i < len; i++) {
+        let xywh = xywhs[i]
+        xywh.x = xywh.x + offsetX
+        xywh.y = xywh.y + offsetY
+    }
+
+    return xywhs
+}
+
+/**
+ * 判断 2 个 rltb 是否有重叠
+ * @param rltbA
+ * @param rltbB
+ * @returns {boolean}
+ */
+export function rltbOverlap(rltbA: IRltb, rltbB: IRltb) {
+    let hasOverlap = !!(
+        rltbA.left <= rltbB.right &&
+        rltbA.right >= rltbB.left &&
+        rltbA.top <= rltbB.bottom &&
+        rltbA.bottom >= rltbB.top
+    )
+    return hasOverlap
+}
+
+/**
+ * 判断 2 个 xywh 是否有重叠
+ * @param xywhA
+ * @param xywhB
+ * @return {boolean}
+ */
+export function xywhOverlap(xywhA: IXywh, xywhB: IXywh) {
+    let rltbA = xywh2rltb(xywhA)
+    let rltbB = xywh2rltb(xywhB)
+
+    return rltbOverlap(rltbA, rltbB)
 }
