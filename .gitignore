@@ -1,8 +1,7 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-.idea
-.git
-.gitattributes
-.idea/*
 node_modules
-.idea/**
+.idea
+temp
+dist
+coverage
+dll/*
+.idea/*
