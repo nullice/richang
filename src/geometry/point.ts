@@ -15,12 +15,8 @@
 //        +-------------------+
 //        |      Richang      |
 //        +-------------------+
-//             · geometry ·
+//             · point ·
 //
 //       By nullice ui@nullice.com
 //             nullice.com
 //            license: MIT
-
-import * as rect from "./rect"
-
-export { rect }
