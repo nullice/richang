@@ -1,4 +1,4 @@
-import { EventHub } from "@/event/event"
+import { EventHub } from "../../src/event/event"
 
 describe("EventHub 监听与解绑", () => {
     let evetnHub = new EventHub()

@@ -1,0 +1,74 @@
+{
+  "name": "richang",
+  "version": "5.0.0",
+  "description": "richang js code.",
+  "main": "dist/Richang.js",
+  "module": "dist/RichangEs.js",
+  "jsnext:main": "dist/RichangEs.js",
+  "files": [
+    "dist",
+    "doc",
+    "LICENSE.md",
+    "README.md",
+    "typings"
+  ],
+  "scripts": {
+    "test": "jest",
+    "test-coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "build-and-publish": "npm run build-all && npm run doc && npm run publish",
+    "publish": "npm publish --registry=https://registry.npmjs.org/ --disturl=/",
+    "watch": "rollup -c -w",
+    "build": "rollup -c",
+    "build-min": "rollup -c rollup-min.config.js",
+    "build-each": "rollup -c rollup-each.config.js && node gen-d-ts.js",
+    "build-node-bundle": "webpack --verbose",
+    "build-all": "node ./build-fix.js && npm run build && npm run build-min && npm run build-node-bundle",
+    "windows-gen-d.ts": "copy dist\\RichangEs.js dist\\RichangEs.ts && tsc ./dist/RichangEs.ts -d --outDir ./dist/ts & copy dist\\ts\\RichangEs.d.ts dist\\RichangEs.d.ts && rmdir /S/Q  dist\\ts && del dist\\RichangEs.ts",
+    "doc": "jsdoc2md dist/RichangNode.js > doc/RichangNode.md && type README-HEAD.MD > README.MD && type doc\\RichangNode.md >> README.MD"
+  },
+  "author": "nullice",
+  "license": "MIT",
+  "repository": "git@github.com:nullice/Richang.js.git",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-runtime": "^6.26.0",
+    "chalk": "^2.3.2",
+    "fs-extra": "^5.0.0",
+    "is-uuid": "^1.0.2",
+    "moment": "^2.21.0",
+    "pngjs": "^3.3.2",
+    "qs": "^6.5.1",
+    "rmdir-cli": "^2.0.6",
+    "stream-to-buffer": "^0.1.0",
+    "url-parse": "^1.4.0",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.1",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-minify": "^0.3.0",
+    "coveralls": "^3.0.0",
+    "dtsmake": "0.0.10",
+    "jest": "^22.4.2",
+    "rollup": "^0.56.5",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-node-resolve": "^3.2.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "tern": "^0.21.0",
+    "uuid": "^3.2.1",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
+  }
+}
