@@ -224,7 +224,7 @@ export function moveXywhs(xywhs: IXywh[], xy: IXy) {
  * @param rltbB
  * @returns {boolean}
  */
-export function rltbOverlap(rltbA: IRltb, rltbB: IRltb) {
+export function rltbHasOverlap(rltbA: IRltb, rltbB: IRltb) {
     let hasOverlap = !!(
         rltbA.left <= rltbB.right &&
         rltbA.right >= rltbB.left &&
@@ -240,9 +240,9 @@ export function rltbOverlap(rltbA: IRltb, rltbB: IRltb) {
  * @param xywhB
  * @return {boolean}
  */
-export function xywhOverlap(xywhA: IXywh, xywhB: IXywh) {
+export function xywhHasOverlap(xywhA: IXywh, xywhB: IXywh) {
     let rltbA = xywh2rltb(xywhA)
     let rltbB = xywh2rltb(xywhB)
 
-    return rltbOverlap(rltbA, rltbB)
+    return rltbHasOverlap(rltbA, rltbB)
 }
