@@ -128,41 +128,83 @@ export function setObjectValueByPath(object: object, path: string | string[], va
     return false
 }
 
-interface ITreeEachOptions {
+interface IObjectEachOptions {
     // 遍历时深度优先，为 false 时为广度优先
     depthFirst?: boolean
-    // 是否检查循环依赖
-    checkCycle?: boolean
-    // 循环依赖回调
-    checkCycleCallback?: (value: any, key: string, parent: any, path?: string[], firstPath?: string[]) => void
-    // 是否需要 KeyPath
-    needKeyPath?: boolean
-}
-
-/**
- *
- * @param object
- * @param eachFunc
- * @param childrenKey
- * @param options
- */
-export function treeEach(
-    object: any,
-    eachFunc: (
+    /**
+     *  深度遍历的回弹（出栈）遍历函数
+     *  eachFunc 相当于在入栈时执行，而 depthReboundFunc 在出栈时执行
+     *  执行时意味着所有子节点已经遍历完了
+     *
+     * @param value
+     * @param key
+     * @param info
+     */
+    depthReboundFunc?: (
         value: any,
         key: string,
-        parent: any,
         info: {
+            // 父级对象
+            parent: any
             // 遍历深度
             deep: number
             // keyPath
             keyPath?: string[]
         }
-    ) => void,
-    options: ITreeEachOptions = {
+    ) => any
+    // 是否检查循环依赖
+    checkCycle?: boolean
+    /**
+     * 循环依赖回调
+     * @param value
+     * @param key
+     * @param parent
+     * @param keyPath
+     * @param firstPath 出现循环依赖的对象第一次出现的 keyPath
+     */
+    checkCycleCallback?: (value: any, key: string, parent: any, keyPath?: string[], firstKeyPath?: string[]) => void
+    // 是否需要 KeyPath
+    needKeyPath?: boolean
+
+    /**
+     仅遍历指定 key 的 children
+     * @example
+     * {children:{
+     *      item1:{value:1, children:{
+     *             item2:{value:1}
+     *      } }
+     * }}
+     */
+    childrenKey?: string
+    // 异步遍历，允许 eachFunc 使用 async 函数，或者 Promise 实例
+}
+
+/**
+ * 对象遍历, 遍历对象的每一个键
+ *
+ * @param object
+ * @param eachFunc 遍历函数。返回 -1 时终止遍历；返回 -2 时终止当层遍历
+ * @param options
+ */
+export function objectEach(
+    object: any,
+    eachFunc: (
+        value: any,
+        key: string,
+        info: {
+            // 父级对象
+            parent: any
+            // 遍历深度
+            deep: number
+            // keyPath
+            keyPath?: string[]
+        }
+    ) => void | -1 | -2,
+    options: IObjectEachOptions = {
         checkCycle: false, // 默认不检查循环依赖
         depthFirst: false, // 默认广度优先遍历
-        needKeyPath: false // 默认不需要 KeyPath
+        needKeyPath: false, // 默认不需要 KeyPath
+        childrenKey: undefined // 默认不指定子树 key ，会遍历对象每一个 key
     }
 ) {
     // 是否使用循环依赖回调
@@ -180,7 +222,7 @@ export function treeEach(
     // 遍历入口
     eachOnce(object, 0, options.needKeyPath ? [] : undefined)
 
-    function eachOnce(object: any, deep: number, path?: string[]) {
+    function eachOnce(object: any, deep: number, path?: string[]): any {
         let nextEachList
 
         // 如果是不是深度优先而是广度优先，则初始化欲遍历队列
@@ -188,15 +230,28 @@ export function treeEach(
             nextEachList = []
         }
 
-        for (let key in object) {
-            let value = object[key]
+        // 遍历目标
+        let target
+        // 是否只遍历指定子节点
+        if (options.childrenKey) {
+            target = object[options.childrenKey]
+        } else {
+            target = object
+        }
+
+        for (let key in target) {
+            let value = target[key]
             let nowKeyPath = path ? [...path, key] : undefined
 
             // 执行 each 函数
-            eachFunc(value, key, object, {
+            let control = eachFunc(value, key, {
+                parent: object,
                 deep: deep,
                 keyPath: nowKeyPath
             })
+
+            if (control === -1) return -1
+            if (control === -2) break
 
             // 判断是需要遍历的项
             if (typeof value === "object") {
@@ -221,7 +276,17 @@ export function treeEach(
 
                 if (options.depthFirst) {
                     // 深度优先遍历
-                    eachOnce(value, deep + 1, nowKeyPath)
+                    let re = eachOnce(value, deep + 1, nowKeyPath)
+                    // 提前终止
+                    if (re === -1) return -1
+                    if (options.depthReboundFunc) {
+                        // 执行 depthReboundFunc 函数
+                        options.depthReboundFunc(value, key, {
+                            parent: object,
+                            deep: deep,
+                            keyPath: nowKeyPath
+                        })
+                    }
                 } else {
                     ;(<any[]>nextEachList).push({ value, key, nowKeyPath })
                 }
@@ -230,7 +295,9 @@ export function treeEach(
 
         // 广度优先遍历
         if (!options.depthFirst) {
-            ;(<any[]>nextEachList).forEach(item => eachOnce(item.value, deep + 1, item.nowKeyPath))
+            let re = (<any[]>nextEachList).every(item => eachOnce(item.value, deep + 1, item.nowKeyPath) !== -1)
+            // 提前终止
+            if (!re) return -1
         }
     }
 }

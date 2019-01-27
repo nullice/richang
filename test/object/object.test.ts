@@ -130,9 +130,9 @@ describe("treeEach()", () => {
         let ob = newOb()
         let count = 0
 
-        rc.object.treeEach(ob, (value, key, parent, info) => {
+        rc.object.objectEach(ob, (value, key, info) => {
             count++
-            expect(parent[key]).toBe(value)
+            expect(info.parent[key]).toBe(value)
         })
         expect(count).toBe(21)
     })
@@ -141,11 +141,11 @@ describe("treeEach()", () => {
         let ob = newOb()
         let count = 0
 
-        rc.object.treeEach(
+        rc.object.objectEach(
             ob,
-            (value, key, parent, info) => {
+            (value, key, info) => {
                 count++
-                expect(parent[key]).toBe(value)
+                expect(info.parent[key]).toBe(value)
             },
             { depthFirst: true }
         )
@@ -159,11 +159,11 @@ describe("treeEach()", () => {
         ;(<any>ob).cycle = ob
         ;(<any>ob).cycle2 = ob.d
 
-        rc.object.treeEach(
+        rc.object.objectEach(
             ob,
-            (value, key, parent, info) => {
+            (value, key, info) => {
                 count++
-                expect(parent[key]).toBe(value)
+                expect(info.parent[key]).toBe(value)
             },
             { checkCycle: true, checkCycleCallback }
         )
@@ -183,11 +183,11 @@ describe("treeEach()", () => {
         ;(<any>ob).cycle = ob
         ;(<any>ob).cycle2 = ob.d
 
-        rc.object.treeEach(
+        rc.object.objectEach(
             ob,
-            (value, key, parent, info) => {
+            (value, key, info) => {
                 count++
-                expect(parent[key]).toBe(value)
+                expect(info.parent[key]).toBe(value)
             },
             { checkCycle: true, checkCycleCallback, depthFirst: true }
         )
@@ -207,11 +207,11 @@ describe("treeEach()", () => {
         ;(<any>ob).cycle = ob
         ;(<any>ob).cycle2 = ob.d
 
-        rc.object.treeEach(
+        rc.object.objectEach(
             ob,
-            (value, key, parent, info) => {
+            (value, key, info) => {
                 count++
-                expect(parent[key]).toBe(value)
+                expect(info.parent[key]).toBe(value)
                 // @ts-ignore
                 expect(info.keyPath[info.keyPath.length - 1]).toBe(key)
             },
@@ -224,5 +224,219 @@ describe("treeEach()", () => {
         }
         expect(count).toBe(23)
         expect(countCycle).toEqual(2)
+    })
+
+    test("needKeyPath for()", () => {
+        let ob = {
+            a: {
+                key: "a",
+                b: {
+                    key: "a.b",
+                    c: { key: "a.b.c" }
+                }
+            }
+        }
+        let count = 0
+        rc.object.objectEach(
+            ob,
+            (value, key, info) => {
+                count++
+                expect(info.parent[key]).toBe(value)
+
+                if (value.key) {
+                    let keys = (<string[]>info.keyPath).join(".")
+                    expect(keys).toEqual(value.key)
+                }
+            },
+            { checkCycle: true, needKeyPath: true }
+        )
+
+        // 深度优先遍历
+        rc.object.objectEach(
+            ob,
+            (value, key, info) => {
+                count++
+                expect(info.parent[key]).toBe(value)
+
+                if (value.key) {
+                    let keys = (<string[]>info.keyPath).join(".")
+                    expect(keys).toEqual(value.key)
+                }
+            },
+            { checkCycle: false, depthFirst: true, needKeyPath: true }
+        )
+    })
+
+    function newchildrenOb() {
+        return {
+            name: "root",
+            children: {
+                itemA: {
+                    name: "itemA",
+                    children: {
+                        itemA_1: {
+                            name: "itemA_1",
+                            children: {
+                                itemA_1_1: {
+                                    name: "itemA_1_1"
+                                }
+                            }
+                        },
+                        itemA_2: {
+                            name: "itemA_2",
+                            children: {
+                                itemA_2_1: {
+                                    name: "itemA_2_1"
+                                }
+                            }
+                        }
+                    }
+                },
+
+                itemB: {
+                    name: "itemB",
+                    children: {
+                        itemB_1: {
+                            name: "itemB_1",
+                            children: {
+                                itemB_1_1: {
+                                    name: "itemB_1_1"
+                                }
+                            }
+                        },
+                        itemB_2: {
+                            name: "itemB_2",
+                            children: {
+                                itemB_2_1: {
+                                    name: "itemB_2_1"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    test("childrenKey", () => {
+        let obj = newchildrenOb()
+        let count = 0
+        rc.object.objectEach(
+            obj,
+            (value, key, info) => {
+                expect(value.name).toBe(key)
+                expect(info.parent.children).toBeTruthy()
+                count++
+            },
+            { childrenKey: "children" }
+        )
+
+        expect(count).toBe(10)
+    })
+
+    test("childrenKey 深度优先+needKeyPath", () => {
+        let obj = newchildrenOb()
+        let count = 0
+        rc.object.objectEach(
+            obj,
+            (value, key, info) => {
+                expect(value.name).toBe(key)
+                expect(info.parent.children).toBeTruthy()
+                count++
+            },
+            { childrenKey: "children", depthFirst: true, needKeyPath: true }
+        )
+
+        expect(count).toBe(10)
+    })
+
+    test("depthReboundFunc", () => {
+        let obj = newchildrenOb()
+        let count = 0
+        rc.object.objectEach(
+            obj,
+            (value, key, info) => {
+                count++
+            },
+            {
+                childrenKey: "children",
+                depthFirst: true,
+                needKeyPath: true,
+                depthReboundFunc(value: any, key: string, info: { parent: any; deep: number; keyPath?: string[] }) {
+                    // console.log("depthReboundFunc", value, key)
+                    if (value.children) {
+                        let cLen = 0
+                        for (let key in value.children) {
+                            cLen++
+                            let item = value.children[key]
+                            if (item.length) {
+                                cLen += item.length
+                            }
+                        }
+                        value.length = cLen
+                    } else {
+                        value.last = true
+                    }
+                }
+            }
+        )
+
+        // console.log("obj", JSON.stringify(obj, null, 4))
+        expect(count).toBe(10)
+        expect((<any>obj.children.itemA).length).toBe(4)
+        expect((<any>obj.children.itemA.children.itemA_1).length).toBe(1)
+    })
+
+    test("提前终止 广度搜索", () => {
+        let count = 0
+        let obj = {
+            a: 1,
+            b: 2,
+            c: 3,
+            d: { d1: 11, d2: 22, d3: { d33: 44 } }
+        }
+
+        let readeds: any = {}
+        rc.object.objectEach(obj, (value, key, info) => {
+            count++
+            readeds[key] = value
+            if (key == "d") return -1
+        })
+
+        expect(count).toBe(4)
+
+        expect(readeds["a"]).toBeTruthy()
+        expect(readeds["b"]).toBeTruthy()
+        expect(readeds["c"]).toBeTruthy()
+        expect(readeds["d"]).toBeTruthy()
+
+        expect(readeds["d1"]).toBeFalsy()
+        expect(readeds["d2"]).toBeFalsy()
+        expect(readeds["d33"]).toBeFalsy()
+    })
+
+    test("提前终止 深度搜索", () => {
+        let obj = {
+            c: { c1: 11, c2: 22, c3: { c4: 44 } },
+            d: { d1: 11, d2: 22, d3: { d4: 44 } }
+        }
+        let readeds: any = {}
+        rc.object.objectEach(
+            obj,
+            (value, key, info) => {
+                readeds[key] = value
+                if (key == "d3") return -1
+            },
+            { depthFirst: true }
+        )
+
+
+
+        expect(readeds["d"]).toBeTruthy()
+        expect(readeds["d2"]).toBeTruthy()
+        expect(readeds["d3"]).toBeTruthy()
+        expect(readeds["d4"]).toBeFalsy()
+
+        expect(readeds["c"] ? readeds["c4"] : true).toBeTruthy()
     })
 })
