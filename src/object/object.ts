@@ -45,14 +45,13 @@ export type KeyPath = string[]
 /**
  * 规范化键名路径
  *
- *
  * @example
  * normalizeKeyPath("foo.bar") // => ["foo","bar"]
  * normalizeKeyPath("foo/bar") // => ["foo","bar"]
  * normalizeKeyPath(["foo","bar"]) // => ["foo","bar"]
  *
  * @param inPath
- * @return {any}
+ * @return {string[]}
  */
 export function normalizeKeyPath(inPath: string | string[]): KeyPath {
     if (typeof inPath === "string") {
@@ -61,6 +60,24 @@ export function normalizeKeyPath(inPath: string | string[]): KeyPath {
         return inPath
     } else {
         return []
+    }
+}
+
+/**
+ * 比较 2 个键名路径是否相等。可以是数组形式的 keyPath 也可以是路径字符串
+ * @param keyPathA
+ * @param keyPathB
+ * @return {boolean}
+ */
+export function keyPathEqual(keyPathA: string | string[], keyPathB: string | string[]) {
+    let aIsArray = Array.isArray(keyPathA)
+    let bIsArray = Array.isArray(keyPathB)
+    if (aIsArray && bIsArray) {
+        return isEqual(keyPathA, keyPathB)
+    } else if (!aIsArray && !bIsArray) {
+        return aIsArray === bIsArray
+    } else {
+        return isEqual(normalizeKeyPath(keyPathA), normalizeKeyPath(keyPathB))
     }
 }
 
@@ -128,6 +145,21 @@ export function setObjectValueByPath(object: object, path: string | string[], va
     return false
 }
 
+/**
+ * 根据键名路径删除对象
+ * @param object
+ * @param path
+ */
+export function deleteObjectValueByPath(object: object, path: string | string[]) {
+    let keyPath = normalizeKeyPath(path)
+    let lastKey = keyPath.pop()
+
+    let lastObject = getObjectValueByPath(object, keyPath)
+    if (typeof lastObject === "object") {
+        return delete lastObject[<any>lastKey]
+    }
+}
+
 interface IObjectEachOptions {
     // 遍历时深度优先，为 false 时为广度优先
     depthFirst?: boolean
@@ -183,7 +215,7 @@ interface IObjectEachOptions {
  * 对象遍历, 遍历对象的每一个键
  *
  * @param object
- * @param eachFunc 遍历函数。返回 -1 时终止遍历；返回 -2 时终止当层遍历
+ * @param eachFunc 遍历函数。返回 -1 时终止遍历（ruturn）；返回 -2 时终止当层遍历（break）; 返回 -3 跳到下一个遍历（continue）
  * @param options
  */
 export function objectEach(
@@ -196,10 +228,12 @@ export function objectEach(
             parent: any
             // 遍历深度
             deep: number
+            // 是否是遍历的末端（没有子节点了）
+            end: boolean
             // keyPath
             keyPath?: string[]
         }
-    ) => void | -1 | -2,
+    ) => void | -1 | -2 | -3,
     options: IObjectEachOptions = {
         checkCycle: false, // 默认不检查循环依赖
         depthFirst: false, // 默认广度优先遍历
@@ -242,19 +276,22 @@ export function objectEach(
         for (let key in target) {
             let value = target[key]
             let nowKeyPath = path ? [...path, key] : undefined
+            let hasNext = typeof value === "object"
 
             // 执行 each 函数
             let control = eachFunc(value, key, {
                 parent: object,
                 deep: deep,
-                keyPath: nowKeyPath
+                keyPath: nowKeyPath,
+                end: !hasNext
             })
 
             if (control === -1) return -1
             if (control === -2) break
+            if (control === -3) continue
 
             // 判断是需要遍历的项
-            if (typeof value === "object") {
+            if (hasNext) {
                 // 检查循环依赖
                 if (options.checkCycle) {
                     if (cycleCache.get(value)) {
@@ -301,10 +338,97 @@ export function objectEach(
         }
     }
 }
-import cloneDeep from "lodash/cloneDeep"
+import _cloneDeep from "lodash/cloneDeep"
+import isEqual from "lodash/isEqual"
 
 /**
  * 深度克隆一个对象
  * @param object
  */
-export let cloneDeep: (obejct: any) => any = cloneDeep
+export let cloneDeep: (obejct: any) => any = _cloneDeep
+
+export interface IMappingRule {
+    [key: string]: any | [string, Function, Function] | IMappingRule
+}
+/**
+ * 对象映射。
+ * 通过定义的映射规则（mappingRule）把源对象转换成另一个新对象
+ * 映射规则：定影新对象的结构，新对象中值根据映射规则中的“键名路径”从源对象获取
+ * 映射规则
+ *
+ * @example
+ * // 源对象
+ * {
+ *     user_name:"a",
+ *     info:{
+ *         id:123,
+ *     }
+ * }
+ *
+ * // 规则
+ * {
+ *     name:"user_name"
+ *     id:"info.id"
+ * }
+ *
+ *
+ * // 新对象
+ * {
+ *     name:"a"
+ *     id:123
+ * }
+ * @param objectSource 原对象
+ * @param mappingRule 映射规则
+ * @param reverse 逆向映射
+ * @return {any}
+ */
+
+export function mappingObject(
+    objectSource: any,
+    mappingRule: IMappingRule,
+    reverse?: boolean,
+    ignoreRule?: { [keyPath: string]: boolean }
+) {
+    let forMap = cloneDeep(mappingRule)
+    let reverseOb: any
+    if (reverse) reverseOb = {}
+
+    objectEach(
+        forMap,
+        (value, key, info) => {
+            let valueIsArray = Array.isArray(value)
+            if (info.end || valueIsArray) {
+                if (valueIsArray) {
+                    let rawKeyPath = value[0]
+                    let func = value[1]
+                    let reverseFunc = value[2]
+
+                    if (reverse) {
+                        let rawValue = getObjectValueByPath(objectSource, <string[]>info.keyPath)
+                        let finValue = reverseFunc(rawValue)
+                        setObjectValueByPath(reverseOb, <string[]>rawKeyPath, finValue)
+                    } else {
+                        let rawValue = getObjectValueByPath(objectSource, rawKeyPath)
+                        info.parent[key] = func(rawValue)
+                    }
+
+                    return -2
+                } else {
+                    if (reverse) {
+                        let rawValue = getObjectValueByPath(objectSource, <string[]>info.keyPath)
+                        setObjectValueByPath(reverseOb, value, rawValue)
+                    } else {
+                        info.parent[key] = getObjectValueByPath(objectSource, value)
+                    }
+                }
+            }
+        },
+        { needKeyPath: !!reverse || !!ignoreRule }
+    )
+
+    if (reverse) {
+        return reverseOb
+    } else {
+        return forMap
+    }
+}
