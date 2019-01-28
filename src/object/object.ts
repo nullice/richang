@@ -377,6 +377,13 @@ export interface IMappingRule {
  *     name:"a"
  *     id:123
  * }
+ *
+ * // 规则处理字符串的键名路径外还可以提供处理函数： [路径, 处理函数, 逆向处理函数]
+ * {
+ *     updateDate:["update_date", (x)=>{new Date(x)}, (x)=>{JSON.stringify(x)}]
+ * }
+ *
+ *
  * @param objectSource 原对象
  * @param mappingRule 映射规则
  * @param reverse 逆向映射
