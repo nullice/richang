@@ -10,3 +10,5 @@ let Richang = {
     geometry
 }
 export { Richang, shuffle, event, geometry, object }
+
+

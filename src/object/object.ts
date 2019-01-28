@@ -301,3 +301,10 @@ export function objectEach(
         }
     }
 }
+import cloneDeep from "lodash/cloneDeep"
+
+/**
+ * 深度克隆一个对象
+ * @param object
+ */
+export let cloneDeep: (obejct: any) => any = cloneDeep
