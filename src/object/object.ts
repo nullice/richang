@@ -383,12 +383,7 @@ export interface IMappingRule {
  * @return {any}
  */
 
-export function mappingObject(
-    objectSource: any,
-    mappingRule: IMappingRule,
-    reverse?: boolean,
-    ignoreRule?: { [keyPath: string]: boolean }
-) {
+export function mappingObject(objectSource: any, mappingRule: IMappingRule, reverse?: boolean) {
     let forMap = cloneDeep(mappingRule)
     let reverseOb: any
     if (reverse) reverseOb = {}
@@ -405,11 +400,12 @@ export function mappingObject(
 
                     if (reverse) {
                         let rawValue = getObjectValueByPath(objectSource, <string[]>info.keyPath)
-                        let finValue = reverseFunc(rawValue)
-                        setObjectValueByPath(reverseOb, <string[]>rawKeyPath, finValue)
+                        if (reverseFunc) rawValue = reverseFunc(rawValue)
+                        setObjectValueByPath(reverseOb, <string[]>rawKeyPath, rawValue)
                     } else {
                         let rawValue = getObjectValueByPath(objectSource, rawKeyPath)
-                        info.parent[key] = func(rawValue)
+                        if (func) rawValue = func(rawValue)
+                        info.parent[key] = rawValue
                     }
 
                     return -2
@@ -423,7 +419,7 @@ export function mappingObject(
                 }
             }
         },
-        { needKeyPath: !!reverse || !!ignoreRule }
+        { needKeyPath: reverse }
     )
 
     if (reverse) {
