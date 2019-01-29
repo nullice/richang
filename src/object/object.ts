@@ -38,6 +38,20 @@ export function isEmptyObject(object: object) {
 }
 
 /**
+ * 判断一个值是否是对象（可遍历键值）
+ * 函数是对象，null 不是对象
+ * @example
+ * isObject(null) // false
+ * isObject(()=>{})) // true
+ * @param value
+ * @return {boolean}
+ */
+export function isObject(value: object) {
+    let type = typeof value
+    return value !== null && (type === "object" || type === "function")
+}
+
+/**
  * 数组化键名路径
  */
 export type KeyPath = string[]
@@ -131,7 +145,7 @@ export function setObjectValueByPath(object: object, path: string | string[], va
             return true
         } else {
             // 路径不存在的情况
-            if (typeof cursor[key] !== "object") {
+            if (!isObject(cursor[key])) {
                 if (overwrite) {
                     cursor[key] = {}
                 } else {
@@ -155,7 +169,7 @@ export function deleteObjectValueByPath(object: object, path: string | string[])
     let lastKey = keyPath.pop()
 
     let lastObject = getObjectValueByPath(object, keyPath)
-    if (typeof lastObject === "object") {
+    if (isObject(lastObject)) {
         return delete lastObject[<any>lastKey]
     }
 }
@@ -276,7 +290,7 @@ export function objectEach(
         for (let key in target) {
             let value = target[key]
             let nowKeyPath = path ? [...path, key] : undefined
-            let hasNext = typeof value === "object"
+            let hasNext = isObject(value)
 
             // 执行 each 函数
             let control = eachFunc(value, key, {
