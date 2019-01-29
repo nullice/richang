@@ -208,7 +208,11 @@ interface IObjectEachOptions {
      * @param keyPath
      * @param firstPath 出现循环依赖的对象第一次出现的 keyPath
      */
-    checkCycleCallback?: (value: any, key: string, parent: any, keyPath?: string[], firstKeyPath?: string[]) => void
+    checkCycleCallback?: (
+        value: any,
+        key: string,
+        info: { parent: any; keyPath?: string[]; firstKeyPath?: string[] }
+    ) => void
     // 是否需要 KeyPath
     needKeyPath?: boolean
 
@@ -311,14 +315,18 @@ export function objectEach(
                     if (cycleCache.get(value)) {
                         // 循环依赖回调
                         if (useCycleCallback && options.checkCycleCallback) {
-                            options.checkCycleCallback(value, key, object, path, cycleCache.get(value))
+                            options.checkCycleCallback(value, key, {
+                                parent: object,
+                                keyPath: path,
+                                firstKeyPath: cycleCache.get(value)
+                            })
                         }
                         // 忽略循环依赖
                         continue
                     } else {
                         // 如果使用循环依赖回调，cycleCache 里会保存路径
                         if (useCycleCallback) {
-                            cycleCache.set(value, path || true)
+                            cycleCache.set(value, nowKeyPath || true)
                         } else {
                             cycleCache.set(value, true)
                         }

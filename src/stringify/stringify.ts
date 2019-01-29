@@ -1,0 +1,75 @@
+/**
+ * 把 Javascript 值序列化为 JSON 字符串
+ * 能处理闭环对象（循环依赖）
+ *
+ * @param value
+ * @param space
+ * @param circularReappear
+ * @return {string}
+ */
+import { cloneDeep, getObjectValueByPath, objectEach, setObjectValueByPath } from "../object/object"
+
+const circularSymbol = "[Circular]░="
+export function toJson(value: any, space: number, circularReappear?: boolean) {
+    let target = circularReappear ? cloneDeep(value) : value
+
+    const replacerFactory = function() {
+        if (circularReappear) {
+            objectEach(target, (value, key, info) => {}, {
+                needKeyPath: true,
+                checkCycle: true,
+                checkCycleCallback: (value, key, info) => {
+                    // console.log("checkCycleCallback",{value, key, info})
+                    info.parent[key] = circularSymbol + info.firstKeyPath
+                }
+            })
+        }
+        // 避免闭环对象(循环依赖)
+        const seen = new WeakSet()
+        return (key: string, value: any) => {
+            if (typeof value === "object" && value !== null) {
+                if (seen.has(value)) {
+                    return "[Circular]"
+                }
+                seen.add(value)
+            }
+            return value
+        }
+    }
+
+    try {
+        return JSON.stringify(target, replacerFactory(), space)
+    } catch (e) {}
+}
+
+/**
+ * 从 JSON 字符串反序列化为 Javascript 值
+ *
+ * 出错或输入 undefined 会返回 undefined
+ * @param value
+ * @return {any}
+ */
+export function fromJson(value: any, circularReappear?: boolean) {
+    try {
+        if (!circularReappear) {
+            return JSON.parse(value)
+        } else {
+            let ob = JSON.parse(value)
+            objectEach(
+                ob,
+                (value, key, info) => {
+                    if (typeof value === "string" && value.slice(0, circularSymbol.length) === circularSymbol) {
+                        let keyPath = value.slice(circularSymbol.length, value.length)
+                        // console.log("<keyPath>", keyPath)
+                        info.parent[key] = getObjectValueByPath(ob, keyPath)
+                    }
+                },
+                {
+                    needKeyPath: true,
+                    depthFirst: true
+                }
+            )
+            return ob
+        }
+    } catch (e) {}
+}
