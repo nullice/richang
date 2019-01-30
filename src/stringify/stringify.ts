@@ -1,16 +1,27 @@
 /**
  * 把 Javascript 值序列化为 JSON 字符串
  * 能处理闭环对象（循环依赖）
+ * 可以序列化闭环对象，其结果可以用 fromJson() 还原
  *
- * @param value
- * @param space
- * @param circularReappear
+ * @param value 值
+ * @param space 生成文本格式的空格
+ * @param circularReappear 闭环对象重现，记录闭环对象的循环依赖信息，以便能使用 fromJson() 还原闭环对象
  * @return {string}
  */
 import { cloneDeep, getObjectValueByPath, objectEach, setObjectValueByPath } from "../object/object"
 
 const circularSymbol = "[Circular]░="
-export function toJson(value: any, space: number, circularReappear?: boolean) {
+
+/**
+ * 把 Javascript 值转换到 JSON
+ * 出错或输入 undefined 会返回 undefined
+ * 使用 circularReappear 参数能够把使用 toJson() 记录的带闭环对象信息的 json 还原成一个闭环对象
+ *
+ * @param value
+ * @param space
+ * @param circularReappear
+ */
+export function toJson(value: any, space?: number, circularReappear?: boolean) {
     let target = circularReappear ? cloneDeep(value) : value
 
     const replacerFactory = function() {
