@@ -87,7 +87,6 @@ describe("mappingObject", () => {
         let newObject = rc.object.mappingObject(backendData, mappingRule)
         let reObject = rc.object.mappingObject(newObject, mappingRule, true)
 
-        console.log("reObject", reObject)
         expect(reObject.id).toEqual(reObject.id)
         expect(reObject.height).toEqual(undefined)
     })

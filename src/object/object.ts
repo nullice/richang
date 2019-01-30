@@ -229,11 +229,28 @@ interface IObjectEachOptions {
     // 异步遍历，允许 eachFunc 使用 async 函数，或者 Promise 实例
 }
 
+enum EachControl {
+    // 终止全部遍历
+    exit = -1,
+    // 终止当层遍历
+    break = -2,
+    // 跳到下一个遍历
+    continue = -3
+}
+
+interface IEachControls {
+    exit: EachControl.exit
+    break: EachControl.break
+    continue: EachControl.continue
+}
+
+const EachControls: IEachControls = { exit: EachControl.exit, break: EachControl.break, continue: EachControl.continue }
+
 /**
  * 对象遍历, 遍历对象的每一个键
  *
  * @param object
- * @param eachFunc 遍历函数。返回 -1 时终止遍历（ruturn）；返回 -2 时终止当层遍历（break）; 返回 -3 跳到下一个遍历（continue）
+ * @param eachFunc 遍历函数。返回 -1 时终止遍历（exit）；返回 -2 时终止当层遍历（break）; 返回 -3 跳到下一个遍历（continue）
  * @param options
  */
 export function objectEach(
@@ -250,7 +267,9 @@ export function objectEach(
             end: boolean
             // keyPath
             keyPath?: string[]
-        }
+        },
+        // 遍历控制符集
+        CONTOL: IEachControls
     ) => void | -1 | -2 | -3,
     options: IObjectEachOptions = {
         checkCycle: false, // 默认不检查循环依赖
@@ -297,16 +316,21 @@ export function objectEach(
             let hasNext = isObject(value)
 
             // 执行 each 函数
-            let control = eachFunc(value, key, {
-                parent: object,
-                deep: deep,
-                keyPath: nowKeyPath,
-                end: !hasNext
-            })
+            let control = eachFunc(
+                value,
+                key,
+                {
+                    parent: object,
+                    deep: deep,
+                    keyPath: nowKeyPath,
+                    end: !hasNext
+                },
+                EachControls
+            )
 
-            if (control === -1) return -1
-            if (control === -2) break
-            if (control === -3) continue
+            if (control === EachControl.exit) return EachControl.exit
+            if (control === EachControl.break) break
+            if (control === EachControl.continue) continue
 
             // 判断是需要遍历的项
             if (hasNext) {
@@ -337,7 +361,7 @@ export function objectEach(
                     // 深度优先遍历
                     let re = eachOnce(value, deep + 1, nowKeyPath)
                     // 提前终止
-                    if (re === -1) return -1
+                    if (re === EachControl.exit) return EachControl.exit
                     if (options.depthReboundFunc) {
                         // 执行 depthReboundFunc 函数
                         options.depthReboundFunc(value, key, {
@@ -349,14 +373,13 @@ export function objectEach(
                 } else {
                     ;(<any[]>nextEachList).push({ value, key, nowKeyPath })
                 }
-            }
-        }
+            }}
 
         // 广度优先遍历
         if (!options.depthFirst) {
             let re = (<any[]>nextEachList).every(item => eachOnce(item.value, deep + 1, item.nowKeyPath) !== -1)
             // 提前终止
-            if (!re) return -1
+            if (!re) return EachControl.exit
         }
     }
 }
@@ -423,7 +446,7 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
 
     objectEach(
         forMap,
-        (value, key, info) => {
+        (value, key, info, CONTOL) => {
             let valueIsArray = Array.isArray(value)
             if (info.end || valueIsArray) {
                 if (valueIsArray) {
@@ -438,7 +461,7 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
                         if (reverseFunc) rawValue = reverseFunc(rawValue)
                         else {
                             deleteObjectValueByPath(reverseOb, <string[]>rawKeyPath)
-                            return -2
+                            return CONTOL.break
                         }
 
                         setObjectValueByPath(reverseOb, <string[]>rawKeyPath, rawValue)
@@ -449,13 +472,13 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
                         if (func) rawValue = func(rawValue)
                         else {
                             delete info.parent[key]
-                            return -2
+                            return CONTOL.break
                         }
 
                         info.parent[key] = rawValue
                     }
 
-                    return -2
+                    return CONTOL.break
                 } else {
                     if (reverse) {
                         let rawValue = getObjectValueByPath(objectSource, <string[]>info.keyPath)
