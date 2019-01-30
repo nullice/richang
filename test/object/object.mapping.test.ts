@@ -50,7 +50,6 @@ describe("mappingObject", () => {
         expect(newObject).toEqual(imageLiteInfo)
     })
 
-
     test("mapping reverse", () => {
         let newObject = rc.object.mappingObject(imageLiteInfo, mappingRule, true)
 
@@ -65,5 +64,31 @@ describe("mappingObject", () => {
             width: 200,
             height: 53
         })
+    })
+
+    test("mapping 使用 undefined 作为处理函数", () => {
+        let mappingRule = {
+            id: "id",
+            height: ["height", undefined, (x: any) => x]
+        }
+
+        let newObject = rc.object.mappingObject(backendData, mappingRule)
+
+        expect(newObject.id).toEqual(backendData.id)
+        expect(newObject.height).toEqual(undefined)
+    })
+
+    test("mapping 使用 undefined 作为逆处理函数", () => {
+        let mappingRule = {
+            id: "id",
+            height: ["height", (x: any) => x, undefined]
+        }
+
+        let newObject = rc.object.mappingObject(backendData, mappingRule)
+        let reObject = rc.object.mappingObject(newObject, mappingRule, true)
+
+        console.log("reObject", reObject)
+        expect(reObject.id).toEqual(reObject.id)
+        expect(reObject.height).toEqual(undefined)
     })
 })

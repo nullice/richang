@@ -405,6 +405,10 @@ export interface IMappingRule {
  *     updateDate:["update_date", (x)=>{new Date(x)}, (x)=>{JSON.stringify(x)}]
  * }
  *
+ * // 如果不提供的处理函数而是 undefined，产生的新对象将没有这个键
+ * {
+ *     updateDate:["update_date", (x)=>{new Date(x)}, undefined }]
+ * }
  *
  * @param objectSource 原对象
  * @param mappingRule 映射规则
@@ -429,11 +433,25 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
 
                     if (reverse) {
                         let rawValue = getObjectValueByPath(objectSource, <string[]>info.keyPath)
+
+                        // 处理函数
                         if (reverseFunc) rawValue = reverseFunc(rawValue)
+                        else {
+                            deleteObjectValueByPath(reverseOb, <string[]>rawKeyPath)
+                            return -2
+                        }
+
                         setObjectValueByPath(reverseOb, <string[]>rawKeyPath, rawValue)
                     } else {
                         let rawValue = getObjectValueByPath(objectSource, rawKeyPath)
+
+                        // 处理函数
                         if (func) rawValue = func(rawValue)
+                        else {
+                            delete info.parent[key]
+                            return -2
+                        }
+
                         info.parent[key] = rawValue
                     }
 
