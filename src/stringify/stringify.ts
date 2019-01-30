@@ -44,9 +44,11 @@ export function toJson(value: any, space: number, circularReappear?: boolean) {
 
 /**
  * 从 JSON 字符串反序列化为 Javascript 值
- *
  * 出错或输入 undefined 会返回 undefined
+ * 使用 circularReappear 参数能够把使用 toJson() 记录的带闭环对象信息的 json 还原成一个闭环对象
+ *
  * @param value
+ * @param circularReappear 闭环对象重现
  * @return {any}
  */
 export function fromJson(value: any, circularReappear?: boolean) {
