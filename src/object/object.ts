@@ -393,6 +393,20 @@ import isEqual from "lodash/isEqual"
  */
 export let cloneDeep: (obejct: any) => any = _cloneDeep
 
+/**
+ * @example
+ * // 普通规则
+ * {
+ *     name:"user_name"
+ *     id:"info.id"
+ * }
+ *
+ * // 规则处理字符串的键名路径外还可以提供处理函数： [路径, 处理函数, 逆向处理函数]
+ * {
+ *     updateDate:["update_date", (x)=>{new Date(x)}, (x)=>{JSON.stringify(x)}]
+ * }
+ *
+ */
 export interface IMappingRule {
     [key: string]: any | [string, Function, Function] | IMappingRule
 }
