@@ -34,6 +34,7 @@ describe("mappingObject", () => {
     let mappingRule = {
         id: "id",
         name: "name",
+        updateTime: ["update_time", (x: any) => new Date(x), (x: any) => x],
         xywh: {
             x: "position_x",
             y: "position_y",
@@ -41,8 +42,7 @@ describe("mappingObject", () => {
             h: "height"
         },
         type: "type",
-        batch: "batch",
-        updateTime: ["update_time", (x: any) => new Date(x), (x: any) => x]
+        batch: "batch"
     }
 
     test("mapping", () => {

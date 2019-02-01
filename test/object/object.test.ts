@@ -103,6 +103,17 @@ describe("setObjectValueByPath()", () => {
         expect(rc.object.setObjectValueByPath(obj, "b.c.d", 112, true)).toBeTruthy()
         expect(obj).toEqual({ a: 123, b: { c: { d: 112 } } })
     })
+
+    test("overwrite", () => {
+        let ob: any = {}
+        rc.object.setObjectValueByPath(ob, "name", "name", true)
+        rc.object.setObjectValueByPath(ob, "a.b.c", 123, true)
+        console.log("ob", ob)
+        expect(ob.name).toEqual("name")
+        expect(typeof ob.a).toEqual("object")
+        expect(typeof ob.a.b).toEqual("object")
+        expect(ob.a.b.c).toEqual(123)
+    })
 })
 
 describe("treeEach()", () => {
@@ -429,8 +440,6 @@ describe("treeEach()", () => {
             },
             { depthFirst: true }
         )
-
-
 
         expect(readeds["d"]).toBeTruthy()
         expect(readeds["d2"]).toBeTruthy()

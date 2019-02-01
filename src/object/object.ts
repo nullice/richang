@@ -373,7 +373,8 @@ export function objectEach(
                 } else {
                     ;(<any[]>nextEachList).push({ value, key, nowKeyPath })
                 }
-            }}
+            }
+        }
 
         // 广度优先遍历
         if (!options.depthFirst) {
@@ -440,15 +441,14 @@ export interface IMappingRule {
  */
 
 export function mappingObject(objectSource: any, mappingRule: IMappingRule, reverse?: boolean) {
-    let forMap = cloneDeep(mappingRule)
-    let reverseOb: any
-    if (reverse) reverseOb = {}
-
+    let newObject: any = {}
     objectEach(
-        forMap,
+        mappingRule,
         (value, key, info, CONTOL) => {
             let valueIsArray = Array.isArray(value)
+
             if (info.end || valueIsArray) {
+                // 带映射函数 [val, func, func]
                 if (valueIsArray) {
                     let rawKeyPath = value[0]
                     let func = value[1]
@@ -458,43 +458,44 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
                         let rawValue = getObjectValueByPath(objectSource, <string[]>info.keyPath)
 
                         // 处理函数
-                        if (reverseFunc) rawValue = reverseFunc(rawValue)
-                        else {
-                            deleteObjectValueByPath(reverseOb, <string[]>rawKeyPath)
-                            return CONTOL.break
+                        if (reverseFunc) {
+                            rawValue = reverseFunc(rawValue)
+                        } else {
+                            return CONTOL.continue
                         }
-
-                        setObjectValueByPath(reverseOb, <string[]>rawKeyPath, rawValue)
+                        setObjectValueByPath(newObject, <string[]>rawKeyPath, rawValue, true)
                     } else {
                         let rawValue = getObjectValueByPath(objectSource, rawKeyPath)
 
                         // 处理函数
-                        if (func) rawValue = func(rawValue)
-                        else {
-                            delete info.parent[key]
-                            return CONTOL.break
+                        if (func) {
+                            rawValue = func(rawValue)
+                        } else {
+                            return CONTOL.continue
                         }
-
-                        info.parent[key] = rawValue
+                        setObjectValueByPath(newObject, <string[]>info.keyPath, rawValue, true)
                     }
 
-                    return CONTOL.break
-                } else {
+                    return CONTOL.continue
+                }
+                // 直接映射
+                else {
                     if (reverse) {
                         let rawValue = getObjectValueByPath(objectSource, <string[]>info.keyPath)
-                        setObjectValueByPath(reverseOb, value, rawValue)
+                        setObjectValueByPath(newObject, value, rawValue, true)
                     } else {
-                        info.parent[key] = getObjectValueByPath(objectSource, value)
+                        setObjectValueByPath(
+                            newObject,
+                            <string[]>info.keyPath,
+                            getObjectValueByPath(objectSource, value),
+                            true
+                        )
                     }
                 }
             }
         },
-        { needKeyPath: reverse }
+        { needKeyPath: true }
     )
 
-    if (reverse) {
-        return reverseOb
-    } else {
-        return forMap
-    }
+    return newObject
 }
