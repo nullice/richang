@@ -513,3 +513,27 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
 
     return newObject
 }
+
+import merge from "lodash/merge"
+
+
+/**
+ * 深度合并多个对象， 相当于递归的 Object.assign()
+ *
+ * @param object
+ * @param [sources]
+ * @returns Returns `object`.
+ * @example
+ *
+ * let users = {
+ *   'data': [{ 'user': 'barney' }, { 'user': 'fred' }]
+ * };
+ *
+ * let ages = {
+ *   'data': [{ 'age': 36 }, { 'age': 40 }]
+ * };
+ *
+ * assignDeep(users, ages);
+ * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
+ */
+export const assignDeep = merge
