@@ -79,7 +79,7 @@ describe("toJson", () => {
         }
 
         let re = <any>rc.stringify.toJson(ob, 4, true)
-        console.log(re)
+
         expect(JSON.parse(re)).toEqual({
             a: "123",
             obC: {
