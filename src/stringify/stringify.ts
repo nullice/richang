@@ -20,6 +20,7 @@ const circularSymbol = "[Circular]░="
  * @param value
  * @param space
  * @param circularReappear
+ * @return {string}
  */
 export function toJson(value: any, space?: number, circularReappear?: boolean) {
     let target = circularReappear ? cloneDeep(value) : value
