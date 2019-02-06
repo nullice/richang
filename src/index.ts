@@ -5,6 +5,8 @@ import * as geometry from "./geometry/geometry"
 import * as object from "./object/object"
 import * as gob from "./gob/gob"
 import * as url from "./url/url"
+import * as cache from "./cache/cache"
+import * as func from "./function/function"
 
 let Richang = {
     shuffle,
@@ -12,6 +14,9 @@ let Richang = {
     object,
     geometry,
     stringify,
-    url
+    url,
+    func,
+    cache,
+    gob
 }
-export { Richang, shuffle, event, geometry, object, stringify, url, gob }
+export { Richang, shuffle, event, geometry, object, stringify, url, cache, func, gob }
