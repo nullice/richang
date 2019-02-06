@@ -3,6 +3,7 @@ import * as event from "./event/event"
 import * as stringify from "./stringify/stringify"
 import * as geometry from "./geometry/geometry"
 import * as object from "./object/object"
+import * as gob from "./gob/gob"
 
 let Richang = {
     shuffle,
@@ -11,4 +12,4 @@ let Richang = {
     geometry,
     stringify
 }
-export { Richang, shuffle, event, geometry, object, stringify }
+export { Richang, shuffle, event, geometry, object, stringify,gob }
