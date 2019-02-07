@@ -10,7 +10,8 @@
         "build:dll": "webpack --mode=production --config=webpack.dll.config.js",
         "test": "jest",
         "test:coverage": "jest --coverage",
-        "copy-to-windows": "cpy  --parents  ./src ../../../THE-Lanhu/Lanhu-WebUniverse/packages/lanhu-core/src/Utils/_modules/richang && cpy  --parents  ./test ../../../THE-Lanhu/Lanhu-WebUniverse/packages/lanhu-core/src/Utils/_modules/richang"
+        "copy-to-windows": "cpy  --parents  ./src ../../../THE-Lanhu/Lanhu-WebUniverse/packages/lanhu-core/src/Utils/_modules/richang && cpy  --parents  ./test ../../../THE-Lanhu/Lanhu-WebUniverse/packages/lanhu-core/src/Utils/_modules/richang",
+        "copy-to-macos": "cpy  --parents  ./src ../../../../LANHU/Lanhu-WebUniverse/packages/lanhu-core/src/Utils/_modules/richang && cpy  --parents  ./test ../../../../LANHU/Lanhu-WebUniverse/packages/lanhu-core/src/Utils/_modules/richang"
     },
     "author": "ui@nullice.com",
     "license": "ISC",

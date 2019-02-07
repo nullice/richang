@@ -61,4 +61,23 @@ describe("KeyValueCache", () => {
         expect(cache.get(ob, { timeout: 111 })).toEqual(undefined)
         expect(cache.has(ob, { timeout: 111 })).toBeFalsy()
     })
+
+    test("timeout 过期不删除（无默认时间）", async () => {
+        let cache = new rc.cache.KeyValueCache({ disablRemoveTimeoutCache: true })
+        let ob = { ob: 123 }
+
+        cache.set(ob, ob)
+        expect(cache.get(ob)).toEqual(ob)
+
+        await sleep(200)
+
+        expect(cache.get(ob)).toEqual(ob)
+        expect(cache.has(ob)).toBeTruthy()
+
+        expect(cache.get(ob, { timeout: 500 })).toEqual(ob)
+        expect(cache.has(ob, { timeout: 500 })).toBeTruthy()
+
+        expect(cache.get(ob, { timeout: 111 })).toEqual(undefined)
+        expect(cache.has(ob, { timeout: 111 })).toBeFalsy()
+    })
 })
