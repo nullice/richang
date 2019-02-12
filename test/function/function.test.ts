@@ -126,4 +126,29 @@ describe("cacheable", () => {
         expect(re2).toEqual("222")
         expect(hiTime).toEqual(2)
     })
+
+    test("并行异步", async () => {
+        let hiTime = 0
+        async function roll(str: string) {
+            await sleep(100)
+            hiTime++
+            return Math.random()
+        }
+
+        let hi2 = rc.func.cacheable(roll, 500)
+        let arr: any = []
+        async function func() {
+            let re = await hi2()
+            arr.push(re)
+        }
+
+        func()
+        func()
+
+        await sleep(300)
+        expect(arr.length).toEqual(2)
+        expect(hiTime).toEqual(1)
+
+        expect(arr[0]).toEqual(arr[1])
+    })
 })
