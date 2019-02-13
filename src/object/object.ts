@@ -30,10 +30,12 @@ import lodash_merge from "lodash/merge"
 import { objectEach as _objectEach } from "./objectEach"
 import { objectFilter as _objectFilter } from "./objectFilter"
 import { objectRemove as _objectRemove } from "./objectFilter"
+import { objectMask as _objectMask } from "./objectFilter"
 
 export const objectFilter = _objectFilter
 export const objectEach = _objectEach
 export const objectRemove = _objectRemove
+export const objectMask = _objectMask
 
 /**
  * 对象是否为空
@@ -335,3 +337,6 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
  * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
  */
 export const assignDeep = lodash_merge
+
+
+

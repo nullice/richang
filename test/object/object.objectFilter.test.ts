@@ -54,7 +54,7 @@ describe("objectFilter", () => {
 
     test("过滤多层对象（变异）", () => {
         let ob = newObj()
-        let re = rc.object.objectFilter(ob, value => value == undefined|| rc.object.isObject(value), true)
+        let re = rc.object.objectFilter(ob, value => value == undefined || rc.object.isObject(value), true)
 
         expect(re).toEqual({
             u: undefined,
@@ -91,5 +91,37 @@ describe("objectFilter", () => {
         expect(ob.hasOwnProperty("u")).toBeFalsy()
         expect(ob.ss.hasOwnProperty("u")).toBeFalsy()
         expect(ob.ss.i0).toBe(2)
+    })
+})
+
+describe("objectMask", () => {
+    test("移除普通对象（变异）", () => {
+        let mask = {
+            i1: 1,
+            ss: {
+                i0: 1
+            }
+        }
+
+        let ob = newObj()
+        let re = rc.object.objectMask(ob, mask, true)
+        expect(re).toBe(ob)
+        expect(re).toEqual({ i1: 123, ss: { i0: 2 } })
+    })
+
+
+    test("移除普通对象（非变异）", () => {
+        let mask = {
+            i1: 1,
+            ss: {
+                i0: 1
+            }
+        }
+
+        let ob = newObj()
+        let re = rc.object.objectMask(ob, mask, false)
+        // console.log("re", re)
+        expect(re).not.toBe(ob)
+        expect(re).toEqual({ i1: 123, ss: { i0: 2 } })
     })
 })

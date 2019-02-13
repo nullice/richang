@@ -1,5 +1,5 @@
 import { IObjectEachOptions, objectEach } from "./objectEach"
-import { isObject, setObjectValueByPath } from "./object"
+import { cloneDeep, getObjectValueByPath, isObject, keyPathEqual, setObjectValueByPath } from "./object"
 
 /**
  * 过滤一个对象，提供过滤函数遍历对象每一个属性（会递归子对象），过滤函数返回真属性则保留。
@@ -73,6 +73,16 @@ export function objectFilter(
     }
 }
 
+
+
+
+
+
+
+
+
+
+
 /**
  * 从对象中删除拥有指定值的属性
  * @param obejct 对象
@@ -80,5 +90,55 @@ export function objectFilter(
  * @param mutation  是否修改对象本身。默认为否会返回新对象
  */
 export function objectRemove(obejct: any, value: any, mutation = false) {
-    return objectFilter(obejct, v => !(value === v), mutation)
+    return objectFilter(obejct, v => !(value === v), mutation, {
+        checkCycle: true
+    })
+}
+
+/**
+ * 对象蒙版，把一个对象根据蒙版对象裁剪属性。源对象会变成和蒙版对象一样的结构。
+ *
+ *@example
+ *
+ * let obj ={a:5, b:5, c:{c1: 4, c2:4}}
+ * let mask = {a:1, c:{c1:1}}
+ * objectMask(obj, mask) // =>  {a:5, c:{c1:4}}
+ *
+ *
+ * @param obejct 源对象
+ * @param maskObject 蒙版对象
+ * @param mutation 是否修改对象本身。默认为否会返回新对象
+ * @return {any}
+ */
+export function objectMask(obejct: any, maskObject: any, mutation = false) {
+    if (mutation) {
+        return objectFilter(
+            obejct,
+            (v, key, info) => {
+                let maskHas = getObjectValueByPath(maskObject, <string[]>info.keyPath)
+                console.log(">", info.keyPath, maskHas)
+                return isObject(v) || maskHas !== undefined
+            },
+            true,
+            {
+                needKeyPath: true,
+                checkCycle: true
+            }
+        )
+    } else {
+        let newOb = cloneDeep(maskObject)
+        objectEach(
+            newOb,
+            (value, key, info, CONTOL) => {
+                if (info.end) {
+                    info.parent[key] = getObjectValueByPath(obejct, <string[]>info.keyPath)
+                }
+            },
+            {
+                needKeyPath: true,
+                checkCycle: true
+            }
+        )
+        return newOb
+    }
 }
