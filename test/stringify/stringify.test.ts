@@ -114,7 +114,7 @@ describe("toJson", () => {
         }
 
         let re = <any>rc.stringify.toJson(ob, 0, true)
-        console.log(re)
+        // console.log(re)
         // expect(JSON.parse(re)).toEqual(null)
     })
 })
