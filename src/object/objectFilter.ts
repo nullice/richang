@@ -73,16 +73,6 @@ export function objectFilter(
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 /**
  * 从对象中删除拥有指定值的属性
  * @param obejct 对象
@@ -116,7 +106,7 @@ export function objectMask(obejct: any, maskObject: any, mutation = false) {
             obejct,
             (v, key, info) => {
                 let maskHas = getObjectValueByPath(maskObject, <string[]>info.keyPath)
-                console.log(">", info.keyPath, maskHas)
+                // console.log(">", info.keyPath, maskHas)
                 return isObject(v) || maskHas !== undefined
             },
             true,
