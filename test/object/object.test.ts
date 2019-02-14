@@ -108,7 +108,7 @@ describe("setObjectValueByPath()", () => {
         let ob: any = {}
         rc.object.setObjectValueByPath(ob, "name", "name", true)
         rc.object.setObjectValueByPath(ob, "a.b.c", 123, true)
-        console.log("ob", ob)
+        // console.log("ob", ob)
         expect(ob.name).toEqual("name")
         expect(typeof ob.a).toEqual("object")
         expect(typeof ob.a.b).toEqual("object")
