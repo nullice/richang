@@ -9,6 +9,7 @@ import * as cache from "./cache/cache"
 import * as func from "./function/function"
 import * as async from "./async/async"
 import * as time from "./time/time"
+import * as number from "./number/number"
 
 let Richang = {
     shuffle,
@@ -21,6 +22,7 @@ let Richang = {
     cache,
     async,
     time,
+    number,
     gob
 }
-export { Richang, shuffle, event, geometry, object, stringify, url, cache, async, func, time, gob }
+export { Richang, shuffle, event, geometry, object, stringify, url, cache, async, func, time, number, gob }
