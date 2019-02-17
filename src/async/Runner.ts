@@ -1,4 +1,3 @@
-import { stopwatch } from "../time/time"
 import { EventHub } from "../event/event"
 
 export interface IRunnerTask {
@@ -29,7 +28,8 @@ interface IRunnerOptions {
 
 enum RunnerEvent {
     taskStart = "taskStart",
-    taskFinal = "taskFinal"
+    taskFinal = "taskFinal",
+    progress = "progress"
 }
 
 /**
@@ -50,6 +50,9 @@ export class Runner {
 
     // 同时运行任务数
     track!: number
+
+    // 任务总数
+    taskLength = 0
 
     // 被暂停
     isPause: boolean = false
@@ -78,23 +81,28 @@ export class Runner {
 
     /**
      * 运行多个异步函数（或非异步），可以控制同时运行任务的数量、超时时间、暂停、监听进度等操作
-     * @param track
-     * @param taskFuncs
-     * @param options
+     *
+     * @example
+     * let runner = new Runner([ [sleep, 50], [sleep, 70] , [sleep, 200]], 2, { timeout: 500 })
+     * runner.onProgress((precent, info, runner)=>{ console.log( precent +"%")})
+     * await runner.run()
+     *
+     * @param taskFuncs 任务函数
+     * @param track 同时运行任务数
+     * @param options 选项
+     * @param options.timeout 超时时间（单个任务）
      */
     constructor(
-        taskFuncs: Function[] | IRunnerFunc[] | RunnerFuncSort[],
+        taskFuncs?: Function[] | IRunnerFunc[] | RunnerFuncSort[],
         track: number = 3,
         options?: {
             // 超时时间
             timeout?: number
         }
     ) {
-        this.add(taskFuncs)
+        if (taskFuncs) this.add(taskFuncs)
         this.track = track
         Object.assign(this.options, options)
-
-        this.eventHub = new EventHub()
     }
 
     /**
@@ -103,8 +111,11 @@ export class Runner {
      * @param callback
      * @returns {() => void}
      */
-    onTaskStart(callback: (info: { task: IRunnerTask; runner: Runner }) => void) {
-        return this.eventHub.on(RunnerEvent.taskStart, callback)
+    onTaskStart(callback: (task: IRunnerTask, runner: Runner) => void) {
+        this.initEvent()
+        return this.eventHub.on(RunnerEvent.taskStart, (info: { task: IRunnerTask; runner: Runner }) => {
+            callback(info.task, info.runner)
+        })
     }
 
     /**
@@ -113,12 +124,46 @@ export class Runner {
      * @param callback
      * @returns {() => void}
      */
-    onTaskFinal(callback: (info: { task: IRunnerTask; runner: Runner }) => void) {
-        return this.eventHub.on(RunnerEvent.taskFinal, callback)
+    onTaskFinal(callback: (task: IRunnerTask, runner: Runner) => void) {
+        this.initEvent()
+        return this.eventHub.on(RunnerEvent.taskFinal, (info: { task: IRunnerTask; runner: Runner }) => {
+            callback(info.task, info.runner)
+        })
     }
 
     /**
-     * 运行
+     * 监听任务进度
+     * @example
+     * runner.onProgress((precent: number, info: { current: number; max: number }, runner: Runner)=>{
+     *    precent      // 99 （当前进度百分比）
+     *    info.current // 990（当前任务数）
+     *    info.max     // 1000（最大任务数）
+     * })
+     *
+     * @param callback
+     * @return {() => void}
+     */
+    onProgress(callback: (precent: number, info: { current: number; max: number }, runner: Runner) => void) {
+        this.initEvent()
+        return this.eventHub.on(RunnerEvent.progress, (info: { task: IRunnerTask; runner: Runner }) => {
+            let current = info.runner.finally.length
+            let max = info.runner.taskLength
+            let precent = Math.round((current / max) * 100)
+            callback(precent, { current, max }, info.runner)
+        })
+    }
+
+    /**
+     * 初始化事件，只有当需要使用事件功能时才初始化
+     */
+    private initEvent() {
+        if (this.eventHub === undefined) {
+            this.eventHub = new EventHub()
+        }
+    }
+
+    /**
+     * 运行任务池中的任务
      * @return {Promise<any>}
      */
     run() {
@@ -156,9 +201,11 @@ export class Runner {
         if (Array.isArray(taskFunc)) {
             ;(<any[]>taskFunc).forEach(x => {
                 this.taskPool.push(once(<Function | IRunnerFunc>x))
+                this.taskLength++
             })
         } else {
             this.taskPool.push(once(<Function | IRunnerFunc>taskFunc))
+            this.taskLength++
         }
 
         function once(func: Function | IRunnerFunc | RunnerFuncSort): IRunnerFunc {
@@ -184,6 +231,7 @@ export class Runner {
         this.failed = []
         this.finally = []
         this.standby = []
+        this.taskLength = 0
         this.runReject = undefined
         this.runReject = undefined
         this.isPause = false
@@ -216,7 +264,10 @@ export class Runner {
             }
 
             try {
-                this.eventHub.emit(RunnerEvent.taskStart, { task: runnerTask, runner: this })
+                if (this.eventHub) {
+                    this.eventHub.emit(RunnerEvent.taskStart, { task: runnerTask, runner: this })
+                }
+
                 await runnerFunc.func.apply(runnerFunc.thisArgs, runnerFunc.args)
                 if (isTimeout) return
                 runnerTask.isFailed = false
@@ -260,12 +311,14 @@ export class Runner {
                     this.success.push(task)
                 }
 
-                this.eventHub.emit(RunnerEvent.taskFinal, { task, runner: this })
+                if (this.eventHub) {
+                    this.eventHub.emit(RunnerEvent.taskFinal, { task, runner: this })
+                    this.eventHub.emit(RunnerEvent.progress, { task, runner: this })
+                }
             }
         }
 
-
-        // 暂停检查（为了事件可能修改暂停）
+        // 暂停检查（为了事件可能修改暂停 ）
         if (this.isPause) return
 
         // 如果任务池有任务，且跑道未满，把任务放入跑道

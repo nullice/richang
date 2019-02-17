@@ -32,7 +32,7 @@ describe("Runner 流程", async () => {
         let runner = new Runner(tasks, 1)
         await runner.run()
         let t = st()
-        expect(inRange(t, [350, 450])).toBeTruthy()
+        expect(inRange(t, [350, 700])).toBeTruthy()
     })
 
     test("耗时估计( track 2)", async () => {
@@ -41,7 +41,7 @@ describe("Runner 流程", async () => {
         let runner = new Runner(tasks, 2)
         await runner.run()
         let t = st()
-        expect(inRange(t, [250, 350])).toBeTruthy()
+        expect(inRange(t, [250, 500])).toBeTruthy()
     })
 })
 
@@ -92,15 +92,16 @@ describe("Runner 执行任务", async () => {
         expect(runner.failed.length).toBe(2)
         expect(runner.success.length).toBe(2)
         expect(runner.taskPool.length).toBe(0)
-        expect(inRange(t, [80, 120])).toBeTruthy()
+        expect(inRange(t, [80, 160])).toBeTruthy()
     })
 
     test("暂停", async () => {
         let { tasks, log } = newTestKit()
         let runner = new Runner(tasks, 3)
 
+
         // 当 2 个任务时暂停
-        runner.onTaskFinal((info: { task: IRunnerTask; runner: Runner }) => {
+        runner.onTaskFinal((task: IRunnerTask, runner: Runner) => {
             if (runner.finally.length == 2) {
                 runner.pause()
             }
@@ -118,6 +119,28 @@ describe("Runner 执行任务", async () => {
         expect(runner.isRunning).toBeFalsy()
         expect(runner.isPause).toBeFalsy()
         expect(runner.success.length).toBe(4)
+    })
 
+    test("进度", async () => {
+        let { tasks, log } = newTestKit()
+        let runner = new Runner(tasks, 3)
+
+        let pLog: any[] = []
+
+        // 当 2 个任务时暂停
+        runner.onProgress((precent, info, runner) => {
+            pLog.push({ precent, info })
+        })
+
+        runner.run()
+        await sleep(300)
+
+        expect(pLog.length).toBe(4)
+        expect(pLog).toEqual([
+            { precent: 25, info: { current: 1, max: 4 } },
+            { precent: 50, info: { current: 2, max: 4 } },
+            { precent: 75, info: { current: 3, max: 4 } },
+            { precent: 100, info: { current: 4, max: 4 } }
+        ])
     })
 })
