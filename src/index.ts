@@ -10,6 +10,8 @@ import * as func from "./function/function"
 import * as async from "./async/async"
 import * as time from "./time/time"
 import * as number from "./number/number"
+import * as image from "./image/image"
+import * as binary from "./binary/binary"
 
 let Richang = {
     shuffle,
@@ -23,6 +25,24 @@ let Richang = {
     async,
     time,
     number,
+    image,
+    binary,
     gob
 }
-export { Richang, shuffle, event, geometry, object, stringify, url, cache, async, func, time, number, gob }
+export {
+    Richang,
+    shuffle,
+    event,
+    geometry,
+    object,
+    stringify,
+    url,
+    cache,
+    async,
+    func,
+    time,
+    number,
+    image,
+    binary,
+    gob
+}
