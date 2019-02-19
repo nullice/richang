@@ -11,6 +11,8 @@ import * as async from "./async/async"
 import * as time from "./time/time"
 import * as number from "./number/number"
 import * as image from "./image/image"
+
+
 import * as binary from "./binary/binary"
 
 let Richang = {

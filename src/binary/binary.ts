@@ -23,7 +23,7 @@ export function uint8ArrayToDataURL(unit8Array: Uint8Array | Uint8ClampedArray, 
  * @param file
  * @return {Promise<any>}
  */
-export function fileToArrayBuffer(file: File | Blob) {
+export function fileToArrayBuffer(file: File | Blob): Promise<ArrayBuffer> {
     return new Promise((resolve, reject) => {
         let fileReader = new FileReader()
         fileReader.addEventListener("load", event => {
@@ -42,6 +42,24 @@ export function fileToArrayBuffer(file: File | Blob) {
 
         fileReader.readAsArrayBuffer(file)
     })
+}
+
+/**
+ *  把一个 blob 转换为 ArrayBuffer
+ * @param blob
+ * @return {Promise<ArrayBuffer>}
+ */
+export function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+    return new Response(blob).arrayBuffer()
+}
+
+/**
+ * 把一个 blob 转换为 text
+ * @param blob
+ * @return {Promise<string>}
+ */
+export function blobToText(blob: Blob): Promise<string> {
+    return new Response(blob).text()
 }
 
 /**
@@ -141,4 +159,15 @@ export function toBlobAsync(data: ArrayBuffer | string, type: string = "") {
     } else {
         return new Blob([data], { type: type })
     }
+}
+
+/**
+ * 判断一个对象是否是 Blob
+ * @param data
+ */
+export function isBlob(data: any) {
+    if (typeof Blob === "undefined") {
+        return false
+    }
+    return data instanceof Blob || Object.prototype.toString.call(data) === "[object Blob]"
 }

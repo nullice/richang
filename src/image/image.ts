@@ -4,7 +4,13 @@
  * @returns {Promise<ImageData>}
  */
 import { async } from "../index"
+import { blobToArrayBuffer, isBlob } from "../binary/binary"
 
+/**
+ * 根据 URL 获取一张图片，返回其 ImageData
+ * @param url
+ * @return {Promise<ImageData>}
+ */
 export async function fetchImageAsImageData(url: string) {
     const img = await fetchImage(url)
     const canvas = document.createElement("canvas")
@@ -13,11 +19,12 @@ export async function fetchImageAsImageData(url: string) {
     const ctx = canvas.getContext("2d")
     if (ctx === null) throw new Error("[fetchImage] canvas.getContext;")
     ctx.drawImage(img, 0, 0)
-    return ctx.getImageData(0, 0, img.width, img.height)
+    let data = ctx.getImageData(0, 0, img.width, img.height)
+    return data
 }
 
 /**
- * 从 url 载入一张图片，返回 Image 对象
+ * 根据 URL 获取一张图片，返回 Image（HTMLImageElement）对象
  * @param url
  */
 export async function fetchImage(url: string): Promise<HTMLImageElement> {
@@ -79,17 +86,54 @@ export async function imageEncode(data: ImageData, type = "image/png", quality?:
     }
 
     if (!blob) throw Error("Encoding failed")
-    ;(canvas as any) = null
-    ;(ctx as any) = null
     return blob
 }
 
-export async function imageDecode(img: string | Blob) {
+/**
+ * 图片解码把一个浏览器支持格式的图片 Blob 解码成 ImageData
+ * @param imageBlob
+ * @return {Promise<ImageData>}
+ */
+export async function imageDecode(imageBlob: Blob) {
     let imageDate: ImageData
-    if (typeof img === "string") {
-        imageDate = await fetchImageAsImageData(img)
-    } else {
+    let canvas = await toCanvas(imageBlob)
+    let ctx = canvas.getContext("2d")
+    if (ctx === null) throw new Error("[fetchImage] canvas.getContext;")
+    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+
+    return imageData
+}
+
+/**
+ * 检查一个图片 Blob 的格式，返回 MimeType
+ * @param blob
+ * @return {Promise<any>}
+ */
+export async function checkImageType(blob: Blob) {
+    const magicNumberToMimeType = new Map<RegExp, string>([
+        [/^%PDF-/, "application/pdf"],
+        [/^GIF87a/, "image/gif"],
+        [/^GIF89a/, "image/gif"],
+        [/^\x89PNG\x0D\x0A\x1A\x0A/, "image/png"],
+        [/^\xFF\xD8\xFF/, "image/jpeg"],
+        [/^BM/, "image/bmp"],
+        [/^I I/, "image/tiff"],
+        [/^II*/, "image/tiff"],
+        [/^MM\x00*/, "image/tiff"],
+        [/^RIFF....WEBPVP8[LX ]/, "image/webp"]
+    ])
+
+    const head = await blobToArrayBuffer(blob.slice(0, 16))
+    const firstChunkString = Array.from(new Uint8Array(head))
+        .map(v => String.fromCodePoint(v))
+        .join("")
+
+    for (const [detector, mimeType] of magicNumberToMimeType) {
+        if (detector.test(firstChunkString)) {
+            return mimeType
+        }
     }
+    return ""
 }
 
 /**
@@ -107,67 +151,46 @@ export async function blobToImg(blob: Blob): Promise<HTMLImageElement> {
     }
 }
 
-interface ICropOptions {
-    // 设置画布宽度
-    width?: number
-    // 设置画布高度
-    height?: number
-    // 图像来源 X
-    sx?: number
-    // 图像来源 Y
-    sy?: number
-    // 图像来源 W
-    sw?: number
-    // 图像来源 H
-    sh?: number
-    // 绘制在画布中的 X
-    dx?: number
-    // 绘制在画布中的 Y
-    dy?: number
-    // 绘制在画布中的 W
-    dw?: number
-    // 绘制在画布中的 H
-    dh?: number
-}
-
 /**
  * 把任何可绘制内容放到一个 canvas 里
- * @return {ImageData}
- * @param drawable 可绘制内容
+ * @return {Promise<HTMLCanvasElement>}
  * @param canvas 指定 canvas ，默认会创建一个新 canvas
+ * @param inDrawable
  */
 export async function toCanvas(
-    drawable: string | Blob | HTMLImageElement | ImageData | ImageBitmap,
-    canvas?: HTMLCanvasElement,
-    cropOptions?: ICropOptions
+    inDrawable: string | Blob | HTMLImageElement | ImageData | ImageBitmap,
+    canvas?: HTMLCanvasElement
 ) {
     if (!canvas) canvas = document.createElement("canvas")
-
-    // 如果字符串就当作链接处理
-    if (typeof drawable === "string") {
-        drawable = await fetchImage(drawable)
-    }
-
-    // const {
-    //     width = drawable.width,
-    //     height = drawable.height,
-    //     sx = 0,
-    //     sy = 0,
-    //     sw = drawable.width,
-    //     sh = drawable.height,
-    // } = opts;
-
-    let canDraw = false
-    if (canDraw) {
-    }
-
-    canvas.width = width
-    canvas.height = height
-    // Draw image onto canvas
     const ctx = canvas.getContext("2d")
-    if (!ctx) throw new Error("Could not create canvas context")
-    ctx.drawImage(drawable, sx, sy, sw, sh, 0, 0, width, height)
-    return ctx.getImageData(0, 0, width, height)
+    if (ctx === null) throw new Error("[fetchImage] canvas.getContext;")
+
+    let drawable: HTMLImageElement | ImageData | ImageBitmap
+
+    // 如果字符串就当作链接处理，转化为 Image
+    if (typeof inDrawable === "string") {
+        drawable = await fetchImage(inDrawable)
+    }
+    // 如果 Blob 就转化为 Image 处理
+    else if (isBlob(inDrawable)) {
+        drawable = await blobToImg(<Blob>inDrawable)
+    } else {
+        drawable = <HTMLImageElement | ImageData | ImageBitmap>inDrawable
+    }
+    // 设置 canvas 高度
+    canvas.width = drawable.width
+    canvas.height = drawable.height
+
+    if (isImageData(drawable)) {
+        /**
+         *
+         * @type {void}
+         */
+        ctx.putImageData(<ImageData>drawable, 0, 0)
+    } else {
+        ctx.drawImage(<HTMLImageElement | ImageBitmap>drawable, 0, 0)
+    }
+    return canvas
 }
 
 /**
