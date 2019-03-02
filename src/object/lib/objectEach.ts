@@ -1,4 +1,4 @@
-import { isObject } from "./object"
+import { isObject } from "../object"
 
 export interface IObjectEachOptions {
     // 遍历时深度优先，为 false 时为广度优先

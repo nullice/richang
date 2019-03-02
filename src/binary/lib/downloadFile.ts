@@ -1,4 +1,4 @@
-import { clickElement } from "../dom/dom"
+import { clickElement } from "../../dom/dom"
 
 /**
  * 调用一个浏览器下载一个 File 或者 Blob

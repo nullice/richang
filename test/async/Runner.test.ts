@@ -1,4 +1,4 @@
-import { Runner, IRunnerTask } from "../../src/async/Runner"
+import { Runner, IRunnerTask } from "../../src/async/lib/Runner"
 import { sleep } from "../../src/async/async"
 import { stopwatch } from "../../src/time/time"
 import { toJson } from "../../src/stringify/stringify"

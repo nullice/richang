@@ -21,6 +21,6 @@
 //             nullice.com
 //            license: MIT
 
-import * as rect from "./rect"
+import * as rect from "./lib/rect"
 
 export { rect }

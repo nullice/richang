@@ -10,5 +10,5 @@ export async function sleep(ms: number) {
     })
 }
 
-import { Runner as _Runner } from "./Runner"
+import { Runner as _Runner } from "./lib/Runner"
 export const Runner = _Runner

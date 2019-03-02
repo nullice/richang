@@ -1,8 +1,17 @@
-import { KeyValueCache } from "../cache/cache"
-import { toJson } from "../stringify/stringify"
+import { KeyValueCache } from "../../cache/cache"
+import { toJson } from "../../stringify/stringify"
 
 let cache_funcs!: KeyValueCache<Function, KeyValueCache<string, any>>
 
+
+/**
+ * 执行一个函数（类似 Function.apply），会记录缓存，相同函数相同参数多次执行会执行返回缓存结果，可以指定缓存过期时间
+ * @param func
+ * @param thisArg
+ * @param args
+ * @param cacheOptions
+ * @return {any}
+ */
 export function applyWithCache(
     func: Function,
     thisArg: any,

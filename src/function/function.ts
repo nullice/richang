@@ -1,4 +1,4 @@
-import { applyWithCache as _applyWithCache } from "./applyWithCache"
+import { applyWithCache as _applyWithCache } from "./lib/applyWithCache"
 export const applyWithCache = _applyWithCache
 
 /**

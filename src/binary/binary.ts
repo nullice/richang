@@ -1,7 +1,7 @@
-import { downloadFile as _downloadFile } from "./downloadFile"
+import { downloadFile as _downloadFile } from "./lib/downloadFile"
 export const downloadFile = _downloadFile
 
-import { getReadableByteSize as _getReadableByteSize } from "./helpers"
+import { getReadableByteSize as _getReadableByteSize } from "./lib/helpers"
 export const getReadableByteSize = _getReadableByteSize
 
 // todo:测试待写

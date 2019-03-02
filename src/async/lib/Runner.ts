@@ -1,4 +1,4 @@
-import { EventHub } from "../event/event"
+import { EventHub } from "../../event/event"
 
 export interface IRunnerTask {
     id: number

@@ -1,5 +1,5 @@
 import { IObjectEachOptions, objectEach } from "./objectEach"
-import { cloneDeep, getObjectValueByPath, isObject, keyPathEqual, setObjectValueByPath } from "./object"
+import { cloneDeep, getObjectValueByPath, isObject, keyPathEqual, setObjectValueByPath } from "../object"
 
 /**
  * 过滤一个对象，提供过滤函数遍历对象每一个属性（会递归子对象），过滤函数返回真属性则保留。

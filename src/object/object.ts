@@ -27,15 +27,28 @@
 
 import lodash_merge from "lodash/merge"
 
-import { objectEach as _objectEach } from "./objectEach"
-import { objectFilter as _objectFilter } from "./objectFilter"
-import { objectRemove as _objectRemove } from "./objectFilter"
-import { objectMask as _objectMask } from "./objectFilter"
+import { objectEach as _objectEach } from "./lib/objectEach"
+import { objectFilter as _objectFilter } from "./lib/objectFilter"
+import { objectRemove as _objectRemove } from "./lib/objectFilter"
+import { objectMask as _objectMask } from "./lib/objectFilter"
+import _cloneDeep from "lodash/cloneDeep"
+import _isEqual from "lodash/isEqual"
+import _objectHash from "object-hash"
 
 export const objectFilter = _objectFilter
 export const objectEach = _objectEach
 export const objectRemove = _objectRemove
 export const objectMask = _objectMask
+export const isEqual = _isEqual
+
+
+/**
+ * 获取一个对象的 hash 值
+ * @param object
+ */
+export function getObjectHash(object: any) {
+   return  _objectHash(object, <any>{respectType: false })
+}
 
 /**
  * 对象是否为空
@@ -186,10 +199,6 @@ export function deleteObjectValueByPath(object: object, path: string | string[])
     }
 }
 
-import _cloneDeep from "lodash/cloneDeep"
-import isEqual from "lodash/isEqual"
-import { fromJson } from "../stringify/stringify"
-
 /**
  * 深度克隆一个对象
  * @param object
@@ -337,6 +346,3 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
  * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
  */
 export const assignDeep = lodash_merge
-
-
-
