@@ -14,6 +14,7 @@ import * as number from "./number/number"
 import * as image from "./image/image"
 import * as binary from "./binary/binary"
 
+
 // 某些版本 webpack 用 {async }
 
 let Richang = {
@@ -26,7 +27,7 @@ let Richang = {
     url,
     func,
     cache,
-    async:async,
+    async: async,
     time,
     number,
     image,
