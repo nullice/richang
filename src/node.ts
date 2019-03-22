@@ -1,7 +1,14 @@
 import * as nodeServer from "./nodeServer/nodeServer"
+import { Richang } from "./index"
+
+delete Richang.image
+delete Richang.binary
+
+
 
 let RichangNode = {
-    nodeServer
+    nodeServer,
+    ...Richang
 }
 
-export { RichangNode, nodeServer }
+export default RichangNode

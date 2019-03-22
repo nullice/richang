@@ -1,6 +1,7 @@
 const fs = require("fs")
 const path = require("path")
 const webpack = require("webpack")
+const _ = require("lodash")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
 
 //  dirname  地址
@@ -11,7 +12,6 @@ let packageJson = require(path.resolve(dirname, "package.json"))
 
 // 构建 lib 目录
 let BUILD_LIB = process.env.BUILD_LIB
-
 
 // webpack 插件
 const CopyWebpackPlugin = require("copy-webpack-plugin")
@@ -39,7 +39,7 @@ let baseConfig = {
         filename: "[name].js",
         path: path.resolve(dirname, "dist"),
         library: packageJson.name,
-        libraryTarget: "umd",
+        libraryTarget: "umd"
         // libraryExport: "default",
     },
     resolve: {
@@ -89,4 +89,14 @@ if (process.env.ANALYZER_WEBPACK) {
     baseConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
-module.exports = baseConfig
+if (BUILD_LIB) {
+    let nodeConfig
+    nodeConfig = _.cloneDeep(baseConfig)
+    nodeConfig.entry.index = path.resolve(dirname, "src/node.ts")
+    nodeConfig.output.filename = `${packageJson.name}.node.js`
+    nodeConfig.target = "node"
+    module.exports = [baseConfig, nodeConfig]
+
+} else {
+    module.exports = baseConfig
+}
