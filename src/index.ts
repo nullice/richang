@@ -13,7 +13,8 @@ import * as time from "./time/time"
 import * as number from "./number/number"
 import * as image from "./image/image"
 import * as binary from "./binary/binary"
-
+import * as string from "./string/string"
+import * as crypto from "./crypto/crypto"
 
 // 某些版本 webpack 用 {async }
 
@@ -32,6 +33,8 @@ let Richang = {
     number,
     image,
     binary,
+    string,
+    crypto,
     gob
 }
 export {
@@ -50,5 +53,7 @@ export {
     number,
     image,
     binary,
+    string,
+    crypto,
     gob
 }
