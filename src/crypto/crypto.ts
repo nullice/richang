@@ -117,9 +117,12 @@ export function roll(max = 100, min = 0) {
  * @param {string} [dict] - 随机字符字典，默认为 a—Z0-9
  * @returns {string}
  */
-export function rollString(length: number, dict: string) {
+export function rollString(
+    length: number,
+    dict: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+) {
     let text = ""
-    const possible = dict || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    const possible = dict
     for (let i = 0; i < length; i++) text += possible.charAt(Math.floor(Math.random() * possible.length))
     return text
 }
