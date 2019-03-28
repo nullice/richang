@@ -1,4 +1,3 @@
-import requireActual = jest.requireActual
 import { genTimestampText, timeDiffDay } from "./../../time/time"
 import { rollString } from "../../crypto/crypto"
 const os = require("os")
