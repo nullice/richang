@@ -41,13 +41,12 @@ export const objectRemove = _objectRemove
 export const objectMask = _objectMask
 export const isEqual = _isEqual
 
-
 /**
  * 获取一个对象的 hash 值
  * @param object
  */
 export function getObjectHash(object: any) {
-   return  _objectHash(object, <any>{respectType: false })
+    return _objectHash(object, <any>{ respectType: false })
 }
 
 /**
@@ -197,6 +196,7 @@ export function deleteObjectValueByPath(object: object, path: string | string[])
     if (isObject(lastObject)) {
         return delete lastObject[<any>lastKey]
     }
+    return false
 }
 
 /**
