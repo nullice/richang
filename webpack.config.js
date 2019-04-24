@@ -3,6 +3,7 @@ const path = require("path")
 const webpack = require("webpack")
 const _ = require("lodash")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
+const DtsBundleWebpack = require("dts-bundle-webpack")
 
 //  dirname  地址
 let dirname = __dirname
@@ -90,13 +91,21 @@ if (process.env.ANALYZER_WEBPACK) {
 }
 
 if (BUILD_LIB) {
+
+
     let nodeConfig
     nodeConfig = _.cloneDeep(baseConfig)
     nodeConfig.entry.index = path.resolve(dirname, "src/node.ts")
     nodeConfig.output.filename = `${packageJson.name}.node.js`
     nodeConfig.target = "node"
-    module.exports = [baseConfig, nodeConfig]
+    nodeConfig.plugins.push(
+        new DtsBundleWebpack({ main: "types/src/index.d.ts", name: "richang", out: "../../lib/richang.d.ts" })
+    )
+    baseConfig.plugins.push(
+        new DtsBundleWebpack({ main: "types/src/node.d.ts", name: "richangNode", out: "../../lib/richang.node.d.ts" })
+    )
 
+    module.exports = [baseConfig, nodeConfig]
 } else {
     module.exports = baseConfig
 }
