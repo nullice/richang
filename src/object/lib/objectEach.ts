@@ -167,7 +167,7 @@ export function objectEach(
                         if (useCycleCallback && options.checkCycleCallback) {
                             options.checkCycleCallback(value, key, {
                                 parent: object,
-                                keyPath: path,
+                                keyPath: nowKeyPath,
                                 firstKeyPath: cycleCache.get(value)
                             })
                         }
