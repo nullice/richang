@@ -15,4 +15,6 @@ export function set(key: string, value: any, keyPath: string[], gobCore: GobCore
             GobHandlerProxy.wrapData(value, gobCore, keyPath, localContext.localData, localContext.localGate)
         }
     }
+
+    return true
 }

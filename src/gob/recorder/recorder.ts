@@ -13,15 +13,12 @@ export class GobRecorder {
         this.gobCore = gobCore
         this.memory = new GobOperatorMemory()
     }
-
-
-
     push(){
-
     }
 }
 
 export interface IGobOperatorMemory {
+
     changes: IGobOperator[]
     visits: IGobOperator[]
     indexes: { set: number; get: number; delete: number; all: number; [propName: string]: number }

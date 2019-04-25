@@ -6,7 +6,7 @@ export class GobCore {
     gate: any
     data: any
     recorder: GobRecorder
-    handler:IGobHandler
+    handler: IGobHandler
 
     constructor() {
         this.data = {}
@@ -16,11 +16,21 @@ export class GobCore {
     }
 }
 
-export function GobFactory(target: any) {
+interface IGobData {
+    $on: 123
+}
+
+/**
+ * 把一个对象包装起来，提供改动监控和拦截等功能
+ * @param target
+ * @constructor
+ */
+export function GobFactory<T>(target: T): T & IGobData {
     // 创建一个 GobCore
     let gobCore = new GobCore()
 
-    let warpData = gobCore.handler.wrapData(target, gobCore,[], gobCore.data, gobCore.gate)
+    // 把要托管的数据通过 handler 包装
+    let warpData = gobCore.handler.wrapData(target, gobCore, [], gobCore.data, gobCore.gate)
 
     return warpData
 
@@ -34,3 +44,4 @@ export function GobFactory(target: any) {
     //     })
     // )
 }
+

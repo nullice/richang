@@ -8,13 +8,13 @@ import {
 } from "../../../../object/object"
 
 export function del(key: string, keyPath: string[], gobCore: GobCore, localContext?: ILocalContext) {
+    let re: boolean
     if (localContext) {
-        let re = delete localContext.localData[key]
+        re = delete localContext.localData[key]
         if (localContext.localGate[key]) delete localContext.localGate[key]
-        return re
     } else {
-        let re = deleteObjectValueByPath(gobCore.data, keyPath)
+        re = deleteObjectValueByPath(gobCore.data, keyPath)
         deleteObjectValueByPath(gobCore.gate, keyPath)
-        return re
     }
+    return re
 }
