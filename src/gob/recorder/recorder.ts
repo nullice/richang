@@ -1,5 +1,5 @@
 import { GobCore } from "../gob"
-import { IGobOperator } from "../operators/operator"
+import { GobOperatorType, IGobOperator } from "../executor/lib/operators"
 
 /**
  * Gob 的操作录放器
@@ -13,15 +13,45 @@ export class GobRecorder {
         this.gobCore = gobCore
         this.memory = new GobOperatorMemory()
     }
-    push(){
+    push(type: GobOperatorType, keyPath: string[], value: any, origin: any) {
+        let operator: IGobOperator = {
+            type,
+            keyPath,
+            value,
+            origin
+        }
+
+        this.memory.latestOperator = operator
+
+        switch (operator.type) {
+            case GobOperatorType.get: {
+                this.memory.visits.push(operator)
+                this.memory.indexes.get++
+            }
+            case GobOperatorType.set: {
+                this.memory.changes.push(operator)
+                this.memory.indexes.set++
+            }
+            case GobOperatorType.delete: {
+                this.memory.changes.push(operator)
+                this.memory.indexes.delete++
+            }
+            default: {
+                this.memory.indexes.all++
+            }
+        }
     }
 }
 
+// 操作符记录对象
 export interface IGobOperatorMemory {
-
+    // 记录编辑型操作符
     changes: IGobOperator[]
+    // 记录浏览型操作符
     visits: IGobOperator[]
+    // 不同类型操作符符的数量索引，每次操作符被执行，相应的值递增
     indexes: { set: number; get: number; delete: number; all: number; [propName: string]: number }
+    // 最后一次执行的操作符
     latestOperator: IGobOperator | null
 }
 

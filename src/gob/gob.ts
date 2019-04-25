@@ -1,5 +1,6 @@
 import { GobRecorder } from "./recorder/recorder"
 import { IGobHandler } from "./handlers/GobHandler"
+import { GobExecutor } from "./executor/executor"
 import { GobHandlerProxy } from "./handlers/proxy/GobHandlerProxy"
 
 export class GobCore {
@@ -7,12 +8,15 @@ export class GobCore {
     data: any
     recorder: GobRecorder
     handler: IGobHandler
+    executor: GobExecutor
 
     constructor() {
         this.data = {}
-        this.recorder = new GobRecorder(this)
-        this.handler = GobHandlerProxy
         this.gate = {}
+        this.recorder = new GobRecorder(this)
+        this.executor = new GobExecutor(this)
+        this.handler = GobHandlerProxy
+
     }
 }
 
@@ -44,4 +48,3 @@ export function GobFactory<T>(target: T): T & IGobData {
     //     })
     // )
 }
-
