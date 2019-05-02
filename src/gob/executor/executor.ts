@@ -56,12 +56,15 @@ export class GobExecutor {
         if (!keyPath) throw Error("[gob] error keyPath")
         if (key === undefined) throw Error("[gob] error undefined key")
 
+        // 直接操作不经过过滤器或者记录器
+        let isDirect = operator.origin && operator.origin.$$$GobDirectSet
+
         // 记录预操作
-        this.gobCore.recorder.push(operator)
+        if (!isDirect) this.gobCore.recorder.push(operator)
 
         let runRe
         // 执行过滤器 IGobOperator
-        if (operator.type !== GobOperatorType.get) {
+        if (!isDirect && operator.type !== GobOperatorType.get) {
             runRe = this.gobCore.filters.runFilters(GobFilterType.pre, operator)
         }
 
@@ -87,7 +90,8 @@ export class GobExecutor {
         }
 
         // 记录终操作
-        this.gobCore.recorder.push(operator, true)
+        if (!isDirect) this.gobCore.recorder.push(operator, true)
+
         return re
         // console.log("[gob]  [exec]", { inType, keyPath, value, origin })
     }

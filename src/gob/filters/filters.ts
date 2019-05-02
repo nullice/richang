@@ -3,7 +3,6 @@ import { type, userInfo } from "os"
 import { getObjectValueByPath, normalizeKeyPath } from "../../object/object"
 import isEqual from "lodash/isEqual"
 import { IGobOperator } from "../executor/lib/operators"
-import { transcode } from "buffer"
 import { isAsyncFunction } from "../../function/function"
 
 export const enum GobFilterType {

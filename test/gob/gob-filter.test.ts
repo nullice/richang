@@ -1,5 +1,5 @@
 import { Richang as rc } from "../../src/index"
-import { GobFilterType } from "src/gob/filters/filters"
+import { GobFilterType } from "../../src/gob/filters/filters"
 import { cloneDeep } from "../../src/object/object"
 
 const GobFactory = rc.gob.GobFactory

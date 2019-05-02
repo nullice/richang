@@ -36,10 +36,17 @@ export class GobCore {
     /**
      * 赋值
      */
-    set(keyPath: string | string[], value: any) {
+    set(keyPath: string | string[], value: any, directSet = false) {
         keyPath = normalizeKeyPath(keyPath)
         let key = keyPath[keyPath.length - 1]
-        return this.executor.exec(GobOperatorType.set, key, value, keyPath)
+        return this.executor.exec(
+            GobOperatorType.set,
+            key,
+            value,
+            keyPath,
+            undefined,
+            directSet ? { $$$GobDirectSet: true } : undefined
+        )
     }
 
     /**
@@ -50,6 +57,16 @@ export class GobCore {
         keyPath = normalizeKeyPath(keyPath)
         let key = keyPath[keyPath.length - 1]
         return this.executor.exec(GobOperatorType.get, key, undefined, keyPath)
+    }
+
+    /**
+     * 重置
+     * @param target
+     */
+    reset(target: any) {
+        this.gate = {}
+        this.data = {}
+        return this.handler.wrapData(target, this, [], this.data, this.gate)
     }
 }
 
