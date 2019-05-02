@@ -84,6 +84,7 @@ export function GobFactory<T>(target: T): T & IGobData {
     let gobCore = new GobCore()
 
     // 把要托管的数据通过 handler 包装
+    gobCore.data = target
     let warpData = gobCore.handler.wrapData(target, gobCore, [], gobCore.data, gobCore.gate)
 
     return warpData

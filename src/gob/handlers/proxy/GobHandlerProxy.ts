@@ -90,6 +90,7 @@ function giveHandler(
 
 function creatGate(target: any, gobCore: GobCore, keyPath: string[]): any {
     let gate: GobGate = {}
+    // todo: 使用 Proxy.revocable() 创建可销毁的代理
     let proxy = new Proxy(target, giveHandler(target, gobCore, keyPath, target, gate))
     gate[GOB_PROXY_KEY] = proxy
     // console.log("[creatGate]", { target, keyPath, gobCore, gate })
