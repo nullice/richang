@@ -1,6 +1,7 @@
 import { GobCore } from "./../gob"
 import { ILocalContext } from "../handlers/proxy/GobHandlerProxy"
-import { IGobOperator, GobOperatorType } from "./lib/operators"
+import { GobOperatorType, IGobOperator } from "./lib/operators"
+import { GobFilterType } from "../filters/filters"
 
 export class GobExecutor {
     gobCore: GobCore
@@ -36,31 +37,59 @@ export class GobExecutor {
         localContext?: ILocalContext,
         origin?: any
     ): boolean {
-        let inType: GobOperatorType
+        let operator: IGobOperator
 
         // 判断是否是 2 个操作事件
-        if (arguments.length === 1 && type) {
-            inType = (<IGobOperator>type).type
-            keyPath = (<IGobOperator>type).keyPath
-            value = (<IGobOperator>type).value
-            key = keyPath[keyPath.length - 1]
+        if (arguments.length === 1) {
+            operator = type
+            key = operator.keyPath[operator.keyPath.length - 1]
         } else {
-            inType = type
+            operator = {
+                type,
+                keyPath: keyPath || [],
+                value,
+                origin
+            }
         }
 
         // 异常处理
         if (!keyPath) throw Error("[gob] error keyPath")
         if (key === undefined) throw Error("[gob] error undefined key")
 
-        // 记录操作
-        this.gobCore.recorder.push(inType, keyPath, value, origin)
+        // 记录预操作
+        this.gobCore.recorder.push(operator)
 
-        console.log("[exec]", { inType, keyPath, value, origin })
-        // 操作执行与分发
+        let runRe
+        // 执行过滤器 IGobOperator
+        if (operator.type !== GobOperatorType.get) {
+            runRe = this.gobCore.filters.runFilters(GobFilterType.pre, operator)
+        }
 
-        let re = this.reallyExec(inType, key, value, keyPath, localContext)
+        // 是否异步执行
+        let re
+        // 异步执行
+        if (runRe && runRe.async) {
+            runRe.async.then(op => {
+                return this.reallyExec(op.type, op.keyPath[op.keyPath.length - 1], op.value, op.keyPath, localContext)
+            })
+            re = true
+        }
+        // 同步执行
+        else {
+            // 操作执行与分发
+            re = this.reallyExec(
+                operator.type,
+                operator.keyPath[operator.keyPath.length - 1],
+                operator.value,
+                operator.keyPath,
+                localContext
+            )
+        }
 
+        // 记录终操作
+        this.gobCore.recorder.push(operator, true)
         return re
+        // console.log("[gob]  [exec]", { inType, keyPath, value, origin })
     }
 
     private reallyExec(
@@ -71,18 +100,15 @@ export class GobExecutor {
         localContext?: ILocalContext
     ) {
         let re: boolean | any
-
         switch (type) {
             case GobOperatorType.get: {
                 re = this.gobCore.handler.get(key, keyPath, this.gobCore, localContext)
                 break
             }
-
             case GobOperatorType.set: {
                 re = this.gobCore.handler.set(key, value, keyPath, this.gobCore, localContext)
                 break
             }
-
             case GobOperatorType.delete: {
                 re = this.gobCore.handler.del(key, keyPath, this.gobCore, localContext)
                 break

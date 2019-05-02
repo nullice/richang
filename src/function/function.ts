@@ -13,3 +13,15 @@ export function cacheable(func: Function, timeout: number, thisArg?: any) {
     }
     return reFunc
 }
+
+export function isAsyncFunction(func: Function) {
+    const string = func.toString().trim()
+    return !!// native
+    (
+        (<any>func)[Symbol.toStringTag] === "AsyncFunction" ||
+        // native
+        string.match(/^async /) ||
+        // babel (this may change, but hey...)
+        string.match(/return _ref[^\.]*\.apply/)
+    )
+}

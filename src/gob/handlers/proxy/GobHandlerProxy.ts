@@ -26,7 +26,7 @@ export const GobHandlerProxy: IGobHandler = {
                     key: string,
                     info: { parent: any; keyPath?: string[]; firstKeyPath?: string[] }
                 ) {
-                    console.log("checkCycleCallback", { value, key, info })
+                    // console.log("checkCycleCallback", { value, key, info })
                     creatCycleGate(value, gobCore, <string[]>info.keyPath, <string[]>info.firstKeyPath)
                 }
             }
@@ -68,19 +68,20 @@ function giveHandler(
     return {
         set(target: any, key: any, value: any) {
             let nowKeyPath = [...keyPath, key]
-            console.log("[set]", { target, key, value })
+            // console.log("[set]", { target, key, value })
             return gobCore.executor.exec(GobOperatorType.set, key, value, nowKeyPath, localContext)
             // return set(key, value, nowKeyPath, gobCore, localContext)
         },
         get(target: any, key: any) {
+            if (key === "$$$GobCore") return gobCore
             let nowKeyPath = [...keyPath, key]
-            console.log("[get]", { target, key })
+            // console.log("[get]", { target, key })
             return gobCore.executor.exec(GobOperatorType.get, key, undefined, nowKeyPath, localContext)
             // return get(key, nowKeyPath, gobCore, localContext)
         },
         deleteProperty(target: any, key: any) {
             let nowKeyPath = [...keyPath, key]
-            console.log("[deleteProperty]", { target, key })
+            // console.log("[deleteProperty]", { target, key })
             return gobCore.executor.exec(GobOperatorType.delete, key, undefined, nowKeyPath, localContext)
             // return del(key, nowKeyPath, gobCore, localContext)
         }
@@ -91,9 +92,7 @@ function creatGate(target: any, gobCore: GobCore, keyPath: string[]): any {
     let gate: GobGate = {}
     let proxy = new Proxy(target, giveHandler(target, gobCore, keyPath, target, gate))
     gate[GOB_PROXY_KEY] = proxy
-
-    console.log("[creatGate]", { target, keyPath, gobCore, gate })
-
+    // console.log("[creatGate]", { target, keyPath, gobCore, gate })
     if (keyPath.length === 0) {
         gobCore.gate = gate
     } else {

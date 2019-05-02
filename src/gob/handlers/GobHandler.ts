@@ -6,3 +6,8 @@ export interface IGobHandler {
     get: (key: string, keyPath: string[], gobCore: GobCore, localContext?: any) => any
     del: (key: string, keyPath: string[], gobCore: GobCore, localContext?: any) => boolean
 }
+
+export enum GobKeyword {
+    $GobCore = "$$$GobCore",
+    $set = "$$$GobCore"
+}
