@@ -63,7 +63,7 @@ export class GobExecutor {
         if (!isDirect) this.gobCore.recorder.push(operator)
 
         let runRe
-        // 执行过滤器 IGobOperator
+        // 执行 pre 过滤器 IGobOperator
         if (!isDirect && operator.type !== GobOperatorType.get) {
             runRe = this.gobCore.filters.runFilters(GobFilterType.pre, operator)
         }
@@ -73,7 +73,10 @@ export class GobExecutor {
         // 异步执行
         if (runRe && runRe.async) {
             runRe.async.then(op => {
-                return this.reallyExec(op.type, op.keyPath[op.keyPath.length - 1], op.value, op.keyPath, localContext)
+                this.reallyExec(op.type, op.keyPath[op.keyPath.length - 1], op.value, op.keyPath, localContext)
+                if (!isDirect) {
+                    this.execFin(op)
+                }
             })
             re = true
         }
@@ -87,13 +90,24 @@ export class GobExecutor {
                 operator.keyPath,
                 localContext
             )
-        }
 
-        // 记录终操作
-        if (!isDirect) this.gobCore.recorder.push(operator, true)
+            if (!isDirect) {
+                this.execFin(operator)
+            }
+        }
 
         return re
         // console.log("[gob]  [exec]", { inType, keyPath, value, origin })
+    }
+
+    private execFin(operator: IGobOperator) {
+        // 执行 fin 过滤器
+        if (operator.type !== GobOperatorType.get) {
+            this.gobCore.filters.runFilters(GobFilterType.fin, operator)
+        }
+
+        // 记录 recorder
+        this.gobCore.recorder.push(operator, true)
     }
 
     private reallyExec(

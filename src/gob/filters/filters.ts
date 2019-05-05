@@ -112,7 +112,7 @@ export class GobFilters {
      * @param name
      * @param [recursive]
      * @param [isAsyncFilter]
-     * @param [type]
+
      */
     addFinFilter(
         keyPath: string | string[],
@@ -120,9 +120,8 @@ export class GobFilters {
         name = "",
         recursive = false,
         isAsyncFilter?: boolean,
-        type = GobFilterType.fin
     ) {
-        return this.addPreFilter(keyPath, func, name, recursive, isAsyncFilter, type)
+        return this.addPreFilter(keyPath, func, name, recursive, isAsyncFilter, GobFilterType.fin)
     }
 
     /**
