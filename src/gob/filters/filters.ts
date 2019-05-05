@@ -157,7 +157,7 @@ export class GobFilters {
 
                 if (item.recursive === IGobFilterRecursiveType.once) {
                     return (
-                        item.keyPath.length === keyPath.length + 1 &&
+                        item.keyPath.length + 1 === keyPath.length &&
                         isEqual(keyPath.slice(0, item.keyPath.length), item.keyPath)
                     )
                 } else {
