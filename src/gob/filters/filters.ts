@@ -223,7 +223,7 @@ export class GobFilters {
 /**
  * 过滤器执行时信息对象
  */
-class GobFilterProvideInfo {
+export class GobFilterProvideInfo {
     gobCore: GobCore
     session: any = {}
     filters: IGobFilter[]
