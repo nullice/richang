@@ -10,7 +10,12 @@ export const enum GobFilterType {
     pre = "pre"
 }
 
-interface IGobFilter {
+export enum IGobFilterRecursiveType {
+    all = "all",
+    once = "once"
+}
+
+export interface IGobFilter {
     // 过滤器类型（fin、pre）
     type: GobFilterType
     // 过滤器名称
@@ -18,7 +23,7 @@ interface IGobFilter {
     // 过滤器匹配的键名路径
     keyPath: string[]
     // 过滤器是否进行键名路径的递归匹配
-    recursive?: boolean
+    recursive?: IGobFilterRecursiveType | boolean
     // 是否是异步过滤器
     async?: boolean
     // 过滤器函数
@@ -149,7 +154,15 @@ export class GobFilters {
                 //     a: keyPath.slice(0, item.keyPath.length),
                 //     b: item.keyPath
                 // })
-                return isEqual(keyPath.slice(0, item.keyPath.length), item.keyPath)
+
+                if (item.recursive === IGobFilterRecursiveType.once) {
+                    return (
+                        item.keyPath.length === keyPath.length + 1 &&
+                        isEqual(keyPath.slice(0, item.keyPath.length), item.keyPath)
+                    )
+                } else {
+                    return isEqual(keyPath.slice(0, item.keyPath.length), item.keyPath)
+                }
             } else {
                 return isEqual(keyPath, item.keyPath)
             }
