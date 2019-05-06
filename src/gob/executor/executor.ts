@@ -66,6 +66,8 @@ export class GobExecutor {
         // 执行 pre 过滤器 IGobOperator
         if (!isDirect && operator.type !== GobOperatorType.get) {
             runRe = this.gobCore.filters.runFilters(GobFilterType.pre, operator)
+            // 过滤器返回 false 终止接下来的操作
+            if (runRe.exit) return true
         }
 
         // 是否异步执行
@@ -73,6 +75,11 @@ export class GobExecutor {
         // 异步执行
         if (runRe && runRe.async) {
             runRe.async.then(op => {
+                // 过滤器返回 false 终止接下来的操作
+                if (op === false) {
+                    return
+                }
+
                 this.reallyExec(op.type, op.keyPath[op.keyPath.length - 1], op.value, op.keyPath, localContext)
                 if (!isDirect) {
                     this.execFin(op)

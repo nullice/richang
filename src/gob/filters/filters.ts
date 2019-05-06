@@ -26,6 +26,8 @@ export interface IGobFilter {
     recursive?: IGobFilterRecursiveType | boolean
     // 是否是异步过滤器
     async?: boolean
+    // 执行优先级
+    level?: number
     // 过滤器函数
     func: (newValue: any, operator: IGobOperator, info: GobFilterProvideInfo) => any
 }
@@ -119,7 +121,7 @@ export class GobFilters {
         func: (newValue: any, operator: IGobOperator, info: GobFilterProvideInfo) => any,
         name = "",
         recursive = false,
-        isAsyncFilter?: boolean,
+        isAsyncFilter?: boolean
     ) {
         return this.addPreFilter(keyPath, func, name, recursive, isAsyncFilter, GobFilterType.fin)
     }
@@ -167,6 +169,12 @@ export class GobFilters {
             }
         })
 
+        re.sort((a, b) => {
+            let aLv = a.level === undefined ? 100 : a.level
+            let bLv = b.level === undefined ? 100 : b.level
+            return aLv - bLv
+        })
+
         return re
     }
 
@@ -201,10 +209,10 @@ export class GobFilters {
             for (let i = 0; i < filters.length; i++) {
                 filterProvideInfo.filterIndex = i
                 let re = this.execFilter(filters[i], operator, filterProvideInfo)
-                if (re === false) return
+                if (re === false) return { exit: true }
             }
 
-            return { operator }
+            return { operator, async: undefined }
         }
     }
 
@@ -217,16 +225,19 @@ export class GobFilters {
         filters: IGobFilter[],
         operator: IGobOperator,
         filterProvideInfo: GobFilterProvideInfo
-    ): Promise<IGobOperator> {
+    ): Promise<IGobOperator | false> {
         for (let i = 0; i < filters.length; i++) {
             let filter = filters[i]
             filterProvideInfo.filterIndex = i
             // 对异步过滤器执行 await
+
+            let re
             if (filter.async) {
-                await this.execFilter(filter, operator, filterProvideInfo)
+                re = await this.execFilter(filter, operator, filterProvideInfo)
             } else {
-                this.execFilter(filter, operator, filterProvideInfo)
+                re = this.execFilter(filter, operator, filterProvideInfo)
             }
+            if (re === false) return false
         }
         return operator
     }
