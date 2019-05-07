@@ -15,6 +15,7 @@ import * as image from "./image/image"
 import * as binary from "./binary/binary"
 import * as string from "./string/string"
 import * as crypto from "./crypto/crypto"
+import * as benchmark from "./benchmark/benchmark"
 
 // 某些版本 webpack 用 {async }
 
@@ -35,7 +36,8 @@ let Richang = {
     binary,
     string,
     crypto,
-    gob
+    gob,
+    benchmark
 }
 export {
     Richang,
@@ -55,5 +57,6 @@ export {
     binary,
     string,
     crypto,
-    gob
+    gob,
+    benchmark
 }

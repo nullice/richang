@@ -82,7 +82,6 @@ export function timeDiffDay(date: Date, oldDate: Date = new Date()) {
     return timeDiff(date, oldDate, "day")
 }
 
-
 /**
  * 计算 2 个 Date 的时差（分钟）
  * @param date
@@ -91,4 +90,19 @@ export function timeDiffDay(date: Date, oldDate: Date = new Date()) {
  */
 export function timeDiffMinute(date: Date, oldDate: Date = new Date()) {
     return timeDiff(date, oldDate, "minute")
+}
+
+/**
+ * 获取高精度的时间戳，毫秒
+ */
+export function getHTime() {
+    if (typeof process !== "undefined" && process.hrtime) {
+        let hrtime = process.hrtime()
+        const nanoseconds = hrtime[0] * 1e9 + hrtime[1]
+        const milliseconds = nanoseconds / 1e6
+
+        return milliseconds
+    } else {
+        return performance.now()
+    }
 }
