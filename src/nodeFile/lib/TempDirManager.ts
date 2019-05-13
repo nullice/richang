@@ -1,10 +1,10 @@
 import { genTimestampText, timeDiffDay } from "./../../time/time"
 import { rollString } from "../../crypto/crypto"
+import { writeFile } from "../nodeFile"
 const os = require("os")
 const fsex = require("fs-extra")
 const fs = require("fs")
 const path = require("path")
-
 
 /**
  * 临时目录管理器
@@ -94,15 +94,14 @@ export class TempDirManager {
         }
     }
 
-
     /**
      * 写一个文件到临时目录，并且返回其文件名
      * @param data 数据
      * @param subPath 子文件夹名
      */
-    writeFile(data: any, subPath?: string) {
+    async writeFile(data: any, subPath?: string) {
         let path = this.newTempFilePath(subPath)
-        fs.writeFileSync(path, data)
+        await writeFile(path, data)
         return path
     }
 }

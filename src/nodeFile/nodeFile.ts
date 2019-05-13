@@ -8,11 +8,15 @@ const util = require("util")
 import { TempDirManager as _TempDirManager } from "./lib/TempDirManager"
 export const TempDirManager = _TempDirManager
 
+import { DirManager as _DirManager } from "./lib/DirManager"
+export const DirManager = _DirManager
+
 const asyncReaddir = util.promisify(fs.readdir)
 const asyncWriteFile = util.promisify(fs.writeFile)
 const asyncReadFile = util.promisify(fs.readFile)
 const asyncStat = util.promisify(fs.stat)
 const asyncAccess = util.promisify(fs.access)
+const asyncEnsureFile = util.promisify(fsex.ensureFile)
 
 interface INodeDirent {
     isFile(): boolean
@@ -90,7 +94,7 @@ export async function readdirWithType(path: any): Promise<INodeDirent[]> {
  * @param data
  * @param [option] { encoding?: string | null; mode?: number | string; flag?: string }
  */
-export async function writeFile(path: any, data: any, option: WriteFileOptions) {
+export async function writeFile(path: any, data: any, option: WriteFileOptions = { encoding: "utf-8" }) {
     return asyncWriteFile(path, data, option)
 }
 
@@ -106,6 +110,15 @@ export async function readFile(
     option?: { encoding?: null; flag?: string }
 ): Promise<{ encoding?: null; flag?: string }> {
     return asyncWriteFile(path, data, option)
+}
+
+/**
+ * 确保一个文件存在
+ * @param path
+ * @param data
+ */
+export async function ensureFile(path: any, data: any): Promise<{ encoding?: null; flag?: string }> {
+    return asyncEnsureFile(path)
 }
 
 /**
