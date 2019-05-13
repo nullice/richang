@@ -75,6 +75,18 @@ export function isObject(value: object) {
     return value !== null && (type === "object" || type === "function")
 }
 
+
+/**
+ * 判断一个值是对象，并且不是函数
+ * @param value
+ */
+export function isObjectWithoutFunction(value: object) {
+    let type = typeof value
+    return value !== null && (type === "object")
+}
+
+
+
 /**
  * 数组化键名路径
  */

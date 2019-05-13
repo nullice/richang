@@ -1,6 +1,12 @@
 import { GobCore } from "../../gob"
 import { IGobHandler } from "../GobHandler"
-import { getObjectValueByPath, isObject, objectEach, setObjectValueByPath } from "../../../object/object"
+import {
+    getObjectValueByPath,
+    isObject,
+    objectEach,
+    setObjectValueByPath,
+    isObjectWithoutFunction
+} from "../../../object/object"
 // todo test
 import { set } from "./operators/set"
 import { get } from "./operators/get"
@@ -13,7 +19,7 @@ export const GobHandlerProxy: IGobHandler = {
         objectEach(
             target,
             (value, key, info, CONTOL) => {
-                if (isObject(value)) {
+                if (isObjectWithoutFunction(value)) {
                     creatGate(value, gobCore, <string[]>info.keyPath)
                 }
             },
@@ -69,20 +75,56 @@ function giveHandler(
         set(target: any, key: any, value: any) {
             let nowKeyPath = [...keyPath, key]
             // console.log("[set]", { target, key, value })
-            return gobCore.executor.exec(GobOperatorType.set, key, value, nowKeyPath, localContext)
+
+            // 是否可枚举
+
+            let enumerable
+            if (target && target.propertyIsEnumerable) {
+                enumerable = target.propertyIsEnumerable(key)
+            }
+            // 不可枚举的元素只使用原生方法
+            if (!target.hasOwnProperty(key) || enumerable) {
+                return gobCore.executor.exec(GobOperatorType.set, key, value, nowKeyPath, localContext)
+            } else {
+                return (target[key] = value)
+            }
+
             // return set(key, value, nowKeyPath, gobCore, localContext)
         },
         get(target: any, key: any) {
             if (key === "$$$GobCore") return gobCore
             let nowKeyPath = [...keyPath, key]
             // console.log("[get]", { target, key })
-            return gobCore.executor.exec(GobOperatorType.get, key, undefined, nowKeyPath, localContext)
+
+            // 是否可枚举
+            let enumerable
+            if (target && target.propertyIsEnumerable) {
+                enumerable = target.propertyIsEnumerable(key)
+            }
+            // 不可枚举的操作只使用原生方法
+            if (!target.hasOwnProperty(key) || enumerable) {
+                return gobCore.executor.exec(GobOperatorType.get, key, undefined, nowKeyPath, localContext)
+            } else {
+                return target[key]
+            }
+
             // return get(key, nowKeyPath, gobCore, localContext)
         },
         deleteProperty(target: any, key: any) {
             let nowKeyPath = [...keyPath, key]
             // console.log("[deleteProperty]", { target, key })
-            return gobCore.executor.exec(GobOperatorType.delete, key, undefined, nowKeyPath, localContext)
+
+            // 是否可枚举
+            let enumerable
+            if (target && target.propertyIsEnumerable) {
+                enumerable = target.propertyIsEnumerable(key)
+            }
+            // 不可枚举的操作只使用原生方法
+            if (!target.hasOwnProperty(key) || enumerable) {
+                return gobCore.executor.exec(GobOperatorType.delete, key, undefined, nowKeyPath, localContext)
+            } else {
+                return delete target[key]
+            }
             // return del(key, nowKeyPath, gobCore, localContext)
         }
     }

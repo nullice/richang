@@ -1,6 +1,6 @@
 import { GobCore } from "../../../gob"
 import { GOB_PROXY_KEY, GobHandlerProxy, ILocalContext } from "../GobHandlerProxy"
-import { getObjectValueByPath, isObject, setObjectValueByPath } from "../../../../object/object"
+import { getObjectValueByPath, isObject, setObjectValueByPath, isObjectWithoutFunction } from "../../../../object/object"
 
 
 export function get(key: string, keyPath: string[], gobCore: GobCore, localContext?: ILocalContext) {
@@ -14,7 +14,7 @@ export function get(key: string, keyPath: string[], gobCore: GobCore, localConte
     }
 
     // 如果值是对象，找到相应对 gata 从 gata 中取值
-    if (isObject(value)) {
+    if (isObjectWithoutFunction(value)) {
         let gate: any
 
         if (localContext) {

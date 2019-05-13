@@ -1,5 +1,5 @@
 import { GobHandlerProxy, ILocalContext } from "../GobHandlerProxy"
-import { isObject, setObjectValueByPath } from "../../../../object/object"
+import { isObject, setObjectValueByPath, isObjectWithoutFunction } from "../../../../object/object"
 import { GobCore } from "../../../gob"
 
 export function set(key: string, value: any, keyPath: string[], gobCore: GobCore, localContext?: ILocalContext) {
@@ -11,7 +11,7 @@ export function set(key: string, value: any, keyPath: string[], gobCore: GobCore
         setObjectValueByPath(gobCore.data, keyPath, value)
     }
 
-    if (isObject(value)) {
+    if (isObjectWithoutFunction(value)) {
         if (localContext) {
             GobHandlerProxy.wrapData(value, gobCore, keyPath, localContext.localData, localContext.localGate)
         }
