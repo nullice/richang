@@ -4,6 +4,9 @@ const fsex = require("fs-extra")
 const fs = require("fs")
 const os = require("os")
 const util = require("util")
+const readdirEnhanced = require("readdir-enhanced")
+const _escapeGlob = require("glob-escape")
+const _glob = require("glob")
 
 import { TempDirManager as _TempDirManager } from "./lib/TempDirManager"
 export const TempDirManager = _TempDirManager
@@ -145,3 +148,85 @@ export async function isExists(path: string) {
         })
     })
 }
+
+/**
+ * 通配符匹配目录与文件
+ *
+ * @example
+ * glob("*") 当前目录下所有文件、文件夹
+ * glob("**") 当前目录与所有子目录下所有文件、文件夹
+ * glob("ab?") 单个匹配符
+ * glob(["*", "!ab"]) "!" 在开头表示排除
+
+ * @param patterns 匹配表达式
+ * @param onlyType 仅返回文件，不返回目录
+ * @param ignoreDot 忽略点开头点文件（手动指定依然可以获得：".*"）
+ */
+export async function glob(
+    patterns: string,
+    onlyType: "all" | "file" | "dir" = "all",
+    absolute = false,
+    ignoreDot = false
+): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        try {
+            // 通过给 patterns 末尾加上 "/" 来限定文件夹
+            if (onlyType === "dir") {
+                if (patterns[patterns.length - 1] !== "/") patterns += "/"
+            }
+
+            let re = _glob(
+                patterns,
+                {
+                    dot: !ignoreDot,
+                    nodir: onlyType === "file",
+                    absolute: absolute
+                },
+                (er: any, files: any) => {
+                    resolve(files)
+                }
+            )
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+/**
+ * 通配符转译
+ */
+export const escapeGlob = _escapeGlob
+
+/**
+ * 递归读取目录和其子目录下的文件
+ * @param path
+ */
+export async function readdirDeep(path: string, deep: boolean | number = true): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        let re = readdirEnhanced.async(path, { deep }, (err: any, files: any) => {
+            if (err) reject(err)
+            resolve(files)
+        })
+    })
+}
+/**
+ * 递归读取目录和其子目录下的文件和其类型
+ * // 读取目录下文件，返回 INodeDirent
+ * let list =await readdir("./", {withFileTypes:true}) => [Dirent,Dirent]
+ * list[0].isFile()
+ * list[0].isDirectory()
+ * list[0].isSymbolicLink()
+ *
+ * @param path
+ * @return {Promise<INodeDirent[]>}
+ */
+export async function readdirDeepWithType(path: string, deep: boolean | number = true): Promise<INodeDirent[]> {
+    return new Promise((resolve, reject) => {
+        let re = readdirEnhanced.async(path, { deep, withFileTypes: true }, (err: any, files: any) => {
+            if (err) reject(err)
+            resolve(files)
+        })
+    })
+}
+
+export const __glob = _glob
