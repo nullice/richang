@@ -107,12 +107,8 @@ export async function writeFile(path: any, data: any, option: WriteFileOptions =
  * @param data
  * @param [option] { encoding?: string | null; mode?: number | string; flag?: string }
  */
-export async function readFile(
-    path: any,
-    data: any,
-    option?: { encoding?: null; flag?: string }
-): Promise<{ encoding?: null; flag?: string }> {
-    return asyncWriteFile(path, data, option)
+export async function readFile(path: any, option?: { encoding?: null; flag?: string }): Promise<any> {
+    return asyncReadFile(path, option)
 }
 
 /**
@@ -228,5 +224,6 @@ export async function readdirDeepWithType(path: string, deep: boolean | number =
         })
     })
 }
-
 export const __glob = _glob
+
+
