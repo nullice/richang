@@ -14,6 +14,12 @@ export const TempDirManager = _TempDirManager
 import { DirManager as _DirManager } from "./lib/DirManager"
 export const DirManager = _DirManager
 
+import { Zipper as _Zipper } from "./lib/Zipper"
+import { Unzipper as _Unzipper } from "./lib/Zipper"
+import * as Stream from "stream"
+export const Zipper = _Zipper
+export const Unzipper = _Unzipper
+
 const asyncReaddir = util.promisify(fs.readdir)
 const asyncWriteFile = util.promisify(fs.writeFile)
 const asyncReadFile = util.promisify(fs.readFile)
@@ -224,6 +230,24 @@ export async function readdirDeepWithType(path: string, deep: boolean | number =
         })
     })
 }
+
+
+/**
+ * 把一个 Stream 输出到一个 Buffer
+ * @param stream
+ */
+export async function streamToBuffer(stream: Stream.Stream): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+        let buffers: Buffer[] = []
+        stream.on("data", (data: any) => {
+            buffers.push(data)
+        })
+        stream.on("end", (data: any) => {
+            let buffer = Buffer.concat(buffers)
+            resolve(buffer)
+        })
+
+    })
+}
+
 export const __glob = _glob
-
-

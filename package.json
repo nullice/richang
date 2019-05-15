@@ -42,7 +42,10 @@
         "@types/is-uuid": "^1.0.0",
         "@types/object-hash": "^1.2.0",
         "@types/qs": "^6.5.1",
+        "@types/stream-buffers": "^3.0.3",
         "@types/uuid": "^3.4.4",
+        "@types/yauzl": "^2.9.1",
+        "@types/yazl": "^2.4.1",
         "dayjs": "^1.8.11",
         "event-emitter": "^0.3.5",
         "find-process": "^1.2.1",
@@ -56,6 +59,9 @@
         "portscanner": "^2.2.0",
         "qs": "^6.6.0",
         "readdir-enhanced": "^2.2.4",
-        "uuid": "^3.3.2"
+        "stream-buffers": "^3.0.2",
+        "uuid": "^3.3.2",
+        "yauzl": "^2.10.0",
+        "yazl": "^2.5.1"
     }
 }
