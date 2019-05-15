@@ -112,4 +112,21 @@ export class DirManager {
         let re = isExists(filePath)
         return re
     }
+
+    /**
+     * 获取目录下全部文件的路径
+     */
+    async getAllFiles() {
+        return await this.glob("**", "file")
+    }
+
+    /**
+     * 获取目录下全部文件夹的路径
+     */
+    async getAllDirs() {
+        let re = await this.glob("**", "dir")
+        // 删除当前目录
+        re.shift()
+        return re
+    }
 }
