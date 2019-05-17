@@ -42,7 +42,6 @@ export class GobStorage {
     // 是否初始化完成
     readonly ready: Promise<boolean>
 
-
     /**
      * 打开/创建一个 GobStorage 并等待其初始化完成，相当于是 new GobStorage 的简便方法
      * @param name
@@ -99,7 +98,7 @@ export class GobStorage {
         // 通过 Gob 订阅数据变更来触发数据到本地记录
         gobCore.recorder.subscribe(operator => {
             // 禁止保存的时候，直接跳过
-            if(this.disableSave) return
+            if (this.disableSave) return
 
             let key = operator.keyPath[0]
             this.waitSaveKeys.push(key)
@@ -128,4 +127,22 @@ export class GobStorage {
         //     // console.timeEnd("[GobStorage] save")
         // })
     }, 50)
+
+    /**
+     * 删除所有数据
+     */
+    async deleteAll() {
+        for (let key in this.data) {
+            delete this.data[key]
+        }
+        return this.storage.deleteAll()
+    }
+
+    /**
+     * 销毁，删除所有数据和数据库
+     */
+    async destroy() {
+        await this.deleteAll()
+        await this.storage.deleteDatabase()
+    }
 }

@@ -107,7 +107,7 @@ export class IndexedDBStorage {
         })
     }
 
-    deleteAll(key: string) {
+    deleteAll() {
         return new Promise((resolve, reject) => {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
