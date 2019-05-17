@@ -16,29 +16,63 @@ import * as binary from "./binary/binary"
 import * as string from "./string/string"
 import * as crypto from "./crypto/crypto"
 import * as benchmark from "./benchmark/benchmark"
+import * as decorators from "./decorators/decorators"
 
 // 某些版本 webpack 用 {async }
 
-let Richang = {
-    shuffle,
-    event,
-    object,
-    array,
-    geometry,
-    stringify,
-    url,
-    func,
-    cache,
-    async: async,
-    time,
-    number,
-    image,
-    binary,
-    string,
-    crypto,
-    gob,
-    benchmark
+class Richang {
+    static shuffle = shuffle
+    static event = event
+    static object = object
+
+    static array = array
+    static geometry = geometry
+    static stringify = stringify
+
+    static url = url
+    static func = func
+    static cache = cache
+
+    static async = async
+    static time = time
+    static number = number
+
+    static image = image
+    static binary = binary
+    static string = string
+
+    static crypto = crypto
+    static gob = gob
+    static benchmark = benchmark
+
+    static decorators = decorators
 }
+
+// let Richang2 = {
+//     shuffle,
+//     event,
+//     object,
+//
+//     array,
+//     geometry,
+//     stringify,
+//
+//     url,
+//     func,
+//     cache,
+//
+//     async: async,
+//     time,
+//     number,
+//
+//     image,
+//     binary,
+//     string,
+//
+//     crypto,
+//     gob,
+//     benchmark
+// }
 export {
     Richang,
     shuffle,
@@ -58,5 +92,6 @@ export {
     string,
     crypto,
     gob,
-    benchmark
+    benchmark,
+    decorators
 }

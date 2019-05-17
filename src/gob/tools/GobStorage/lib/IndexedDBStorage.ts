@@ -1,31 +1,70 @@
 export class IndexedDBStorage {
+    static allIndexedDBNames = new IndexedDBStorage("allIndexedDBNames")
+    static allInstances: { [id: string]: IndexedDBStorage } = {}
+    static async deleteAllDatabase() {
+        let names = await this.allIndexedDBNames.getAll()
+        for (let name in IndexedDBStorage.allInstances) {
+            this.allInstances[name].deleteDatabase()
+        }
+        for (let name in names) {
+            indexedDB.deleteDatabase(name)
+        }
+    }
+
     private idbRequest!: IDBRequest
     name: string
+    subName: string
     ready: Promise<boolean>
-    constructor(name = "IndexedDBStorage") {
+    isDestroyed = true
+
+    constructor(name = "IndexedDBStorage", subName?: string) {
         this.name = name
+        this.subName = subName || name
         let self = this
         let request = window.indexedDB.open("IDBStorage_" + name, 1)
         this.idbRequest = request
+
         request.onupgradeneeded = function(this: IDBOpenDBRequest, event: IDBVersionChangeEvent) {
             // console.log("onupgradeneeded", event)
             let db = this.result
-            let objectStore = db.createObjectStore(self.name)
+            let objectStore = db.createObjectStore(self.subName)
         }
 
         this.ready = new Promise((resolve, reject) => {
+            let self = this
             request.onerror = function(event) {
-                console.error("[IndexedDBStorage] err", event)
+                // console.error("[IndexedDBStorage] err", event)
                 reject(event)
             }
+
             request.onsuccess = function(event) {
                 resolve(true)
+                let databaseName = self.getDatabaseName()
+                IndexedDBStorage.allInstances[databaseName] = self
+                IndexedDBStorage.allIndexedDBNames.ready.then((a: any) => {
+                    IndexedDBStorage.allIndexedDBNames.set(databaseName, true)
+                })
             }
         })
     }
 
-    static deleteDatabase(name: string) {
-        window.indexedDB.deleteDatabase("IDBStorage_" + name)
+    deleteDatabase() {
+        let databaseName = this.getDatabaseName()
+        let db = this.idbRequest.result
+        db.close()
+        window.indexedDB.deleteDatabase(databaseName)
+        delete IndexedDBStorage.allInstances[databaseName]
+        this.isDestroyed = true
+
+        if (!IndexedDBStorage.allIndexedDBNames.isDestroyed) {
+            IndexedDBStorage.allIndexedDBNames.ready.then((a: any) => {
+                IndexedDBStorage.allIndexedDBNames.delete(databaseName)
+            })
+        }
+    }
+
+    getDatabaseName() {
+        return "IDBStorage_" + this.name
     }
 
     set(key: string, value: any) {
@@ -33,9 +72,8 @@ export class IndexedDBStorage {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
                 let transaction = db.transaction([this.name], "readwrite")
-                let store = transaction.objectStore(this.name)
+                let store = transaction.objectStore(this.subName)
                 store.put(value, key)
-
 
                 transaction.oncomplete = function() {
                     resolve()
@@ -54,7 +92,7 @@ export class IndexedDBStorage {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
                 let transaction = db.transaction([this.name], "readwrite")
-                let store = transaction.objectStore(this.name)
+                let store = transaction.objectStore(this.subName)
                 store.delete(key)
 
                 transaction.oncomplete = function() {
@@ -69,12 +107,12 @@ export class IndexedDBStorage {
         })
     }
 
-    clear(key: string) {
+    deleteAll(key: string) {
         return new Promise((resolve, reject) => {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
                 let transaction = db.transaction([this.name], "readwrite")
-                let store = transaction.objectStore(this.name)
+                let store = transaction.objectStore(this.subName)
                 store.clear()
 
                 transaction.oncomplete = function() {
@@ -114,7 +152,7 @@ export class IndexedDBStorage {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
                 let transaction = db.transaction([this.name], "readwrite")
-                let store = transaction.objectStore(this.name)
+                let store = transaction.objectStore(this.subName)
                 let re = store.getAll()
                 let re_allKeys = store.getAllKeys()
 

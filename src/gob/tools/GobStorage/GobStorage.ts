@@ -23,10 +23,25 @@ export class GobStorage {
 
     // 存储名称，通过这个名称存储到本地
     name: string
+
     // 存储对象，通过这个对象操作数据
-    data: any
+    get data() {
+        return this.gobData
+    }
+    set data(value) {
+        if (typeof value === "object") {
+            Object.assign(this.gobData, value)
+        } else {
+            throw new Error("[GobStorage] data must be object.")
+        }
+    }
+
+    /** 禁止保存 */
+    public disableSave = false
+
     // 是否初始化完成
     readonly ready: Promise<boolean>
+
 
     /**
      * 打开/创建一个 GobStorage 并等待其初始化完成，相当于是 new GobStorage 的简便方法
@@ -59,7 +74,7 @@ export class GobStorage {
         if (localData === undefined) localData = {}
         let initGobFilters: IGobFilter[] = []
 
-        console.log("localData", JSON.stringify(localData))
+        // console.log("localData", JSON.stringify(localData))
 
         if (this.defaultData) {
             if (this.defaultData instanceof GobSchema) {
@@ -83,6 +98,9 @@ export class GobStorage {
 
         // 通过 Gob 订阅数据变更来触发数据到本地记录
         gobCore.recorder.subscribe(operator => {
+            // 禁止保存的时候，直接跳过
+            if(this.disableSave) return
+
             let key = operator.keyPath[0]
             this.waitSaveKeys.push(key)
             this.tick()
