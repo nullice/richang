@@ -41,3 +41,6 @@ test("GobStorage 初始值", async () => {
     expect(hoho.data.a).toEqual(123)
     expect(hoho.data.b).toEqual(323)
 })
+
+
+

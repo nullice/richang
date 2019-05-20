@@ -11,6 +11,17 @@ export class IndexedDBStorage {
         }
     }
 
+    /**
+     * 打开/创建一个 IndexedDBStorage 并等待其初始化完成，相当于是 new IndexedDBStorage 的简便方法
+     * @param name
+     * @param subName
+     */
+    static async open(name = "IndexedDBStorage", subName?: string) {
+        let idbs = new IndexedDBStorage(name, subName)
+        await idbs.ready
+        return idbs
+    }
+
     private idbRequest!: IDBRequest
     name: string
     subName: string
