@@ -138,11 +138,11 @@ export class IndexedDBStorage {
         })
     }
 
-    get(key: string, value: any) {
+    get(key: string) {
         return new Promise((resolve, reject) => {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
-                let transaction = db.transaction([this.name], "readwrite")
+                let transaction = db.transaction([this.name], "readonly")
                 let store = transaction.objectStore(this.name)
                 let re = store.get(key)
 
@@ -158,11 +158,31 @@ export class IndexedDBStorage {
         })
     }
 
+    has(key: string) {
+        return new Promise((resolve, reject) => {
+            if (this.idbRequest && this.idbRequest.result) {
+                let db = this.idbRequest.result
+                let transaction = db.transaction([this.name], "readonly")
+                let store = transaction.objectStore(this.name)
+                let re = store.getKey(key)
+
+                re.onsuccess = function(e: Event) {
+                    resolve(re.result !== undefined)
+                }
+                transaction.onerror = function(e: Event) {
+                    reject(e)
+                }
+            } else {
+                reject(new Error("[GobStorage] Not loaded indexedDB."))
+            }
+        })
+    }
+
     getAll() {
         return new Promise(async (resolve, reject) => {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
-                let transaction = db.transaction([this.name], "readwrite")
+                let transaction = db.transaction([this.name], "readonly")
                 let store = transaction.objectStore(this.subName)
                 let re = store.getAll()
                 let re_allKeys = store.getAllKeys()
@@ -196,6 +216,30 @@ export class IndexedDBStorage {
 
                     resolve(re)
                 })
+
+                transaction.onerror = function(e: Event) {
+                    reject(e)
+                }
+            } else {
+                reject(new Error("[GobStorage] Not loaded indexedDB."))
+            }
+        })
+    }
+
+    getAllKeys() {
+        return new Promise(async (resolve, reject) => {
+            if (this.idbRequest && this.idbRequest.result) {
+                let db = this.idbRequest.result
+                let transaction = db.transaction([this.name], "readonly")
+                let store = transaction.objectStore(this.subName)
+                let re = store.getAllKeys()
+
+                re.onsuccess = function(e: Event) {
+                    resolve(re.result)
+                }
+                re.onerror = function(e: Event) {
+                    reject(e)
+                }
 
                 transaction.onerror = function(e: Event) {
                     reject(e)
