@@ -35,7 +35,7 @@ export function objectFilter(
 ) {
     let newObject: any
     if (!mutation) {
-        newObject = {}
+        newObject = Array.isArray(object) ? [] : {}
         eachOptions = Object.assign({}, eachOptions, { needKeyPath: true })
     }
     objectEach(
@@ -54,7 +54,11 @@ export function objectFilter(
             else {
                 if (re) {
                     if (isObject(value)) {
-                        setObjectValueByPath(newObject, <string[]>info.keyPath, {})
+                        if (Array.isArray(value)) {
+                            setObjectValueByPath(newObject, <string[]>info.keyPath, [])
+                        } else {
+                            setObjectValueByPath(newObject, <string[]>info.keyPath, {})
+                        }
                     } else {
                         setObjectValueByPath(newObject, <string[]>info.keyPath, value)
                     }
