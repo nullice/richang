@@ -92,8 +92,8 @@ export class IndexedDBStorage {
                 let store = transaction.objectStore(this.subName)
 
                 if (this.safeSet && typeof value === "object") {
-                    value = cloneDeepWith(value, value => {
-                        if (!isFunction(value)) return value
+                    value = objectFilter(value, (value1, key, info) => {
+                        return !isFunction(value1)
                     })
                 }
 
