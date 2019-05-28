@@ -27,6 +27,15 @@ export class DirManager {
     }
 
     /**
+     * 通过复制已有文件，写入文件
+     * @param subPath
+     * @param filePath
+     */
+    async writeFileFromCopy(subPath: string, filePath: string) {
+        await fsex.copyFile(filePath, path.join(this.mianDir, subPath))
+    }
+
+    /**
      * 在目录中读取一个文件
      * @param subPath
      * @param option
@@ -114,17 +123,31 @@ export class DirManager {
     }
 
     /**
+     * 提供子文件名获取这个文件的完整路径
+     */
+    async getFile(subPath: string) {
+        let filePath = path.join(this.mianDir, subPath)
+        if (isExists(filePath)) {
+            return filePath
+        }
+    }
+
+    /**
      * 获取目录下全部文件的路径
      */
-    async getAllFiles() {
-        return await this.glob("**", "file")
+    async getAllFiles(subPath: string) {
+        let glob = "**"
+        if (subPath) glob = subPath + "/" + glob
+        return await this.glob(glob, "file")
     }
 
     /**
      * 获取目录下全部文件夹的路径
      */
-    async getAllDirs() {
-        let re = await this.glob("**", "dir")
+    async getAllDirs(subPath: string) {
+        let glob = "**"
+        if (subPath) glob = subPath + "/" + glob
+        let re = await this.glob(glob, "dir")
         // 删除当前目录
         re.shift()
         return re
