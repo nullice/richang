@@ -4,4 +4,7 @@ module.exports = {
   moduleNameMapper: {
     "@\/(.*)$": "<rootDir>/src/$1",
   },
+    setupFiles: [
+        "./test/beforeAll.js"
+    ]
 };
