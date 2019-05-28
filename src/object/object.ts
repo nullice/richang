@@ -82,7 +82,7 @@ export function isObject(value: object) {
  */
 export function isObjectWithoutFunction(value: object) {
     let type = typeof value
-    return value !== null && (type === "object")
+    return value !== null && type === "object"
 }
 
 
@@ -358,3 +358,18 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
  * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
  */
 export const assignDeep = lodash_merge
+
+
+/**
+ * 为对象设置一个不可枚举的属性值
+ * @param target
+ * @param propertyKey
+ * @param value
+ */
+export function setValueEnumerableFalse(target: any, propertyKey: string, value: any) {
+    Object.defineProperty(target, propertyKey, {
+        enumerable: false,
+        writable: true,
+        value: value
+    })
+}
