@@ -23,7 +23,6 @@ export function writable(value: boolean) {
 
 export function defineGlobal(constructor: Function) {
     if (typeof global !== "undefined") {
-        <any>global
+        ;(<any>global)[constructor.name] = constructor.name
     }
-    console.log(constructor)
 }
