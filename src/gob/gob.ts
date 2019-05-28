@@ -13,6 +13,7 @@ export { GobSchema, GobStorage }
 export class GobCore {
     gate: any
     data: any
+    warp: any
     recorder: GobRecorder
     handler: IGobHandler
     executor: GobExecutor
@@ -22,6 +23,7 @@ export class GobCore {
     constructor() {
         this.data = {}
         this.gate = {}
+
         this.recorder = new GobRecorder(this)
         this.executor = new GobExecutor(this)
         this.filters = new GobFilters(this)
@@ -90,7 +92,7 @@ export function GobFactory<T>(target: T): T & IGobData {
     // 把要托管的数据通过 handler 包装
     gobCore.data = target
     let warpData = gobCore.handler.wrapData(target, gobCore, [], gobCore.data, gobCore.gate)
-
+    gobCore.warp = warpData
     return warpData
 
     // 创建一个代理
