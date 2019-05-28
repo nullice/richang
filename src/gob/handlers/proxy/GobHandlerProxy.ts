@@ -19,8 +19,10 @@ export const GobHandlerProxy: IGobHandler = {
         objectEach(
             target,
             (value, key, info, CONTOL) => {
+                let nowKeyPath: string[] = keyPath.concat(<string[]>info.keyPath)
+                // console.log("wrapData", nowKeyPath, isObjectWithoutFunction(value), { value, key, info })
                 if (isObjectWithoutFunction(value)) {
-                    creatGate(value, gobCore, <string[]>info.keyPath)
+                    creatGate(value, gobCore, nowKeyPath)
                 }
             },
             {
@@ -32,8 +34,10 @@ export const GobHandlerProxy: IGobHandler = {
                     key: string,
                     info: { parent: any; keyPath?: string[]; firstKeyPath?: string[] }
                 ) {
+                    let nowKeyPath: string[] = keyPath.concat(<string[]>info.keyPath)
+                    let firstKeyPath: string[] = keyPath.concat(<string[]>info.firstKeyPath)
                     // console.log("checkCycleCallback", { value, key, info })
-                    creatCycleGate(value, gobCore, <string[]>info.keyPath, <string[]>info.firstKeyPath)
+                    creatCycleGate(value, gobCore, nowKeyPath, firstKeyPath)
                 }
             }
         )
