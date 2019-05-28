@@ -1,7 +1,11 @@
 import { GobCore } from "../../../gob"
 import { GOB_PROXY_KEY, GobHandlerProxy, ILocalContext } from "../GobHandlerProxy"
-import { getObjectValueByPath, isObject, setObjectValueByPath, isObjectWithoutFunction } from "../../../../object/object"
-
+import {
+    getObjectValueByPath,
+    isObject,
+    setObjectValueByPath,
+    isObjectWithoutFunction
+} from "../../../../object/object"
 
 export function get(key: string, keyPath: string[], gobCore: GobCore, localContext?: ILocalContext) {
     // console.log({key, keyPath, gobCore, localContext})
@@ -22,7 +26,10 @@ export function get(key: string, keyPath: string[], gobCore: GobCore, localConte
         } else {
             gate = getObjectValueByPath(gobCore.gate, keyPath)
         }
+        // 备选方案
+        if(!gate)gate = getObjectValueByPath(gobCore.gate, keyPath)
 
+        // console.log("gob get", { key, keyPath, localContext,"gobCore.gate":gobCore.gate, gate })
         return gate[GOB_PROXY_KEY]
     } else {
         return value
