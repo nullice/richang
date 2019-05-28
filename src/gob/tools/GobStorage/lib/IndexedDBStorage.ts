@@ -1,3 +1,8 @@
+import isFunction from "lodash/isFunction"
+import cloneDeepWith from "lodash/cloneDeepWith"
+import { objectFilter } from "../../../../object/object"
+
+
 export class IndexedDBStorage {
     static allIndexedDBNames = new IndexedDBStorage("allIndexedDBNames")
     static allInstances: { [id: string]: IndexedDBStorage } = {}
@@ -15,9 +20,10 @@ export class IndexedDBStorage {
      * 打开/创建一个 IndexedDBStorage 并等待其初始化完成，相当于是 new IndexedDBStorage 的简便方法
      * @param name
      * @param subName
+     * @param subName
      */
-    static async open(name = "IndexedDBStorage", subName?: string) {
-        let idbs = new IndexedDBStorage(name, subName)
+    static async open(name = "IndexedDBStorage", subName?: string, safeSet = true) {
+        let idbs = new IndexedDBStorage(name, subName, safeSet)
         await idbs.ready
         return idbs
     }
@@ -28,7 +34,7 @@ export class IndexedDBStorage {
     ready: Promise<boolean>
     isDestroyed = true
 
-    constructor(name = "IndexedDBStorage", subName?: string) {
+    constructor(name = "IndexedDBStorage", subName?: string, private safeSet = true) {
         this.name = name
         this.subName = subName || name
         let self = this
@@ -84,6 +90,13 @@ export class IndexedDBStorage {
                 let db = this.idbRequest.result
                 let transaction = db.transaction([this.name], "readwrite")
                 let store = transaction.objectStore(this.subName)
+
+                if (this.safeSet && typeof value === "object") {
+                    value = cloneDeepWith(value, value => {
+                        if (!isFunction(value)) return value
+                    })
+                }
+
                 store.put(value, key)
 
                 transaction.oncomplete = function() {
@@ -178,7 +191,7 @@ export class IndexedDBStorage {
         })
     }
 
-    getAll() {
+    getAll(): Promise<{ [id: string]: any }> {
         return new Promise(async (resolve, reject) => {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
@@ -226,7 +239,7 @@ export class IndexedDBStorage {
         })
     }
 
-    getAllKeys() {
+    getAllKeys(): Promise<string[]> {
         return new Promise(async (resolve, reject) => {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
