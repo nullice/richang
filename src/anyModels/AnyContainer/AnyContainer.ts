@@ -1,21 +1,67 @@
-import { AnyBase } from "../AnyBase/AnyBase"
+import { genUUID_v4 } from "../../crypto/crypto"
+import { GobFactory, GobCore } from "../../gob/gob"
+import { setValueEnumerableFalse } from "../../object/object"
 
-export abstract class AnyContainer<T> extends AnyBase {
-    public data: T
-    constructor(data: T, options?: { id?: string }) {
-        let id!: string
+export interface IAnyContainerInset<TData = any> {
+    rawData: TData
+    gobData: TData
+    gobCore: GobCore
+}
 
-        // 没有通过 options 指定 id，但是 data 里有 id 字段时，使用 data 里的 id 字段作为 id
-        if (!options || (options && !options.id)) {
-            if (data && (<any>data).id) {
-                id = (<any>data).id
-            }
-        }
-        super(id)
+export interface IAnyData {
+    id: string
+    name: string
+}
 
-        this.data = data
+export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAnyContainerInset = IAnyContainerInset> {
+    public get data(): TData {
+        return this.inset.gobData
+    }
+    public set data(value) {
+        throw new Error("[AnyContainer] err.")
     }
 
+    public get id(): string {
+        return this.data.id
+    }
+    public set id(value) {
+        this.data.id = value
+    }
+    public get name(): string {
+        return this.data.name
+    }
+    public set name(value) {
+        this.data.name = value
+    }
 
+    public inset!: TInset
+    protected creatEmptyData(): TData {
+        let re = <TData>(<any>{
+            id: genUUID_v4(),
+            name: "unnameed",
+            parentId: null,
+            childrenIds: []
+        })
+        return re
+    }
 
+    constructor(data?: TData) {
+        setValueEnumerableFalse(this, "inset", {})
+        if (!data) {
+            data = this.creatEmptyData()
+        }
+        this.inset.rawData = data
+        this.inset.gobData = GobFactory(data)
+        this.inset.gobCore = GobFactory.getGobCore(this.inset.gobData)
+    }
+
+    toData(): TData {
+        return this.inset.rawData
+    }
+
+    async destroy() {
+        this.inset.gobCore
+    }
 }
+
+let x = new AnyContainer()
