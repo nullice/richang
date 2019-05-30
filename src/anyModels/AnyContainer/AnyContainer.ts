@@ -14,12 +14,12 @@ export interface IAnyData {
 }
 
 export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAnyContainerInset = IAnyContainerInset> {
-    public get data(): TData {
-        return this.inset.gobData
-    }
-    public set data(value) {
-        throw new Error("[AnyContainer] err.")
-    }
+    // public get data(): TData {
+    //     return this.inset.gobData
+    // }
+    // public set data(value) {
+    //     throw new Error("[AnyContainer] err.")
+    // }
 
     public get id(): string {
         return this.data.id
@@ -33,6 +33,8 @@ export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAny
     public set name(value) {
         this.data.name = value
     }
+
+     public  readonly data!: TData
 
     public inset!: TInset
     protected creatEmptyData(): TData {
@@ -53,6 +55,7 @@ export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAny
         this.inset.rawData = data
         this.inset.gobData = GobFactory(data)
         this.inset.gobCore = GobFactory.getGobCore(this.inset.gobData)
+        this.data = this.inset.gobData
     }
 
     toData(): TData {
