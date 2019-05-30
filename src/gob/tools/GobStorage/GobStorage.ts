@@ -111,8 +111,14 @@ export class GobStorage {
     private tick = debounce(function(this: GobStorage) {
         // console.time("[GobStorage] save")
         let ps = []
-        while (this.waitSaveKeys.length > 0) {
-            let key = this.waitSaveKeys.pop()
+        let keyHash: any = {}
+        let keys
+        this.waitSaveKeys.forEach(key => (keyHash[key] = key))
+        this.waitSaveKeys.length = 0
+        keys = Object.keys(keyHash)
+
+        while (keys.length > 0) {
+            let key = keys.pop()
             if (key) {
                 let value = this.gobCore.data[key]
                 if (value === undefined) {
