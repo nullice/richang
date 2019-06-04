@@ -2,6 +2,7 @@ import { GobRecorder } from "./recorder/recorder"
 import { IGobHandler, GobKeyword } from "./handlers/GobHandler"
 import { GobExecutor } from "./executor/executor"
 import { GobFilters } from "./filters/filters"
+import { VueSupport } from "./extensions/vue-support/vue-support"
 import { GobHandlerProxy } from "./handlers/proxy/GobHandlerProxy"
 import { IGobOperator, GobOperatorType } from "./executor/lib/operators"
 import { normalizeKeyPath } from "../object/object"
@@ -19,6 +20,8 @@ export class GobCore {
     executor: GobExecutor
     filters: GobFilters
     isGob = true
+    /** 暂停订阅 */
+    pauseSubscribe = false
 
     constructor() {
         this.data = {}
@@ -80,14 +83,35 @@ interface IGobData {
     $on: 123
 }
 
+export interface GobExtension {
+    (gobCore: GobCore, target: any): void
+}
+
 /**
  * 把一个对象包装起来，提供改动监控和拦截等功能
  * @param target
  * @constructor
  */
-export function GobFactory<T>(target: T): T & IGobData {
+export function GobFactory<T>(
+    target: T,
+    options?: { vue?: boolean },
+    extensions?: GobExtension | GobExtension[]
+): T & IGobData {
     // 创建一个 GobCore
     let gobCore = new GobCore()
+
+    // 配置
+    if (options) {
+        if (options.vue) VueSupport(gobCore, target)
+    }
+
+    // 注册扩展
+    if (extensions) {
+        if (!Array.isArray(extensions)) extensions = [extensions]
+        extensions.forEach(extension => {
+            extension(gobCore, target)
+        })
+    }
 
     // 把要托管的数据通过 handler 包装
     gobCore.data = target

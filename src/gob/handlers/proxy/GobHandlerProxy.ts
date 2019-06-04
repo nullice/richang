@@ -20,7 +20,7 @@ export const GobHandlerProxy: IGobHandler = {
             target,
             (value, key, info, CONTOL) => {
                 let nowKeyPath: string[] = keyPath.concat(<string[]>info.keyPath)
-                // console.log("wrapData", nowKeyPath, isObjectWithoutFunction(value), { value, key, info })
+                // console.log("objectEach", nowKeyPath, isObjectWithoutFunction(value), { value, key, info })
                 if (isObjectWithoutFunction(value)) {
                     creatGate(value, gobCore, nowKeyPath)
                 }

@@ -34,7 +34,7 @@ export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAny
         this.data.name = value
     }
 
-     public  readonly data!: TData
+    public readonly data!: TData
 
     public inset!: TInset
     protected creatEmptyData(): TData {
@@ -53,7 +53,7 @@ export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAny
             data = this.creatEmptyData()
         }
         this.inset.rawData = data
-        this.inset.gobData = GobFactory(data)
+        this.inset.gobData = GobFactory(data, { vue: true })
         this.inset.gobCore = GobFactory.getGobCore(this.inset.gobData)
         this.data = this.inset.gobData
     }
