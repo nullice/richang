@@ -65,7 +65,7 @@ export class EventHub {
      * @param needlessCloser 不需要返回监听关闭函数
      * @return {listenCloser}
      */
-    on(typePath: string, listener: (eventData: any) => void, needlessCloser: boolean = false) {
+    on(typePath: string, listener: (eventData: any, typePath?: string) => void, needlessCloser: boolean = false) {
         this.eventEmitter.on(typePath, listener)
 
         if (!needlessCloser) {
@@ -115,7 +115,7 @@ export class EventHub {
         }
 
         for (let i = 0; i < emitArray.length; i++) {
-            this.eventEmitter.emit(emitArray[i], eventData)
+            this.eventEmitter.emit(emitArray[i], eventData, typePath)
         }
     }
 }
