@@ -77,6 +77,8 @@ export class GobRecorder {
 
     // 发布订阅消息 访问操作（get）
     private publishOperatorEvent(operator: IGobOperator) {
+        if (this.gobCore.pauseSubscribe) return
+
         if (operator.type === GobOperatorType.get) {
             if (this.enableVisitsSubscribe) this.eventHub.emit("visits", operator)
         } else {
