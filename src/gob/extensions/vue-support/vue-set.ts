@@ -6,6 +6,8 @@ import { set as orgSet } from "../../handlers/proxy/operators/set"
 import Vue from "vue"
 
 export function set(key: string, value: any, keyPath: string[], gobCore: GobCore, localContext?: ILocalContext) {
+    // console.log("[x:vset]", { key, keyPath, value, localContext })
+
     if (key === "__proto__") {
         return orgSet(key, value, keyPath, gobCore, localContext)
     }

@@ -53,9 +53,9 @@ export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAny
             data = this.creatEmptyData()
         }
         this.inset.rawData = data
-        this.inset.gobData = GobFactory(data, { vue: true })
-        this.inset.gobCore = GobFactory.getGobCore(this.inset.gobData)
-        this.data = this.inset.gobData
+        // this.inset.gobData = GobFactory(data, { vue: true })
+        // this.inset.gobCore = GobFactory.getGobCore(this.inset.gobData)
+        this.data = data
     }
 
     toData(): TData {
@@ -63,7 +63,7 @@ export class AnyContainer<TData extends IAnyData = IAnyData, TInset extends IAny
     }
 
     async destroy() {
-        this.inset.gobCore
+        // this.inset.gobCore
     }
 }
 

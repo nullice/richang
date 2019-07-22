@@ -39,6 +39,7 @@ class Richang {
 
     static image = image
     static binary = binary
+    static bin = binary
     static string = string
 
     static crypto = crypto

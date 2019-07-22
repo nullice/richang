@@ -102,6 +102,54 @@ export function checkUUID(uuid: string) {
 }
 
 /**
+ * 混合 2 个 uuid
+ * @param nameSpaceUUID
+ * @param UUID
+ */
+export function mixUUID(nameSpaceUUID: string, UUID: string) {
+    nameSpaceUUID = nameSpaceUUID.toUpperCase()
+    UUID = UUID.toUpperCase()
+    let mixUUID: string[] = nameSpaceUUID.split("")
+
+    for (let i = 0; i < nameSpaceUUID.length; i++) {
+        if (i % 2 !== 0) {
+            ;(<any>mixUUID)[i] = UUID[i]
+        }
+    }
+    return mixUUID.join("")
+}
+
+
+
+
+/**
+ * 检查一个 UUID 是否是由一个 UUID 混合的
+ * @param nameSpaceUUID
+ * @param UUID
+ */
+export function checkUUIDMix(nameSpaceUUID: string, UUID: string) {
+    nameSpaceUUID = nameSpaceUUID.toUpperCase()
+    UUID = UUID.toUpperCase()
+    for (let i = 0; i < nameSpaceUUID.length; i++) {
+        if (i % 2 === 0) {
+            if ((<any>nameSpaceUUID)[i] !== UUID[i]) {
+                return false
+            }
+        }
+    }
+    return true
+}
+
+/**
+ * 生成一个 UUID 的 mix UUID
+ * @param nameSpaceUUID
+ */
+export function forkUUID(nameSpaceUUID: string) {
+    let uuid = genUUID_v4()
+    return mixUUID(nameSpaceUUID, uuid)
+}
+
+/**
  * 生成一个随机整数
  * @param {number} max - 最大值
  * @param {number} min - 最小值

@@ -6,7 +6,6 @@ import { VueSupport } from "./extensions/vue-support/vue-support"
 import { GobHandlerProxy } from "./handlers/proxy/GobHandlerProxy"
 import { IGobOperator, GobOperatorType } from "./executor/lib/operators"
 import { normalizeKeyPath } from "../object/object"
-
 import { GobSchema } from "./tools/GobSchema/GobSchema"
 import { GobStorage } from "./tools/GobStorage/GobStorage"
 export { GobSchema, GobStorage }

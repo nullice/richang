@@ -21,3 +21,26 @@ export function normailzeFileName(text: string, fix = "") {
     let name = text.replace(reg, fix)
     return name
 }
+
+const hyphenateRE = /\B([A-Z])/g
+
+/**
+ * 驼峰风格转连字符风格
+ * nameString => name-string
+ *
+ * @param str
+ */
+export function hyphenate(str: string) {
+    return str.replace(hyphenateRE, "-$1").toLowerCase()
+}
+
+const camelizeRE = /-(\w)/g
+
+/**
+ * 连字符风格转驼峰风格
+ * name-string => nameString
+ * @param str
+ */
+export function camelize(str: string) {
+    return str.replace(camelizeRE, (_, c) => (c ? c.toUpperCase() : ""))
+}

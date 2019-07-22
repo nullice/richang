@@ -3,7 +3,7 @@ import { isObject, setObjectValueByPath, isObjectWithoutFunction } from "../../.
 import { GobCore } from "../../../gob"
 
 export function set(key: string, value: any, keyPath: string[], gobCore: GobCore, localContext?: ILocalContext) {
-    // console.log("[x:set]", { key, keyPath, value, localContext })
+    //  console.log("[x:set]", { key, keyPath, value, localContext })
     // 有 handler 上下文
     if (localContext) {
         localContext.localData[key] = value

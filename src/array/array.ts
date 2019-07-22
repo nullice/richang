@@ -25,6 +25,13 @@
 
 import { getObjectHash, isObject } from "../object/object"
 
+import _natsort from "./lib/natsort"
+
+/**
+ * 自然排序函数
+ */
+export const natsort = _natsort
+
 /**
  *  对象比较方法
  *  - equal: boolean 内容比较

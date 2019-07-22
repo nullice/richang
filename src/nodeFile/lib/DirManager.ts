@@ -32,7 +32,10 @@ export class DirManager {
      * @param filePath
      */
     async writeFileFromCopy(subPath: string, filePath: string) {
-        await fsex.copyFile(filePath, path.join(this.mianDir, subPath))
+        let finPath = path.join(this.mianDir, subPath)
+        fsex.ensureFileSync(finPath)
+        await fsex.copyFile(filePath, finPath)
+        return finPath
     }
 
     /**
@@ -118,7 +121,7 @@ export class DirManager {
      */
     async isExists(subPath: string) {
         let filePath = path.join(this.mianDir, subPath)
-        let re = isExists(filePath)
+        let re = await isExists(filePath)
         return re
     }
 
@@ -127,7 +130,7 @@ export class DirManager {
      */
     async getFile(subPath: string) {
         let filePath = path.join(this.mianDir, subPath)
-        if (isExists(filePath)) {
+        if (await isExists(filePath)) {
             return filePath
         }
     }

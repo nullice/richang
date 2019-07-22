@@ -2,7 +2,6 @@ import isFunction from "lodash/isFunction"
 import cloneDeepWith from "lodash/cloneDeepWith"
 import { objectFilter } from "../../../../object/object"
 
-
 export class IndexedDBStorage {
     static allIndexedDBNames = new IndexedDBStorage("allIndexedDBNames")
     static allInstances: { [id: string]: IndexedDBStorage } = {}
@@ -85,6 +84,7 @@ export class IndexedDBStorage {
     }
 
     set(key: string, value: any) {
+        // console.log("IndexedDBStorage", key, value)
         return new Promise((resolve, reject) => {
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
@@ -157,11 +157,17 @@ export class IndexedDBStorage {
                 let db = this.idbRequest.result
                 let transaction = db.transaction([this.name], "readonly")
                 let store = transaction.objectStore(this.name)
-                let re = store.get(key)
 
-                re.onsuccess = function(e: Event) {
-                    resolve(re.result)
+                try {
+                    let re = store.get(key)
+                    re.onsuccess = function(e: Event) {
+                        resolve(re.result)
+                    }
+                } catch (e) {
+                    console.error("[IndexedDBStorage] get", e)
+                    resolve(undefined)
                 }
+
                 transaction.onerror = function(e: Event) {
                     reject(e)
                 }
@@ -173,10 +179,16 @@ export class IndexedDBStorage {
 
     has(key: string) {
         return new Promise((resolve, reject) => {
+            if (key == undefined) {
+                console.warn("[indexedDB] has(null).", key)
+                resolve(undefined)
+            }
+
             if (this.idbRequest && this.idbRequest.result) {
                 let db = this.idbRequest.result
                 let transaction = db.transaction([this.name], "readonly")
                 let store = transaction.objectStore(this.name)
+
                 let re = store.getKey(key)
 
                 re.onsuccess = function(e: Event) {

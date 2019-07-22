@@ -3,6 +3,7 @@ import { IndexedDBStorage } from "./lib/indexedDBStorage"
 import debounce from "lodash/debounce"
 import { GobSchema } from "../GobSchema/GobSchema"
 import { IGobFilter } from "../../../gob/filters/filters"
+import merge from "lodash/merge"
 
 /**
  * GobStorage 本地存储工具
@@ -23,6 +24,9 @@ export class GobStorage {
 
     // 存储名称，通过这个名称存储到本地
     name: string
+
+    // 手动模式
+    manual: boolean
 
     // 存储对象，通过这个对象操作数据
     get data() {
@@ -58,10 +62,11 @@ export class GobStorage {
      * @param name 存储名称，通过这个名称存储到本地
      * @param defaultData 默认数据
      */
-    constructor(name = "GobStorage_normal", defaultData?: object | GobSchema<any>) {
+    constructor(name = "GobStorage_normal", defaultData?: object | GobSchema<any>, manual = false) {
         this.name = name
         this.storage = new IndexedDBStorage(name)
         this.ready = this.init()
+        this.manual = manual
         if (defaultData) this.defaultData = defaultData
     }
 
@@ -79,33 +84,53 @@ export class GobStorage {
             if (this.defaultData instanceof GobSchema) {
                 let gs = this.defaultData.getGobSource()
                 initGobFilters = gs.filters
-                localData = Object.assign({}, gs.data, localData)
+                localData = merge({}, gs.data, localData)
             } else {
-                localData = Object.assign({}, this.defaultData, localData)
+                localData = merge({}, this.defaultData, localData)
+
+
             }
         }
 
         this.raw = localData
-        let gobData = GobFactory(localData)
-        let gobCore = GobFactory.getGobCore(gobData)
-        this.gobCore = gobCore
-        this.gobData = gobData
-        this.data = gobData
 
-        // 添加 Gob 初始过滤器
-        initGobFilters.forEach(filter => gobCore.filters.addFilter(filter))
+        if (this.manual) {
+            this.gobData = localData
+        } else {
+            let gobData = GobFactory(localData)
+            let gobCore = GobFactory.getGobCore(gobData)
+            this.gobCore = gobCore
+            this.gobData = gobData
+            this.data = gobData
 
-        // 通过 Gob 订阅数据变更来触发数据到本地记录
-        gobCore.recorder.subscribe(operator => {
-            // 禁止保存的时候，直接跳过
-            if (this.disableSave) return
+            // 添加 Gob 初始过滤器
+            initGobFilters.forEach(filter => gobCore.filters.addFilter(filter))
 
-            let key = operator.keyPath[0]
-            this.waitSaveKeys.push(key)
-            this.tick()
-        })
+            // 通过 Gob 订阅数据变更来触发数据到本地记录
+            gobCore.recorder.subscribe(operator => {
+                // 禁止保存的时候，直接跳过
+                if (this.disableSave) return
+
+                let key = operator.keyPath[0]
+                this.waitSaveKeys.push(key)
+                this.tick()
+            })
+        }
 
         return true
+    }
+
+    change(key: string) {
+        this.waitSaveKeys.push(key)
+        this.tick()
+    }
+
+    saveAll() {
+        let ps = []
+        for (let key in this.data) {
+            ps.push(this.storage.set(key, this.data[key]))
+        }
+        return Promise.all(ps)
     }
 
     private tick = debounce(function(this: GobStorage) {
@@ -120,7 +145,7 @@ export class GobStorage {
         while (keys.length > 0) {
             let key = keys.pop()
             if (key) {
-                let value = this.gobCore.data[key]
+                let value = this.gobData[key]
                 if (value === undefined) {
                     ps.push(this.storage.delete(key))
                 } else {
@@ -132,7 +157,7 @@ export class GobStorage {
         // Promise.all(ps).then(()=>{
         //     // console.timeEnd("[GobStorage] save")
         // })
-    }, 50)
+    }, 250)
 
     /**
      * 删除所有数据
