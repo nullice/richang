@@ -91,8 +91,6 @@ if (process.env.ANALYZER_WEBPACK) {
 }
 
 if (BUILD_LIB) {
-
-
     let nodeConfig
     nodeConfig = _.cloneDeep(baseConfig)
     nodeConfig.entry.index = path.resolve(dirname, "src/node.ts")
@@ -104,6 +102,7 @@ if (BUILD_LIB) {
     baseConfig.plugins.push(
         new DtsBundleWebpack({ main: "types/src/node.d.ts", name: "richangNode", out: "../../lib/richang.node.d.ts" })
     )
+    nodeConfig.resolve.alias["./gob/gob"] = "./gob/gob.node"
 
     module.exports = [baseConfig, nodeConfig]
 } else {

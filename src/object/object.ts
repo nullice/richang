@@ -31,6 +31,7 @@ import { objectEach as _objectEach } from "./lib/objectEach"
 import { objectFilter as _objectFilter } from "./lib/objectFilter"
 import { objectRemove as _objectRemove } from "./lib/objectFilter"
 import { objectMask as _objectMask } from "./lib/objectFilter"
+import { objectGen as _objectGen } from "./lib/objectGen"
 import _cloneDeep from "lodash/cloneDeep"
 import _isEqual from "lodash/isEqual"
 import _objectHash from "object-hash"
@@ -39,6 +40,7 @@ export const objectFilter = _objectFilter
 export const objectEach = _objectEach
 export const objectRemove = _objectRemove
 export const objectMask = _objectMask
+export const objectGen = _objectGen
 export const isEqual = _isEqual
 
 /**
@@ -61,6 +63,8 @@ export function isEmptyObject(object: object) {
     return true
 }
 
+export function se() {}
+
 /**
  * 判断一个值是否是对象（可遍历键值）
  * 函数是对象，null 不是对象
@@ -75,7 +79,6 @@ export function isObject(value: object) {
     return value !== null && (type === "object" || type === "function")
 }
 
-
 /**
  * 判断一个值是对象，并且不是函数
  * @param value
@@ -84,8 +87,6 @@ export function isObjectWithoutFunction(value: object) {
     let type = typeof value
     return value !== null && type === "object"
 }
-
-
 
 /**
  * 数组化键名路径
@@ -358,7 +359,6 @@ export function mappingObject(objectSource: any, mappingRule: IMappingRule, reve
  * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
  */
 export const assignDeep = lodash_merge
-
 
 /**
  * 为对象设置一个不可枚举的属性值

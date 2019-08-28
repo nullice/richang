@@ -46,6 +46,7 @@
         "@types/uuid": "^3.4.4",
         "@types/yauzl": "^2.9.1",
         "@types/yazl": "^2.4.1",
+        "benchmark": "^2.1.4",
         "dayjs": "^1.8.11",
         "event-emitter": "^0.3.5",
         "fake-indexeddb": "^2.1.0",
