@@ -133,7 +133,7 @@ class UnzipableData {
     /**
      * 获取这个文件的 Buffer
      */
-    async getBuffer() {
+    getBuffer() {
         return new Promise((resolve, reject) => {
             this.zipfile.openReadStream(this.raw, function(err, readStream) {
                 if (err) throw err
@@ -148,7 +148,7 @@ class UnzipableData {
      * 把这个文件当作文本文件，获取文本内容
      */
     async getText(): Promise<string> {
-        let buffer = await this.getBuffer()
+        let buffer: any = await this.getBuffer()
         if (buffer && buffer.toString) {
             return buffer.toString()
         } else {

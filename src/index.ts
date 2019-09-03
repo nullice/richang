@@ -74,6 +74,8 @@ class Richang {
 //     gob,
 //     benchmark
 // }
+
+export default Richang
 export {
     Richang,
     shuffle,
