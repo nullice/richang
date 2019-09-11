@@ -75,7 +75,6 @@ class Richang {
 //     benchmark
 // }
 
-export default Richang
 export {
     Richang,
     shuffle,
@@ -96,5 +95,6 @@ export {
     crypto,
     gob,
     benchmark,
-    decorators
+    decorators,
+    Richang as default
 }
