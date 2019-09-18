@@ -44,3 +44,29 @@ const camelizeRE = /-(\w)/g
 export function camelize(str: string) {
     return str.replace(camelizeRE, (_, c) => (c ? c.toUpperCase() : ""))
 }
+
+/**
+ * 一个字符串是否是一个百分比字符串 "22%", "22.33%"
+ */
+export function isPercentText(str: string): boolean {
+    const reg = /([0-9]*\.?[0-9]*)\s*%/
+    return reg.test(str)
+}
+
+/**
+ * 一个字符串是否是一个像素字符串 "100px", "322.2 px"
+ * 可以接受一个空格间隔
+ */
+export function isPxText(str: string): boolean {
+    const reg = /([0-9]*\.?[0-9]*\ ?)px/
+    return reg.test(str)
+}
+
+/**
+ * 一个字符串是否是一个 Rem字符串 "100rem", "322.2 rem"
+ * 可以接受一个空格间隔
+ */
+export function isRemText(str: string): boolean {
+    const reg = /([0-9]*\.?[0-9]*\ ?)rem/
+    return reg.test(str)
+}

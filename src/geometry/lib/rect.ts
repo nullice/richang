@@ -47,7 +47,7 @@ export type Rect = IRltb | IXywh
  * @return {IXywh}
  */
 export function rltb2xywh(rltb: IRltb) {
-    let xyhw!: IXywh
+    let xyhw: IXywh = <IXywh>{}
 
     xyhw.x = rltb.left
     xyhw.y = rltb.top
@@ -63,7 +63,7 @@ export function rltb2xywh(rltb: IRltb) {
  * @return {IRltb}
  */
 export function xywh2rltb(xywh: IXywh) {
-    let rltb!: IRltb
+    let rltb: IRltb = <IRltb>{}
 
     rltb.left = xywh.x
     rltb.top = xywh.y
@@ -245,4 +245,46 @@ export function xywhHasOverlap(xywhA: IXywh, xywhB: IXywh) {
     let rltbB = xywh2rltb(xywhB)
 
     return rltbHasOverlap(rltbA, rltbB)
+}
+
+/**
+ * 判断点是否在区域内
+ * @param point
+ * @param rltb
+ */
+export function rltbHasPoint(point: IXy, rltb: IRltb) {
+    return point.x > rltb.left && point.x < rltb.right && (point.y > rltb.top && point.y < rltb.bottom)
+}
+
+/**
+ * 判断点是否在区域内
+ * @param point
+ * @param rltb
+ */
+export function xywhHasPoint(point: IXy, xywh: IXywh) {
+    let rltb = xywh2rltb(xywh)
+    return rltbHasPoint(point, rltb)
+}
+
+/**
+ *  rect 转换到 html rect
+ * @param rect
+ */
+export function rect2HtmlRect(rect: Rect) {
+    let htmlRect: any = {}
+    if (rectIsRltb(rect)) {
+        Object.assign(htmlRect, rect)
+        let xywh = rltb2xywh(<IRltb>rect)
+        htmlRect.height = xywh.h
+        htmlRect.width = xywh.w
+        htmlRect.x = xywh.w
+        htmlRect.y = xywh.y
+    } else {
+        htmlRect = xywh2rltb(<IXywh>rect)
+        htmlRect.height = (<IXywh>rect).h
+        htmlRect.width = (<IXywh>rect).w
+        htmlRect.x = (<IXywh>rect).w
+        htmlRect.y = (<IXywh>rect).y
+    }
+    return htmlRect
 }
