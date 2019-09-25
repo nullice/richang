@@ -26,3 +26,16 @@ export function normaliz(inNum: number, inRange: [number, number], outRange: [nu
     newNum = ((inNum - inMin) * outMax) / inMax + outMin
     return newNum
 }
+
+
+/**
+ * 限制一个数到制定范围内
+ * @param num
+ * @param min
+ * @param max
+ */
+export function limitRange(num: number, min = 0, max = 100) {
+    num = Math.max(min, num)
+    num = Math.min(max, num)
+    return num
+}
