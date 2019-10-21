@@ -1,3 +1,7 @@
+import { LocalCache as _LocalCache } from "./lib/LocalCache"
+
+export const LocalCache = _LocalCache
+
 interface ICacheItem {
     data: any
     latestTimestamp: number
