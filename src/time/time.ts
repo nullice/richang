@@ -1,5 +1,7 @@
 import dayjs from "dayjs"
 
+const msTool = require("./lib/ms/index.js")
+
 /**
  * 创建一个秒表函数，秒表函数每次执行会返回执行时到创建时的时差
  *
@@ -105,4 +107,27 @@ export function getHTime() {
     } else {
         return performance.now()
     }
+}
+
+/**
+ * 从时间文本中返回毫秒
+ *
+ * @example
+ * ms('2 days')  // 172800000
+ * ms('1d')      // 86400000
+ * ms('10h')     // 36000000
+ * ms('2.5 hrs') // 9000000
+ * ms('2h')      // 7200000
+ * ms('1m')      // 60000
+ * ms('5s')      // 5000
+ * ms('1y')      // 31557600000
+ * ms('100')     // 100
+ * ms('-3 days') // -259200000
+ * ms('-1h')     // -3600000
+ * ms('-200')    // -200
+ *
+ */
+export function parseMs(time: string) {
+    if (typeof time !== "string") time = "" + time
+    return msTool(time)
 }

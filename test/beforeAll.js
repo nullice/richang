@@ -2,3 +2,6 @@
 let fakeIndexeddb = require("fake-indexeddb")
 global.window = global
 global.indexedDB = fakeIndexeddb
+global.navigator = {
+    userAgent: 'node',
+}
