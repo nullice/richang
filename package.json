@@ -11,7 +11,7 @@
         "test": "jest",
         "test:coverage": "jest --coverage",
         "copy-to-windows": "cpy  --parents  ./src ../../../THE-Lanhu/Lanhu-WebUniverse/zeros/zero-system/src/Core/richang && cpy  --parents  ./test ../../../THE-Lanhu/Lanhu-WebUniverse/zero-system/src/Core/richang",
-        "copy-to-macos": "cpy  --parents  ./src /Users/nullice/Project/LANHU/Lanhu-WebUniverse/zeros/zero-system/src/Core/richang && cpy  --parents ./test /Users/nullice/Project/LANHU/Lanhu-WebUniverse/zeros/zero-system/src/Core/richang"
+        "copy-to-macos": "cpy  --parents  ./src /Users/nullice/Project/LANHU/Lanhu-WebUniverse/zeros/zero-system/src/Core/richang"
     },
     "author": "ui@nullice.com",
     "license": "ISC",
@@ -30,14 +30,15 @@
         "cross-env": "^5.2.0",
         "dts-bundle-webpack": "^1.0.2",
         "electron": "^5.0.1",
+        "fake-indexeddb": "^2.1.0",
         "jest": "^23.6.0",
+        "jest-localstorage-mock": "^2.4.0",
         "ts-jest": "^23.10.5",
         "ts-loader": "^5.3.3",
         "typescript": "^3.4.5",
         "webpack": "^4.28.4",
         "webpack-bundle-analyzer": "^3.0.3",
-        "webpack-cli": "^3.2.1",
-        "fake-indexeddb": "^2.1.0"
+        "webpack-cli": "^3.2.1"
     },
     "dependencies": {
         "@types/is-uuid": "^1.0.0",
