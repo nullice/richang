@@ -1,6 +1,5 @@
 import dayjs from "dayjs"
-
-const msTool = require("./lib/ms/index.js")
+const msTool = require("ms")
 
 /**
  * 创建一个秒表函数，秒表函数每次执行会返回执行时到创建时的时差
