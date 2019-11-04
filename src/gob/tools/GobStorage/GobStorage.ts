@@ -1,5 +1,5 @@
 import { GobFactory } from "../../gob"
-import { IndexedDBStorage } from "./lib/indexedDBStorage"
+import { IndexedDBStorage } from "./lib/IndexedDBStorage"
 import debounce from "lodash/debounce"
 import { GobSchema } from "../GobSchema/GobSchema"
 import { IGobFilter } from "../../../gob/filters/filters"
@@ -87,8 +87,6 @@ export class GobStorage {
                 localData = merge({}, gs.data, localData)
             } else {
                 localData = merge({}, this.defaultData, localData)
-
-
             }
         }
 
