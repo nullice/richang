@@ -126,7 +126,7 @@ export function getHTime() {
  * ms('-200')    // -200
  *
  */
-export function parseMs(time: string) {
+export function parseMs(time: string): number {
     if (typeof time !== "string") time = "" + time
     return msTool(time)
 }
