@@ -27,7 +27,6 @@ export function normaliz(inNum: number, inRange: [number, number], outRange: [nu
     return newNum
 }
 
-
 /**
  * 限制一个数到制定范围内
  * @param num

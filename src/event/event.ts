@@ -21,8 +21,6 @@
 //             nullice.com
 //            license: MIT
 
-
-
 import EventEmitter from "event-emitter"
 
 /**

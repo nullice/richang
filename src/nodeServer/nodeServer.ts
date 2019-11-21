@@ -15,7 +15,6 @@ export function checkPortFree(port: number): Promise<boolean> {
     })
 }
 
-
 /**
  * 注册一个端口占用的启动错误的捕捉器
  * 当 node 应用因为端口占用而启动失败时，给出提示并且找到是那个进程占用了端口

@@ -1,7 +1,6 @@
 import { LocalCache as _LocalCache } from "./lib/LocalCache"
 export const LocalCache = _LocalCache
 
-
 import { LocalFastCache } from "./lib/LocalFastCache"
 export { LocalFastCache }
 

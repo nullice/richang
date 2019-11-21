@@ -88,7 +88,7 @@ function walker(ob: any, len: number, deep: number, inherit: string, maxDeep: nu
                 inited: false,
                 selected: true,
                 halfSelected: false,
-                disalbeEmitChange: false,
+                disalbeEmitChange: false
             },
             children: {}
         }

@@ -253,7 +253,7 @@ export function xywhHasOverlap(xywhA: IXywh, xywhB: IXywh) {
  * @param rltb
  */
 export function rltbHasPoint(point: IXy, rltb: IRltb) {
-    return point.x > rltb.left && point.x < rltb.right && (point.y > rltb.top && point.y < rltb.bottom)
+    return point.x > rltb.left && point.x < rltb.right && point.y > rltb.top && point.y < rltb.bottom
 }
 
 /**

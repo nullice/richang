@@ -8,7 +8,7 @@ import {
 } from "../../../../object/object"
 
 export function get(key: string, keyPath: string[], gobCore: GobCore, localContext?: ILocalContext) {
-  //  console.log("gob get",{key, keyPath, gobCore, localContext})
+    //  console.log("gob get",{key, keyPath, gobCore, localContext})
     // 获取原始值
     let value: any
     if (localContext) {

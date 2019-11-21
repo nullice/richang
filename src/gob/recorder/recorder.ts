@@ -27,7 +27,6 @@ export class GobRecorder {
     // 启用访问操作（get）的的订阅
     private enableVisitsSubscribe = false
 
-
     constructor(gobCore: GobCore) {
         this.gobCore = gobCore
         this.preMemory = new GobOperatorMemory()

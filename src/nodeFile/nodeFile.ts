@@ -231,7 +231,6 @@ export async function readdirDeepWithType(path: string, deep: boolean | number =
     })
 }
 
-
 /**
  * 把一个 Stream 输出到一个 Buffer
  * @param stream
@@ -246,7 +245,6 @@ export async function streamToBuffer(stream: Stream.Stream): Promise<Buffer> {
             let buffer = Buffer.concat(buffers)
             resolve(buffer)
         })
-
     })
 }
 

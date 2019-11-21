@@ -93,7 +93,6 @@ export function beep() {
     return electron.shell.beep()
 }
 
-
 /**
  * 把文件删除到回收站
  * @param path
