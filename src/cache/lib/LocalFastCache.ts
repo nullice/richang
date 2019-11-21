@@ -34,7 +34,7 @@ export class LocalFastCache<V = any> {
      * @param subName 子分类名
      * @param life 缓存寿命（ms），除了直接指定毫秒数还可以是时间字符串如（"5s","10h", "1h", "3day"）
      */
-    set(key: string, value: V, subName = "0", life?: number | string) {
+    set<K extends keyof V>(key: K, value: V[keyof V], subName = "0", life?: number | string) {
         let timestamp = new Date().getTime()
 
         let lifeMs = typeof life === "string" ? parseMs(life) : life
@@ -57,10 +57,10 @@ export class LocalFastCache<V = any> {
      * @param value
      * @param subName
      */
-    get(key: string, subName = "0") {
+    get<K extends keyof V>(key: K, subName = "0"): V[K] | undefined {
         let realKey = `${this.fixName}${DVCHAR}${subName}${DVCHAR}${key}`
         let re = this._checkCache(realKey)
-        if (re) return re.data
+        if (re) return <V[K]>(<any>re.data)
     }
 
     /**
@@ -69,7 +69,7 @@ export class LocalFastCache<V = any> {
      * @param subName
      * @return {Promise<boolean>}
      */
-    has(key: string, subName = "0") {
+    has<K extends keyof V>(key: K, subName = "0") {
         let realKey = `${this.fixName}${DVCHAR}${subName}${DVCHAR}${key}`
         let re = this._checkCache(realKey)
         return re != undefined
@@ -79,10 +79,10 @@ export class LocalFastCache<V = any> {
      * 获取全部值
      * @param subName
      */
-    getAll(subName = "0"): { [key: string]: V } {
+    getAll(subName = "0"): V {
         let keys = this.getAllRealKeys()
 
-        let allValues: { [key: string]: V } = {}
+        let allValues: any = {}
         for (let realKey of keys) {
             let item = this._checkCache(realKey)
             if (item != undefined) {
@@ -108,7 +108,7 @@ export class LocalFastCache<V = any> {
      * @param key
      * @param subName
      */
-    delete(key: string, subName = "0") {
+    delete<K extends keyof V>(key: K, subName = "0") {
         let realKey = `${this.fixName}${DVCHAR}${subName}${DVCHAR}${key}`
         return localStorage.removeItem(realKey)
     }
@@ -163,3 +163,5 @@ export class LocalFastCache<V = any> {
         }
     }
 }
+
+

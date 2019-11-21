@@ -5,11 +5,11 @@ import { parseMs } from "./../../time/time"
  */
 export interface ILocalCacheItem<V = any> {
     /** 键名 */
-    key: string
+    key: keyof V
     /** 子分类名 */
     subName?: string
     /** 数据 */
-    data: V
+    data: V[keyof V]
     /** 创建时间 ms */
     creatTime: number
     /** 寿命 ms */
@@ -48,7 +48,7 @@ export class LocalCache<V = any> {
      * @param subName 子分类名
      * @param life 缓存寿命（ms），除了直接指定毫秒数还可以是时间字符串如（"5s","10h", "1h", "3day"）
      */
-    async set(key: string, value: V, subName = "0", life?: number | string) {
+    async set<K extends keyof V>(key: K, value: V[keyof V], subName = "0", life?: number | string) {
         let timestamp = new Date().getTime()
 
         let lifeMs = typeof life === "string" ? parseMs(life) : life
@@ -71,10 +71,10 @@ export class LocalCache<V = any> {
      * @param value
      * @param subName
      */
-    async get(key: string, subName = "0") {
+    async get<K extends keyof V>(key: K, subName = "0"): Promise<V[K] | undefined> {
         let realKey = `${subName}${DVCHAR}${key}`
         let re = await this._checkCache(realKey)
-        if (re) return re.data
+        if (re) return <V[K]>re.data
     }
 
     /**
@@ -83,7 +83,7 @@ export class LocalCache<V = any> {
      * @param subName
      * @return {Promise<boolean>}
      */
-    async has(key: string, subName = "0") {
+    async has<K extends keyof V>(key: string, subName = "0") {
         let realKey = `${subName}${DVCHAR}${key}`
         let re = await this._checkCache(realKey)
         return re != undefined
@@ -93,12 +93,12 @@ export class LocalCache<V = any> {
      * 获取全部值
      * @param subName
      */
-    async getAll(subName = "0"): Promise<{ [key: string]: V }> {
+    async getAll(subName = "0"): Promise<V> {
         let keys = await this.db.getAllKeys()
         let startStr = `${subName}${DVCHAR}`
         keys = keys.filter(key => key.slice(0, startStr.length) === startStr)
 
-        let allValues: { [key: string]: V } = {}
+        let allValues: V = <V>{}
 
         for (let realKey of keys) {
             let item = await this._checkCache(realKey)
@@ -114,7 +114,7 @@ export class LocalCache<V = any> {
      * @param key
      * @param subName
      */
-    async delete(key: string, subName = "0") {
+    async delete<K extends keyof V>(key: K, subName = "0") {
         let realKey = `${subName}${DVCHAR}${key}`
         return await this.db.delete(realKey)
     }
