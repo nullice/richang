@@ -28,6 +28,9 @@ export class LocalCache<V = any> {
     ready: Promise<boolean>
     name: string
 
+    // 停用，开启后不会写入，读取也都会是 undefined
+    disable = false
+
     constructor(name: string) {
         this.name = name
         this.db = new IndexedDBStorage("LocalCache—" + name)
@@ -38,6 +41,7 @@ export class LocalCache<V = any> {
      * 清空所有缓存
      */
     async claer() {
+        if (this.disable) return
         return await this.db.deleteAll()
     }
 
@@ -49,6 +53,8 @@ export class LocalCache<V = any> {
      * @param life 缓存寿命（ms），除了直接指定毫秒数还可以是时间字符串如（"5s","10h", "1h", "3day"）
      */
     async set<K extends keyof V>(key: K, value: V[keyof V], subName = "0", life?: number | string) {
+        if (this.disable) return
+
         let timestamp = new Date().getTime()
 
         let lifeMs = typeof life === "string" ? parseMs(life) : life
@@ -72,6 +78,8 @@ export class LocalCache<V = any> {
      * @param subName
      */
     async get<K extends keyof V>(key: K, subName = "0"): Promise<V[K] | undefined> {
+        if (this.disable) return
+
         let realKey = `${subName}${DVCHAR}${key}`
         let re = await this._checkCache(realKey)
         if (re) return <V[K]>re.data
@@ -84,6 +92,8 @@ export class LocalCache<V = any> {
      * @return {Promise<boolean>}
      */
     async has<K extends keyof V>(key: string, subName = "0") {
+        if (this.disable) return
+
         let realKey = `${subName}${DVCHAR}${key}`
         let re = await this._checkCache(realKey)
         return re != undefined
@@ -94,6 +104,8 @@ export class LocalCache<V = any> {
      * @param subName
      */
     async getAll(subName = "0"): Promise<V> {
+        if (this.disable) return <V>{}
+
         let keys = await this.db.getAllKeys()
         let startStr = `${subName}${DVCHAR}`
         keys = keys.filter(key => key.slice(0, startStr.length) === startStr)
@@ -115,6 +127,8 @@ export class LocalCache<V = any> {
      * @param subName
      */
     async delete<K extends keyof V>(key: K, subName = "0") {
+        if (this.disable) return
+
         let realKey = `${subName}${DVCHAR}${key}`
         return await this.db.delete(realKey)
     }
@@ -161,6 +175,8 @@ export class LocalCache<V = any> {
      * 清除所有过期的缓存
      */
     async clearDeadCache() {
+        if (this.disable) return
+
         let keys = await this.db.getAllKeys()
 
         for (let key of keys) {

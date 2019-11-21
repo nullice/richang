@@ -13,6 +13,9 @@ export class LocalFastCache<V = any> {
     name: string
     fixName: string
 
+    // 停用，开启后不会写入，读取也都会是 undefined
+    disable = false
+
     constructor(name: string) {
         this.name = name
         this.fixName = "LFCache—" + name
@@ -22,6 +25,7 @@ export class LocalFastCache<V = any> {
      * 清空所有缓存
      */
     claer() {
+        if (this.disable) return
         let keys = this.getAllRealKeys()
         keys.forEach(key => localStorage.removeItem(key))
         return
@@ -35,6 +39,8 @@ export class LocalFastCache<V = any> {
      * @param life 缓存寿命（ms），除了直接指定毫秒数还可以是时间字符串如（"5s","10h", "1h", "3day"）
      */
     set<K extends keyof V>(key: K, value: V[keyof V], subName = "0", life?: number | string) {
+        if (this.disable) return
+
         let timestamp = new Date().getTime()
 
         let lifeMs = typeof life === "string" ? parseMs(life) : life
@@ -58,6 +64,8 @@ export class LocalFastCache<V = any> {
      * @param subName
      */
     get<K extends keyof V>(key: K, subName = "0"): V[K] | undefined {
+        if (this.disable) return
+
         let realKey = `${this.fixName}${DVCHAR}${subName}${DVCHAR}${key}`
         let re = this._checkCache(realKey)
         if (re) return <V[K]>(<any>re.data)
@@ -70,6 +78,8 @@ export class LocalFastCache<V = any> {
      * @return {Promise<boolean>}
      */
     has<K extends keyof V>(key: K, subName = "0") {
+        if (this.disable) return
+
         let realKey = `${this.fixName}${DVCHAR}${subName}${DVCHAR}${key}`
         let re = this._checkCache(realKey)
         return re != undefined
@@ -80,6 +90,8 @@ export class LocalFastCache<V = any> {
      * @param subName
      */
     getAll(subName = "0"): V {
+        if (this.disable) return <V>{}
+
         let keys = this.getAllRealKeys()
 
         let allValues: any = {}
@@ -97,6 +109,8 @@ export class LocalFastCache<V = any> {
      * @param subName
      */
     getAllRealKeys(subName = "0"): string[] {
+        if (this.disable) return []
+
         let keys = Object.keys(localStorage)
         let startStr = `${this.fixName}${DVCHAR}${subName}`
         keys = keys.filter(key => key.slice(0, startStr.length) === startStr)
@@ -109,6 +123,8 @@ export class LocalFastCache<V = any> {
      * @param subName
      */
     delete<K extends keyof V>(key: K, subName = "0") {
+        if (this.disable) return
+
         let realKey = `${this.fixName}${DVCHAR}${subName}${DVCHAR}${key}`
         return localStorage.removeItem(realKey)
     }
@@ -156,6 +172,8 @@ export class LocalFastCache<V = any> {
      * 清除所有过期的缓存
      */
     async clearDeadCache() {
+        if (this.disable) return
+
         let keys = this.getAllRealKeys()
 
         for (let key of keys) {
