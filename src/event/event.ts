@@ -55,8 +55,15 @@ export class EventHub {
     }
 
     /**
+     * 有监听全部事件的监听器
+     */
+    hasAnyListener = false
+
+    /**
      * 监听一个事件。
      * 会返回一个监听关闭函数，执行它会结束这个监听。
+     *
+     * 使用 "*" 监听全部事件
      *
      * @param typePath 事件类型，支持路径
      * @param listener 监听器
@@ -65,6 +72,9 @@ export class EventHub {
      */
     on(typePath: string, listener: (eventData: any, typePath?: string) => void, needlessCloser: boolean = false) {
         this.eventEmitter.on(typePath, listener)
+
+        // 有监听全部事件的监听器
+        if (typePath === "*") this.hasAnyListener = true
 
         if (!needlessCloser) {
             const offFunction: listenCloser = () => {
@@ -114,6 +124,14 @@ export class EventHub {
 
         for (let i = 0; i < emitArray.length; i++) {
             this.eventEmitter.emit(emitArray[i], eventData, typePath)
+        }
+
+        // 触发 * 监听
+        if (this.hasAnyListener) {
+            // 防止 emit * 时触发 2 次
+            if (typePath !== "*") {
+                this.eventEmitter.emit("*", eventData, typePath)
+            }
         }
     }
 }
