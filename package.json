@@ -9,11 +9,7 @@
         "publish": "npm publish --registry=https://registry.npmjs.org/ --disturl=/",
         "build:dll": "webpack --mode=production --config=webpack.dll.config.js",
         "test": "jest",
-        "test:coverage": "jest --coverage",
-        "copy-to-windows": "cpy  --parents  ./src /Users/nullice/Project/NULLICE/Coverc/moonvy-web/src/Core/richang",
-        "copy-to-macos": "cpy  --parents  ./src /Users/nullice/Project/NULLICE/Coverc/moonvy-web/src/Core/richang"
-
-
+        "test:coverage": "jest --coverage"
     },
     "author": "ui@nullice.com",
     "license": "ISC",
