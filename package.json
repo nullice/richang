@@ -10,8 +10,10 @@
         "build:dll": "webpack --mode=production --config=webpack.dll.config.js",
         "test": "jest",
         "test:coverage": "jest --coverage",
-        "copy-to-windows": "cpy  --parents  ./src ../../../THE-Lanhu/Lanhu-WebUniverse/zeros/zero-system/src/Core/richang && cpy  --parents  ./test ../../../THE-Lanhu/Lanhu-WebUniverse/zero-system/src/Core/richang",
-        "copy-to-macos": "cpy  --parents  ./src /Users/nullice/Project/LANHU/Zeros/zeros/zero-system/src/Core/richang"
+        "copy-to-windows": "cpy  --parents  ./src /Users/nullice/Project/NULLICE/Coverc/moonvy-web/src/Core/richang",
+        "copy-to-macos": "cpy  --parents  ./src /Users/nullice/Project/NULLICE/Coverc/moonvy-web/src/Core/richang"
+
+
     },
     "author": "ui@nullice.com",
     "license": "ISC",
