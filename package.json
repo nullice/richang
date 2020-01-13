@@ -68,7 +68,7 @@
         "yazl": "^2.5.1"
     },
     "files": [
-        "src",
+        "src/**/*",
         "lib",
         "dll",
         "package.json",
