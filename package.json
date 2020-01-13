@@ -1,7 +1,7 @@
 {
     "name": "richang",
     "main": "lib/richang.js",
-    "version": "1.0.0",
+    "version": "5.0.5",
     "description": "",
     "scripts": {
         "dev": "webpack --watch",
