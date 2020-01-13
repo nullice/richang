@@ -66,5 +66,12 @@
         "vue": "^2.6.10",
         "yauzl": "^2.10.0",
         "yazl": "^2.5.1"
-    }
+    },
+    "files": [
+        "src",
+        "lib",
+        "dll",
+        "package.json",
+        "tsconfig.json"
+    ]
 }
